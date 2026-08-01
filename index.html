@@ -743,7 +743,9 @@
 
     <script>
         const styleArtsList = [
-            "Auto-Set by AI", "KUSTOM", 
+            "Auto-Set by AI", "KUSTOM",
+            
+            "--- 🧵 3D FABRIC & YARN CRAFTS ---",
             "1. GAYA 1/ ImaKnit / Premium Knit & Crochet 3D",
             "2. GAYA 2/ ImaWaru / Premium Needle Felting 3D",
             "3. GAYA 3/ ImaQupa / Premium Quilted Patchwork 3D",
@@ -755,59 +757,77 @@
             "9. GAYA 9/ ImaMacra / Premium Handcrafted Macrame Fiber Art",
             "10. GAYA 10/ ImaWeave / Premium Woven Tapestry Art",
             "11. GAYA 11/ ImaTile / Premium 3D Textile Storybook Art",
-            "12. GAYA 12/ ImaWhimsi / Ink & Watercolor Whimsical Doodle",
-            "13. GAYA 13/ ImaStudy / Studygram Digital Journaling & Scrapbook",
-            "14. GAYA 14/ ImaWaco / Watercolor & Ink Illustration",
-            "15. GAYA 15/ ImaGeru / Grunge Streetwear Photocopy Collage",
-            "16. GAYA 16/ ImaDenim / Hand-Drawn Sketchnote & Visual Journaling",
-            "17. GAYA 17/ ImaFlato / Modern Flat Vector Illustration",
-            "18. GAYA 18/ ImaNoto / Notion Minimal Monochrome Illustration",
-            "19. GAYA 19/ ImaGraf / Risograph Vintage Graphic Print",
-            "20. GAYA 20/ ImaGraff / Urban Street Graffiti Art",
-            "21. GAYA 21/ ImaSketch / Doodle Journal Notebook Illustration",
-            "22. GAYA 22/ ImaKomi / Comic Studio (High-Fidelity Islamic Comic)",
-            "23. GAYA 23/ ImaWebo / Premium Webtoon Comic Illustration",
+
+            "--- ✂️ 3D PAPER & CARDBOARD CRAFTS ---",
+            "12. GAYA 12/ ImaSand / Premium Sand Sculpture & Art Diorama 3D",
+            "13. GAYA 13/ ImaShadow / Premium Paper Shadow Box 3D",
+            "14. GAYA 14/ ImaCraft / Premium 3D Papercraft Diorama",
+            "15. GAYA 15/ ImaPaper / Premium Layered Papercut 3D Diorama",
+            "16. GAYA 16/ ImaOri / 3D Origami Paper Art Diorama",
+            "17. GAYA 17/ ImaPaper / Premium 3D Paper Diorama Art",
+            "18. GAYA 18/ ImaQuill / Premium 3D Paper Quilling Art Diorama",
+            "19. GAYA 19/ ImaKiri / Premium 3D Kirigami Paper Cut Art",
+            "20. GAYA 20/ ImaCut / Premium Handmade Cut Paper Collage",
+            "21. GAYA 21/ ImaCard / Premium Handmade Cardboard Craft 3D",
+            "22. GAYA 22/ ImaSculpt / Premium 3D Paper Sculpture Art",
+
+            "--- 📖 STORYBOOK & TALES ---",
+            "23. GAYA 23/ ImaWhimsi / Ink & Watercolor Whimsical Doodle",
             "24. GAYA 24/ ImaWimmel / Wimmelbilderbuch (Teeming Picture Book)",
-            "25. GAYA 25/ ImaPixar / Pixar Inspired 3D Animation",
-            "26. GAYA 26/ ImaGame / Stylized Game Art Illustration",
-            "27. GAYA 27/ ImaVoxel / Isometric 3D Voxel Art Diorama",
-            "28. GAYA 28/ ImaSand / Premium Sand Sculpture & Art Diorama 3D",
-            "29. GAYA 29/ ImaChalk / Vintage Chalkboard Typography & Sketch",
-            "30. GAYA 30/ ImaShadow / Premium Paper Shadow Box 3D",
-            "31. GAYA 31/ ImaMix / Mixed Media Experimental Collage",
-            "32. GAYA 32/ ImaCraft / Premium 3D Papercraft Diorama",
-            "33. GAYA 33/ ImaPaper / Premium Layered Papercut 3D Diorama",
-            "34. GAYA 34/ ImaOri / 3D Origami Paper Art Diorama",
-            "35. GAYA 35/ ImaPaper / Premium 3D Paper Diorama Art",
-            "36. GAYA 36/ ImaQuill / Premium 3D Paper Quilling Art Diorama",
-            "37. GAYA 37/ ImaKiri / Premium 3D Kirigami Paper Cut Art",
-            "38. GAYA 38/ ImaCut / Premium Handmade Cut Paper Collage",
-            "39. GAYA 39/ ImaCard / Premium Handmade Cardboard Craft 3D",
-            "40. GAYA 40/ ImaSculpt / Premium 3D Paper Sculpture Art",
-            "41. GAYA 41/ ImaCozy / Premium Cozy Storybook Illustration",
-            "42. GAYA 42/ ImaVinta / Premium Vintage Storybook Illustration",
-            "43. GAYA 43/ ImaAqua / Premium Watercolor Storybook Illustration",
-            "44. GAYA 44/ ImaScandi / Premium Scandinavian Folk Storybook Art",
-            "45. GAYA 45/ ImaWhim / Premium Whimsical Storybook Illustration",
-            "46. GAYA 46/ ImaTale / Premium Enchanted Fairytale Storybook Art",
-            "47. GAYA 47/ ImaEdito / Premium Editorial Storybook Illustration",
-            "48. GAYA 48/ ImaPencil / Premium Soft Pencil Storybook Illustration",
-            "49. GAYA 49/ ImaCottage / Premium Cottagecore Storybook Illustration",
-            "50. GAYA 50/ ImaKids / Premium Children's Book Illustration",
-            "51. GAYA 51/ ImaGouache / Premium Opaque Gouache Painting",
-            "52. GAYA 52/ ImaOil / Premium Impasto Oil Painting",
-            "53. GAYA 53/ ImaAcryl / Premium Expressive Acrylic Painting",
-            "54. GAYA 54/ ImaColor / Premium Colored Pencil Illustration",
-            "55. GAYA 55/ ImaWood / Minimalist Vintage Japanese Woodcut Print",
-            "56. GAYA 56/ ImaHoku / Hokusai-inspired Ukiyo-e Sci-Fi",
-            "57. GAYA 57/ ImaFinlay / Vintage Sci-Fi Stipple Ink Illustration",
-            "58. GAYA 58/ ImaStory / Whimsical Watercolor Storybook Illustration",
-            "59. GAYA 59/ ImaLine / Intricate Black & White Line Art Illustration",
-            "60. GAYA 60/ ImaPop / Bold Pop Art Illustration",
-            "61. GAYA 61/ ImaAvantAsian / Avant-Garde Geometric Asian Illustration",
-            "62. GAYA 62/ ImaDecora / Retro Psychedelic Anime Pop Illustration"
+            "25. GAYA 25/ ImaCozy / Premium Cozy Storybook Illustration",
+            "26. GAYA 26/ ImaVinta / Premium Vintage Storybook Illustration",
+            "27. GAYA 27/ ImaAqua / Premium Watercolor Storybook Illustration",
+            "28. GAYA 28/ ImaScandi / Premium Scandinavian Folk Storybook Art",
+            "29. GAYA 29/ ImaWhim / Premium Whimsical Storybook Illustration",
+            "30. GAYA 30/ ImaTale / Premium Enchanted Fairytale Storybook Art",
+            "31. GAYA 31/ ImaEdito / Premium Editorial Storybook Illustration",
+            "32. GAYA 32/ ImaPencil / Premium Soft Pencil Storybook Illustration",
+            "33. GAYA 33/ ImaCottage / Premium Cottagecore Storybook Illustration",
+            "34. GAYA 34/ ImaKids / Premium Children's Book Illustration",
+            "35. GAYA 35/ ImaStory / Whimsical Watercolor Storybook Illustration",
+
+            "--- 🎨 TRADITIONAL PAINTINGS ---",
+            "36. GAYA 36/ ImaWaco / Watercolor & Ink Illustration",
+            "37. GAYA 37/ ImaGouache / Premium Opaque Gouache Painting",
+            "38. GAYA 38/ ImaOil / Premium Impasto Oil Painting",
+            "39. GAYA 39/ ImaAcryl / Premium Expressive Acrylic Painting",
+            "40. GAYA 40/ ImaColor / Premium Colored Pencil Illustration",
+
+            "--- 📝 JOURNALING & MIXED MEDIA ---",
+            "41. GAYA 41/ ImaStudy / Studygram Digital Journaling & Scrapbook",
+            "42. GAYA 42/ ImaDenim / Hand-Drawn Sketchnote & Visual Journaling",
+            "43. GAYA 43/ ImaSketch / Doodle Journal Notebook Illustration",
+            "44. GAYA 44/ ImaMix / Mixed Media Experimental Collage",
+
+            "--- ✒️ GRAPHIC, POP & VECTOR ---",
+            "45. GAYA 45/ ImaFlato / Modern Flat Vector Illustration",
+            "46. GAYA 46/ ImaNoto / Notion Minimal Monochrome Illustration",
+            "47. GAYA 47/ ImaLine / Intricate Black & White Line Art Illustration",
+            "48. GAYA 48/ ImaPop / Bold Pop Art Illustration",
+            "49. GAYA 49/ ImaAvantAsian / Avant-Garde Geometric Asian Illustration",
+
+            "--- 🛹 RETRO & STREET ART ---",
+            "50. GAYA 50/ ImaGeru / Grunge Streetwear Photocopy Collage",
+            "51. GAYA 51/ ImaGraf / Risograph Vintage Graphic Print",
+            "52. GAYA 52/ ImaGraff / Urban Street Graffiti Art",
+            "53. GAYA 53/ ImaChalk / Vintage Chalkboard Typography & Sketch",
+
+            "--- ⛩️ JAPANESE & CLASSIC SCI-FI ---",
+            "54. GAYA 54/ ImaWood / Minimalist Vintage Japanese Woodcut Print",
+            "55. GAYA 55/ ImaHoku / Hokusai-inspired Ukiyo-e Sci-Fi",
+            "56. GAYA 56/ ImaFinlay / Vintage Sci-Fi Stipple Ink Illustration",
+
+            "--- 🌸 ANIME & WEBTOON ---",
+            "57. GAYA 57/ ImaKomi / Comic Studio (High-Fidelity Islamic Comic)",
+            "58. GAYA 58/ ImaWebo / Premium Webtoon Comic Illustration",
+            "59. GAYA 59/ ImaDecora / Retro Psychedelic Anime Pop Illustration",
+
+            "--- 🎮 3D ANIMATION & GAMING ---",
+            "60. GAYA 60/ ImaPixar / Pixar Inspired 3D Animation",
+            "61. GAYA 61/ ImaGame / Stylized Game Art Illustration",
+            "62. GAYA 62/ ImaVoxel / Isometric 3D Voxel Art Diorama"
         ];
-        
+
         const fontDNAList = [
             "Auto-Set by AI", "KUSTOM", "FONT 1. Friendly Rounded Handwritten", "FONT 2. Soft Brush Handwriting", "FONT 3. Modern Editorial Serif",
             "FONT 4. Humanist Sans", "FONT 5. Geometric Sans", "FONT 6. Rounded Sans", "FONT 7. Storybook Typography", "FONT 8. Notebook Handwriting",
@@ -897,9 +917,84 @@
             "[SUZUME]": "DNA: Orange, Blue, Gold"
         };
 
+        const styleArtsConcepts = {
+            "1. GAYA 1/ ImaKnit / Premium Knit & Crochet 3D": "Realistic 3D knitted wool diorama in isometric miniature style, premium Cinema 4D (C4D) render. Featuring highly detailed wool fiber textures, visible woven stitches, and a soft matte fabric surface that provides a warm, cozy, and highly artistic atmosphere.",
+            "2. GAYA 2/ ImaWaru / Premium Needle Felting 3D": "3D needle felting craft illustration of an organic miniature sculpture. Featuring a dense, fuzzy wool texture with fine fibers naturally sticking out along its contours, creating an aesthetic and warm handmade decor vibe.",
+            "3. GAYA 3/ ImaQupa / Premium Quilted Patchwork 3D": "Quilted patchwork diorama neatly stitched with soft wool padding inside for an embossed volume effect. Featuring a combination of checkered, floral, and solid fabric patterns with detailed embroidered stitch lines and realistic fabric folds.",
+            "4. GAYA 4/ ImaFlannel / Premium Stuffed Felt Art Diorama": "Isometric 3D stuffed flannel craft diorama filled with soft cotton for an embossed voluminous effect. Featuring neat handmade blanket stitches along the fabric edges and a soft fuzzy matte fabric texture. A blend of bright pastel colors creates a sweet, warm, and highly artistic visual atmosphere.",
+            "5. GAYA 5/ ImaStitch / Premium 3D Hand Embroidery Art": "3D hand embroidery art illustration with high texture on a rough canvas or linen surface. Featuring highly precise embossed cotton thread stitches, gradient color blends from stacked threads, and macro photography lighting effects that enhance the volume and sheen of each strand. Creating a warm, tactile, and highly artistic handmade craft atmosphere.",
+            "6. GAYA 6/ ImaFab / Premium Mixed Fabric Collage Art": "Tactile mixed fabric collage art made from overlapping cutouts of various fabrics. Featuring naturally frayed cut edges, a blend of textures from materials like cotton and linen, and expressive stitching elements that bind each layer. Bathed in soft lighting that enhances physical depth, creating an organic, warm, and handmade-rich visual atmosphere.",
+            "7. GAYA 7/ ImaWool / Premium 3D Wool Sculpture Art": "3D wool sculpture diorama with thick textures, tightly twisted yarn, and dense fiber clumps. Featuring a minimalist character with a blank faceless expression in a soft matte fibrous environment. Bathed in warm lighting that highlights the fuzzy effect on all surfaces, creating a cozy, tactile, and highly artistic visual atmosphere.",
+            "8. GAYA 8/ ImaPlush / Premium 3D Plush Toy Diorama": "3D miniature plush toy diorama, soft and voluminous. Featuring detailed fuzzy minky or fleece fabric textures, neat edge stitching, and rounded proportions like a real stuffed toy. Illuminated by soft directional studio lighting to emphasize the tactile fabric surface, creating a warm, adorable, and aesthetic visual atmosphere.",
+            "9. GAYA 9/ ImaMacra / Premium Handcrafted Macrame Fiber Art": "3D bohemian macrame cotton cord knot craft diorama, highly precise and thickly textured. Featuring intricate knot weaves, naturally falling frayed fringes, and natural wood supports highlighted by soft directional lighting. Creating an organic, tactile, warm, and highly artistic handmade craft atmosphere.",
+            "10. GAYA 10/ ImaWeave / Premium Woven Tapestry Art": "Traditional woven tapestry illustration with dense yarn weaves and realistic fabric textures. Featuring a slightly faded classic color palette, intricate decorative border stitches, and thick woven yarn elements that provide a tactile feel. Bathed in soft lighting that highlights the woven curves on the fabric surface, creating a majestic, historical, and highly artistic visual atmosphere.",
+            "11. GAYA 11/ ImaTile / Premium 3D Textile Storybook Art": "3D textile storybook illustration made from a blend of textile crafts, patchwork, and embroidery with realistic physical depth. Featuring a blank faceless character formed from cotton and felt cutouts, combined with embossed stitches and a rough textured canvas background. Highlighted by warm lighting to emphasize the fibers of each material, creating a tactile, nostalgic, and highly artistic handmade fairytale atmosphere.",
+
+            "12. GAYA 12/ ImaSand / Premium Sand Sculpture & Art Diorama 3D": "Premium 3D sand sculpture art diorama with precise micro-grain details. Featuring a dense granular sand surface texture with a warm golden-cream color gradient, and natural sunlight effects that accentuate the carved depths. Creating an organic, artistic, and aesthetic beach-vibe visual atmosphere.",
+            "13. GAYA 13/ ImaShadow / Premium Paper Shadow Box 3D": "3D paper shadow box diorama focusing on profound shadow play. Featuring highly precise object silhouettes, softly gradated matte paper textures, and hidden lighting effects from behind the paper layers that accentuate visual contours. Creating a dramatic, poetic, and highly artistic atmosphere.",
+            "14. GAYA 14/ ImaCraft / Premium 3D Papercraft Diorama": "3D papercraft diorama with precise layered depth effects. Featuring a fine-grained matte paper texture with sharp fold lines and cut angles, as well as soft interplay of shadows between layers. Creating a creative, aesthetic, and highly artistic visual atmosphere.",
+            "15. GAYA 15/ ImaPaper / Premium Layered Papercut 3D Diorama": "3D layered papercut diorama with precise depth. Featuring stacked layers of matte paper creating a natural shadow box effect between the cut gaps, sharp and clean paper edges, and dramatic lighting to highlight the fine paper fiber texture, producing an aesthetic, poetic, and highly artistic visual atmosphere.",
+            "16. GAYA 16/ ImaOri / 3D Origami Paper Art Diorama": "3D origami paper art diorama with high precision, featuring sharp and symmetrical geometric structures. Showcasing a fine-grained matte paper surface texture, crisp fold angles, and realistic drop shadows from soft directional lighting. Creating a clean, minimalist, elegant, and highly artistic visual atmosphere.",
+            "17. GAYA 17/ ImaPaper / Premium 3D Paper Diorama Art": "3D layered papercraft diorama miniature, highly detailed and precise. Featuring a fine-grained matte paper texture with physical depth between layers producing natural drop shadows. Bathed in soft directional lighting with a macro photography perspective, creating an aesthetic, artistic, and highly artistic visual.",
+            "18. GAYA 18/ ImaQuill / Premium 3D Paper Quilling Art Diorama": "3D paper quilling art diorama with intricate and precise layered details. Featuring an arrangement of colorful paper strips rolled, curved, and neatly shaped, complete with matte paper fiber textures and crisp folded edges. Bathed in soft lighting that casts drop shadows between the rolled gaps, creating an elegant, dynamic, and highly artistic physical depth effect.",
+            "19. GAYA 19/ ImaKiri / Premium 3D Kirigami Paper Cut Art": "3D kirigami paper cut and fold diorama with precise layered depth. Featuring intricate paper carving details with a backlight shadow box effect, creating a subtle play of shadows on the matte paper texture that provides a poetic, elegant, and highly artistic vibe.",
+            "20. GAYA 20/ ImaCut / Premium Handmade Cut Paper Collage": "Premium handmade cut paper collage art featuring stacked colored paper with visible matte fiber textures. Each layer has crisp cut edges with natural drop shadows in between, producing a 3D physical depth effect. Creating an organic, artistic visual atmosphere rich with a handmade touch.",
+            "21. GAYA 21/ ImaCard / Premium Handmade Cardboard Craft 3D": "3D miniature diorama made from precisely layered corrugated cardboard and kraft paper cutouts. Featuring natural brown paper fiber textures with exposed inner cardboard ridges along the cut edges, and soft lighting that produces natural drop shadows. Creating an eco-friendly, artistic, and highly artistic handmade craft visual atmosphere.",
+            "22. GAYA 22/ ImaSculpt / Premium 3D Paper Sculpture Art": "3D paper sculpture diorama, precisely carved and shaped with stunning volumetric depth. Featuring a smooth matte paper fiber texture, gentle curves and folds, and sharp cut edges. Bathed in soft lighting that casts gradated shadows among hollows and folds, creating an elegant, artistic, and highly artistic visual atmosphere.",
+
+            "23. GAYA 23/ ImaWhimsi / Ink & Watercolor Whimsical Doodle": "Traditional analog ink and watercolor doodle illustration in a children's storybook style. Characters are drawn with super thin (0.05pt) black ink that is intentionally imperfect, combined with transparent watercolor strokes that aesthetically bleed outside the lines on rough textured paper.",
+            "24. GAYA 24/ ImaWimmel / Wimmelbilderbuch (Teeming Picture Book)": "Teeming Wimmelbilderbuch children's hidden-object book illustration, highly dense and crowded. Using a bird's-eye or isometric perspective, featuring a super busy miniature world with hundreds of characters and objects interconnected in witty little stories.",
+            "25. GAYA 25/ ImaCozy / Premium Cozy Storybook Illustration": "Classic 2D digital children's book illustration drawn using textured pastel brush strokes and traditional colored pencils. Featuring a warm color palette with a soft magical glowing illumination on a grainy paper texture surface. Creating a highly cozy, calming, nostalgic, and imaginative fairytale atmosphere.",
+            "26. GAYA 26/ ImaVinta / Premium Vintage Storybook Illustration": "Classic golden age 2D children's book illustration with a retro touch. Featuring organic pen ink line details blended with faded pastel (muted colors) watercolor strokes on a yellowing, rough textured paper surface. Creating a nostalgic, warm, and historically rich fairytale atmosphere.",
+            "27. GAYA 27/ ImaAqua / Premium Watercolor Storybook Illustration": "Classic 2D children's book illustration painted with soft and transparent watercolor strokes. Featuring a blend of organic pastel color gradients, natural pigment effects from wet-on-wet techniques, and fine pencil sketch details on a rough cold-pressed paper surface. Creating a warm, calming, nostalgic, and visually imaginative fairytale atmosphere.",
+            "28. GAYA 28/ ImaScandi / Premium Scandinavian Folk Storybook Art": "2D digital Scandinavian Nordic folk art storybook illustration embracing a minimalist aesthetic with geometric flora and fauna ornaments. Featuring a muted earth tones palette using flat coloring techniques with fine grain textures and characterful organic brush strokes. Creating a highly calming, warm hygge-vibe, aesthetic, and modern fairytale atmosphere.",
+            "29. GAYA 29/ ImaWhim / Premium Whimsical Storybook Illustration": "2D digital whimsical children's book illustration full of magic and fantasy. Featuring soft pastel brush strokes, dynamic fluid organic shapes, and magical glowing light effects on a smooth textured paper surface. Creating an enchanting, cheerful, slightly eccentric, and wildly imaginative fairytale atmosphere.",
+            "30. GAYA 30/ ImaTale / Premium Enchanted Fairytale Storybook Art": "Digital illustration in a classic enchanted fairytale storybook style with a premium touch. Featuring soft oil paint and pastel textured brush strokes on a fine-grained paper surface. Combined with magical volumetric lighting and a warm pastel color palette that creates an enchanting, nostalgic, and magical atmosphere.",
+            "31. GAYA 31/ ImaEdito / Premium Editorial Storybook Illustration": "2D digital illustration blending modern editorial magazine design aesthetics with children's storybook narrative charm. Featuring a smart use of negative space, lineless characters with crisp geometric shapes, and a contrasting color palette coated in a fine grain texture. Creating a poetic, conceptual, aesthetic, and contemporary visual atmosphere.",
+            "32. GAYA 32/ ImaPencil / Premium Soft Pencil Storybook Illustration": "Classic 2D digital children's book illustration drawn using highly soft and layered pastel colored pencil hatching techniques. Featuring a smooth graphite or pencil stroke grain texture on thick sketch paper, naturally blending contour lines, and a muted warm color palette. Creating a calming, nostalgic, and tender fairytale atmosphere.",
+            "33. GAYA 33/ ImaCottage / Premium Cottagecore Storybook Illustration": "2D children's book illustration embracing a romantic and peaceful cottagecore aesthetic. Featuring a blend of pastel watercolor strokes and colored pencil hatching on a rough paper surface, highlighting organic elements like wildflowers, mushrooms, and wooden cottages in warm earth tones. Creating a highly calming, nostalgic, cozy, and nature-harmonious fairytale atmosphere.",
+            "34. GAYA 34/ ImaKids / Premium Children's Book Illustration": "2D digital children's book illustration blending soft watercolor strokes and detailed colored pencil hatching on a rough textured paper surface. Featuring organically designed characters with blank faceless features integrated into a warm pastel color palette environment, creating a nostalgic, cozy, and imaginative fairytale atmosphere.",
+            "35. GAYA 35/ ImaStory / Whimsical Watercolor Storybook Illustration": "Traditional whimsical watercolor storybook illustration full of warmth and imagination. Using soft wet-on-wet color strokes combined with thin pencil sketches on a richly textured cold-pressed paper surface. Featuring expressively proportioned characters with a muted earthy pastel color palette, creating a nostalgic, sweet, and storytelling atmosphere.",
+
+            "36. GAYA 36/ ImaWaco / Watercolor & Ink Illustration": "Premium traditional watercolor painting with expressive freehand black ink contour lines. Utilizing wet-on-wet techniques to produce luminous transparent color gradients, lively brush textures, and natural pigment grains on a realistic cold-pressed paper surface.",
+            "37. GAYA 37/ ImaGouache / Premium Opaque Gouache Painting": "2D traditional opaque gouache painting illustration on a rough textured paper surface. Featuring expressive brush strokes, dense pigmented overlapping colors with a matte shine-free finish, and organic handmade painting details. Creating a warm, aesthetic, characterful visual atmosphere rich in tactile texture.",
+            "38. GAYA 38/ ImaOil / Premium Impasto Oil Painting": "2D traditional impasto oil painting illustration on a rough canvas surface. Featuring expressive impasto brush strokes with voluminous color pigment build-up, realistic oil sheen effects, and a thick blend of organically unified colors. Creating an elegant, classic, expressive, and highly artistic visual atmosphere.",
+            "39. GAYA 39/ ImaAcryl / Premium Expressive Acrylic Painting": "2D traditional expressive acrylic painting illustration on a rough canvas surface. Featuring thick, bold, and decisive brush strokes with highly pigmented, fast-drying overlapping colors. Highlighting a satin semi-gloss finish with light impasto texture details, creating a dynamic, energetic, expressive, and contemporary visual atmosphere.",
+            "40. GAYA 40/ ImaColor / Premium Colored Pencil Illustration": "Traditional 2D colored pencil illustration drawn using layered hatching techniques on a thick textured sketch paper surface. Featuring rich color pigment strokes, organic color blending through varied hand pressure, and precise line details that retain the original paper grain. Creating a warm, nostalgic, expressive visual atmosphere that strongly emphasizes an authentic hand-drawn touch.",
+
+            "41. GAYA 41/ ImaStudy / Studygram Digital Journaling & Scrapbook": "Modern digital journaling Studygram aesthetic like GoodNotes or Notion apps. Set against a white grid or graph paper background, decorated with a collage of torn paper scraps, decorative stickers, pastel washi tape, highlighter marks, paper clips, and neat minimal line illustration notes.",
+            "42. GAYA 42/ ImaDenim / Hand-Drawn Sketchnote & Visual Journaling": "Creative analog hand-drawn sketchnote journaling doodles using black ink pens and Copic marker coloring. Featuring faint pencil construction lines, connecting arrows, visual thinking diagrams, and slight coffee stains that provide a casual yet informative study note impression.",
+            "43. GAYA 43/ ImaSketch / Doodle Journal Notebook Illustration": "Teenage school notebook sketch drawn using a blue gel or ballpoint pen on lined paper. Featuring cross-hatching techniques, marker circles, annotation arrows, and bright neon highlighter scribbles that create a relaxed study atmosphere.",
+            "44. GAYA 44/ ImaMix / Mixed Media Experimental Collage": "Experimental mixed media collage artwork harmoniously combining analog painting techniques and digital collages. Featuring a unique blend of thickly textured paint strokes, expressive black ink sketches, and stacked paper cutouts with a grainy texture. Creating a visually rich, detailed, artistic, and highly energetic creative display.",
+
+            "45. GAYA 45/ ImaFlato / Modern Flat Vector Illustration": "Modern flat vector 2D minimal graphic art with a clean lineless aesthetic. Featuring crisp geometric shapes, solid color blocking in pastel or pop themes, and flat lighting without complex gradients to create a neat, elegant, and user-friendly look.",
+            "46. GAYA 46/ ImaNoto / Notion Minimal Monochrome Illustration": "Pure minimal monochrome black and white Notion-style illustration. Set against a clean white background with vast negative space, featuring solid black hair silhouettes and a highly elegant, neat infographic or mind map structure.",
+            "47. GAYA 47/ ImaLine / Intricate Black & White Line Art Illustration": "Monochrome black & white line art illustration in a highly dense and detailed coloring book style. Using clean and thick black contour lines, combined with intricate cross-hatching techniques to provide texture and shading on retro-vibe interiors. Featuring a linear composition without color, rich in visual elements, creating a nostalgic, calm, and aesthetic atmosphere.",
+            "48. GAYA 48/ ImaPop / Bold Pop Art Illustration": "Modern pop art poster digital illustration with thick, bold black outlines. Featuring a blend of highly saturated and bold contrasting colors, combined with a fine vintage comic print halftone texture to create an iconic, energetic, and highly expressive visual impression.",
+            "49. GAYA 49/ ImaAvantAsian / Avant-Garde Geometric Asian Illustration": "Premium flat vector digital illustration deconstructed into abstract geometric shapes. Featuring an Asian female character (STRICTLY profile or completely featureless silhouette) adorned with traditional patterns (flowers, clouds, ornaments) and complex headpieces broken down into sharp shapes. Set against an abstract collage of geometric shapes in a bright, contrasting color palette, creating an avant-garde, fashionable, and contemporary atmosphere.",
+
+            "50. GAYA 50/ ImaGeru / Grunge Streetwear Photocopy Collage": "Raw and bold grunge streetwear poster mixed media collage. Using a worn-out xerography photocopy textured monochrome foundation, combined with torn paper, black duct tape, neon spray paint splatters, and stencil-style typography.",
+            "51. GAYA 51/ ImaGraf / Risograph Vintage Graphic Print": "Retro risograph vintage graphic print blending indie zine and classic analog poster aesthetics. Featuring a limited dual-tone color blend overlaid with halftone dot patterns, distinctive print misregistration effects, and grainy ink textures on a crispy recycled paper surface. Creating an artistic, nostalgic visual atmosphere rich in analog textures.",
+            "52. GAYA 52/ ImaGraff / Urban Street Graffiti Art": "Urban street graffiti mural art drawn on a rough textured brick wall using a combination of spray paint and thick markers. Featuring paint drips, sharp contour lines, striking neon color gradients, and expressive paint splatters. Creating a bold, energetic impression rich in modern street culture aesthetics.",
+            "53. GAYA 53/ ImaChalk / Vintage Chalkboard Typography & Sketch": "Classic vintage chalkboard typography and sketch illustration set against a rough textured blackboard background. Featuring dusty chalk strokes with a crispy texture, fine hatching lines, and realistic erased chalk smudge effects. Combined with artistic hand-lettering typography and detailed line sketches, creating a friendly, warm, and authentic cafe or classroom retro atmosphere.",
+
+            "54. GAYA 54/ ImaWood / Minimalist Vintage Japanese Woodcut Print": "Modern traditional Japanese Ukiyo-e minimalist vintage woodcut print. Featuring a minimalist composition with clean, sharp, and precise black contour lines on rough textured washi paper. Using a limited, muted vintage color palette, utilizing vast negative space to create a calm, elegant, and authentic atmosphere.",
+            "55. GAYA 55/ ImaHoku / Hokusai-inspired Ukiyo-e Sci-Fi": "2D digital painting blending classic Edo-era Ukiyo-e woodblock print aesthetics with sci-fi elements. Featuring bold, dynamic black ink outlines inspired by Hokusai, a traditional muted color palette (indigo, vermilion, ochre), and worn-out ancient washi paper textures. Temporal anomalies are visualized through calligraphic swirling clouds and waves bending space-time, creating a dramatic and historic surreal atmosphere.",
+            "56. GAYA 56/ ImaFinlay / Vintage Sci-Fi Stipple Ink Illustration": "Classic black and white vintage sci-fi pulp magazine ink illustration from the 1940s using highly intricate and precise stippling and cross-hatching techniques. Combining extreme chiaroscuro contrast to showcase retro mechanical details, leather textures, and dramatic cinematic lighting. Set against a pitch-black space background, delivering a mysterious, profound, and authentic retro-futuristic cosmic atmosphere.",
+
+            "57. GAYA 57/ ImaKomi / Comic Studio (High-Fidelity Islamic Comic)": "Premium high-fidelity Islamic comic studio and professional webtoon style with cel-shaded 2D/2.5D coloring. Using clean, bold black ink lines, dramatic lighting effects, and screentone/halftone textures for a modern and energetic comic narrative visualization.",
+            "58. GAYA 58/ ImaWebo / Premium Webtoon Comic Illustration": "Modern Korean webtoon/manhwa digital illustration with extremely clean and smooth line art. Using dynamic diagonal panel layouts, glowing environmental rim lighting, and professionally integrated narrative boxes and speech bubbles.",
+            "59. GAYA 59/ ImaDecora / Retro Psychedelic Anime Pop Illustration": "2D digital retro psychedelic anime pop illustration with Harajuku Decora aesthetics and highly vibrant elements. Featuring clean black contour lines, cel-shaded coloring with highly saturated rainbow colors, halftone hatching textures, floral ornaments, and star sparkle effects. Set against a soft cream plain background, creating a cheerful, energetic, nostalgic, and expressive atmosphere.",
+
+            "60. GAYA 60/ ImaPixar / Pixar Inspired 3D Animation": "High-end cinematic 3D animation inspired by Pixar feature films. Characters are designed with adorable and expressive proportions, featuring realistic cloth simulations, subsurface scattering skin, and dramatic, emotional volumetric lighting.",
+            "61. GAYA 61/ ImaGame / Stylized Game Art Illustration": "Stylized 3D game art illustration concept with a clean isometric perspective. Object surfaces are colored using hand-painted digital brush texture rendering typical of popular casual RPGs, featuring a bright, colorful, and characterful layered environment.",
+            "62. GAYA 62/ ImaVoxel / Isometric 3D Voxel Art Diorama": "Isometric 3D voxel art diorama built from precise retro-modern pixel cubes rendered in premium MagicaVoxel. Featuring a neat grid block texture with a matte surface, an enchanting color blend, and natural lighting that produces soft yet distinct shadows. Creating an aesthetic, nostalgic, and visually charming geometric miniature world atmosphere."
+        };
+
         // ====== DAFTAR LINK GEMS (EDIT LINK DI SINI NANTINYA) ======
         // Ganti url: "#" menjadi link aslinya nanti (misal url: "https://koleksigems.com/knit")
         const gemsData = [
+            // --- 🧵 3D FABRIC & YARN CRAFTS ---
             { title: "1. GAYA 1/ ImaKnit / Premium Knit & Crochet 3D", url: "#", desc: "Referensi Visual & Aset" },
             { title: "2. GAYA 2/ ImaWaru / Premium Needle Felting 3D", url: "#", desc: "Referensi Visual & Aset" },
             { title: "3. GAYA 3/ ImaQupa / Premium Quilted Patchwork 3D", url: "#", desc: "Referensi Visual & Aset" },
@@ -911,57 +1006,75 @@
             { title: "9. GAYA 9/ ImaMacra / Premium Handcrafted Macrame Fiber Art", url: "#", desc: "Referensi Visual & Aset" },
             { title: "10. GAYA 10/ ImaWeave / Premium Woven Tapestry Art", url: "#", desc: "Referensi Visual & Aset" },
             { title: "11. GAYA 11/ ImaTile / Premium 3D Textile Storybook Art", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "12. GAYA 12/ ImaWhimsi / Ink & Watercolor Whimsical Doodle", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "13. GAYA 13/ ImaStudy / Studygram Digital Journaling & Scrapbook", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "14. GAYA 14/ ImaWaco / Watercolor & Ink Illustration", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "15. GAYA 15/ ImaGeru / Grunge Streetwear Photocopy Collage", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "16. GAYA 16/ ImaDenim / Hand-Drawn Sketchnote & Visual Journaling", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "17. GAYA 17/ ImaFlato / Modern Flat Vector Illustration", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "18. GAYA 18/ ImaNoto / Notion Minimal Monochrome Illustration", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "19. GAYA 19/ ImaGraf / Risograph Vintage Graphic Print", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "20. GAYA 20/ ImaGraff / Urban Street Graffiti Art", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "21. GAYA 21/ ImaSketch / Doodle Journal Notebook Illustration", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "22. GAYA 22/ ImaKomi / Comic Studio (High-Fidelity Islamic Comic)", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "23. GAYA 23/ ImaWebo / Premium Webtoon Comic Illustration", url: "#", desc: "Referensi Visual & Aset" },
+
+            // --- ✂️ 3D PAPER & CARDBOARD CRAFTS ---
+            { title: "12. GAYA 12/ ImaSand / Premium Sand Sculpture & Art Diorama 3D", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "13. GAYA 13/ ImaShadow / Premium Paper Shadow Box 3D", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "14. GAYA 14/ ImaCraft / Premium 3D Papercraft Diorama", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "15. GAYA 15/ ImaPaper / Premium Layered Papercut 3D Diorama", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "16. GAYA 16/ ImaOri / 3D Origami Paper Art Diorama", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "17. GAYA 17/ ImaPaper / Premium 3D Paper Diorama Art", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "18. GAYA 18/ ImaQuill / Premium 3D Paper Quilling Art Diorama", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "19. GAYA 19/ ImaKiri / Premium 3D Kirigami Paper Cut Art", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "20. GAYA 20/ ImaCut / Premium Handmade Cut Paper Collage", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "21. GAYA 21/ ImaCard / Premium Handmade Cardboard Craft 3D", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "22. GAYA 22/ ImaSculpt / Premium 3D Paper Sculpture Art", url: "#", desc: "Referensi Visual & Aset" },
+
+            // --- 📖 STORYBOOK & TALES ---
+            { title: "23. GAYA 23/ ImaWhimsi / Ink & Watercolor Whimsical Doodle", url: "#", desc: "Referensi Visual & Aset" },
             { title: "24. GAYA 24/ ImaWimmel / Wimmelbilderbuch (Teeming Picture Book)", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "25. GAYA 25/ ImaPixar / Pixar Inspired 3D Animation", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "26. GAYA 26/ ImaGame / Stylized Game Art Illustration", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "27. GAYA 27/ ImaVoxel / Isometric 3D Voxel Art Diorama", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "28. GAYA 28/ ImaSand / Premium Sand Sculpture & Art Diorama 3D", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "29. GAYA 29/ ImaChalk / Vintage Chalkboard Typography & Sketch", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "30. GAYA 30/ ImaShadow / Premium Paper Shadow Box 3D", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "31. GAYA 31/ ImaMix / Mixed Media Experimental Collage", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "32. GAYA 32/ ImaCraft / Premium 3D Papercraft Diorama", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "33. GAYA 33/ ImaPaper / Premium Layered Papercut 3D Diorama", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "34. GAYA 34/ ImaOri / 3D Origami Paper Art Diorama", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "35. GAYA 35/ ImaPaper / Premium 3D Paper Diorama Art", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "36. GAYA 36/ ImaQuill / Premium 3D Paper Quilling Art Diorama", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "37. GAYA 37/ ImaKiri / Premium 3D Kirigami Paper Cut Art", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "38. GAYA 38/ ImaCut / Premium Handmade Cut Paper Collage", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "39. GAYA 39/ ImaCard / Premium Handmade Cardboard Craft 3D", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "40. GAYA 40/ ImaSculpt / Premium 3D Paper Sculpture Art", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "41. GAYA 41/ ImaCozy / Premium Cozy Storybook Illustration", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "42. GAYA 42/ ImaVinta / Premium Vintage Storybook Illustration", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "43. GAYA 43/ ImaAqua / Premium Watercolor Storybook Illustration", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "44. GAYA 44/ ImaScandi / Premium Scandinavian Folk Storybook Art", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "45. GAYA 45/ ImaWhim / Premium Whimsical Storybook Illustration", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "46. GAYA 46/ ImaTale / Premium Enchanted Fairytale Storybook Art", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "47. GAYA 47/ ImaEdito / Premium Editorial Storybook Illustration", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "48. GAYA 48/ ImaPencil / Premium Soft Pencil Storybook Illustration", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "49. GAYA 49/ ImaCottage / Premium Cottagecore Storybook Illustration", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "50. GAYA 50/ ImaKids / Premium Children's Book Illustration", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "51. GAYA 51/ ImaGouache / Premium Opaque Gouache Painting", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "52. GAYA 52/ ImaOil / Premium Impasto Oil Painting", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "53. GAYA 53/ ImaAcryl / Premium Expressive Acrylic Painting", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "54. GAYA 54/ ImaColor / Premium Colored Pencil Illustration", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "55. GAYA 55/ ImaWood / Minimalist Vintage Japanese Woodcut Print", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "56. GAYA 56/ ImaHoku / Hokusai-inspired Ukiyo-e Sci-Fi", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "57. GAYA 57/ ImaFinlay / Vintage Sci-Fi Stipple Ink Illustration", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "58. GAYA 58/ ImaStory / Whimsical Watercolor Storybook Illustration", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "59. GAYA 59/ ImaLine / Intricate Black & White Line Art Illustration", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "60. GAYA 60/ ImaPop / Bold Pop Art Illustration", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "61. GAYA 61/ ImaAvantAsian / Avant-Garde Geometric Asian Illustration", url: "#", desc: "Referensi Visual & Aset" },
-            { title: "62. GAYA 62/ ImaDecora / Retro Psychedelic Anime Pop Illustration", url: "#", desc: "Referensi Visual & Aset" }
+            { title: "25. GAYA 25/ ImaCozy / Premium Cozy Storybook Illustration", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "26. GAYA 26/ ImaVinta / Premium Vintage Storybook Illustration", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "27. GAYA 27/ ImaAqua / Premium Watercolor Storybook Illustration", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "28. GAYA 28/ ImaScandi / Premium Scandinavian Folk Storybook Art", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "29. GAYA 29/ ImaWhim / Premium Whimsical Storybook Illustration", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "30. GAYA 30/ ImaTale / Premium Enchanted Fairytale Storybook Art", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "31. GAYA 31/ ImaEdito / Premium Editorial Storybook Illustration", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "32. GAYA 32/ ImaPencil / Premium Soft Pencil Storybook Illustration", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "33. GAYA 33/ ImaCottage / Premium Cottagecore Storybook Illustration", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "34. GAYA 34/ ImaKids / Premium Children's Book Illustration", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "35. GAYA 35/ ImaStory / Whimsical Watercolor Storybook Illustration", url: "#", desc: "Referensi Visual & Aset" },
+
+            // --- 🎨 TRADITIONAL PAINTINGS ---
+            { title: "36. GAYA 36/ ImaWaco / Watercolor & Ink Illustration", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "37. GAYA 37/ ImaGouache / Premium Opaque Gouache Painting", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "38. GAYA 38/ ImaOil / Premium Impasto Oil Painting", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "39. GAYA 39/ ImaAcryl / Premium Expressive Acrylic Painting", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "40. GAYA 40/ ImaColor / Premium Colored Pencil Illustration", url: "#", desc: "Referensi Visual & Aset" },
+
+            // --- 📝 JOURNALING & MIXED MEDIA ---
+            { title: "41. GAYA 41/ ImaStudy / Studygram Digital Journaling & Scrapbook", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "42. GAYA 42/ ImaDenim / Hand-Drawn Sketchnote & Visual Journaling", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "43. GAYA 43/ ImaSketch / Doodle Journal Notebook Illustration", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "44. GAYA 44/ ImaMix / Mixed Media Experimental Collage", url: "#", desc: "Referensi Visual & Aset" },
+
+            // --- ✒️ GRAPHIC, POP & VECTOR ---
+            { title: "45. GAYA 45/ ImaFlato / Modern Flat Vector Illustration", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "46. GAYA 46/ ImaNoto / Notion Minimal Monochrome Illustration", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "47. GAYA 47/ ImaLine / Intricate Black & White Line Art Illustration", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "48. GAYA 48/ ImaPop / Bold Pop Art Illustration", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "49. GAYA 49/ ImaAvantAsian / Avant-Garde Geometric Asian Illustration", url: "#", desc: "Referensi Visual & Aset" },
+
+            // --- 🛹 RETRO & STREET ART ---
+            { title: "50. GAYA 50/ ImaGeru / Grunge Streetwear Photocopy Collage", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "51. GAYA 51/ ImaGraf / Risograph Vintage Graphic Print", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "52. GAYA 52/ ImaGraff / Urban Street Graffiti Art", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "53. GAYA 53/ ImaChalk / Vintage Chalkboard Typography & Sketch", url: "#", desc: "Referensi Visual & Aset" },
+
+            // --- ⛩️ JAPANESE & CLASSIC SCI-FI ---
+            { title: "54. GAYA 54/ ImaWood / Minimalist Vintage Japanese Woodcut Print", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "55. GAYA 55/ ImaHoku / Hokusai-inspired Ukiyo-e Sci-Fi", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "56. GAYA 56/ ImaFinlay / Vintage Sci-Fi Stipple Ink Illustration", url: "#", desc: "Referensi Visual & Aset" },
+
+            // --- 🌸 ANIME & WEBTOON ---
+            { title: "57. GAYA 57/ ImaKomi / Comic Studio (High-Fidelity Islamic Comic)", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "58. GAYA 58/ ImaWebo / Premium Webtoon Comic Illustration", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "59. GAYA 59/ ImaDecora / Retro Psychedelic Anime Pop Illustration", url: "#", desc: "Referensi Visual & Aset" },
+
+            // --- 🎮 3D ANIMATION & GAMING ---
+            { title: "60. GAYA 60/ ImaPixar / Pixar Inspired 3D Animation", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "61. GAYA 61/ ImaGame / Stylized Game Art Illustration", url: "#", desc: "Referensi Visual & Aset" },
+            { title: "62. GAYA 62/ ImaVoxel / Isometric 3D Voxel Art Diorama", url: "#", desc: "Referensi Visual & Aset" }
         ];
 
         const strictSyariatRule = `
@@ -1097,7 +1210,19 @@
         function populateSelect(id, list) {
             const el = document.getElementById(id);
             if (!el) return;
-            el.innerHTML = list.map(item => `<option value="${item}">${item}</option>`).join('');
+            let html = '';
+            let inOptGroup = false;
+            list.forEach(item => {
+                if (item.startsWith('--- ')) {
+                    if (inOptGroup) html += '</optgroup>';
+                    html += `<optgroup label="${item.replace(/---/g, '').trim()}">`;
+                    inOptGroup = true;
+                } else {
+                    html += `<option value="${item}">${item}</option>`;
+                }
+            });
+            if (inOptGroup) html += '</optgroup>';
+            el.innerHTML = html;
         }
 
         function switchMode(mode) {
@@ -1698,6 +1823,8 @@ Kembalikan wajib dalam format JSON array sesuai skema yang diminta.`;
             }
             
             const style = getSettingValue('set-style');
+            const styleConcept = styleArtsConcepts[style] ? styleArtsConcepts[style] : (style === 'Auto-Set by AI' || style === 'KUSTOM' ? 'Buatkan deskripsi visual yang estetik dan detail sesuai gaya yang Anda tentukan sendiri' : style);
+            
             const fontHeader = getSettingValue('set-font-header');
             const effectHeader = getSettingValue('set-texteffect-header');
             const fontBody = getSettingValue('set-font-body');
@@ -1764,7 +1891,7 @@ Kembalikan wajib dalam format JSON array sesuai skema yang diminta.`;
 
             const commonPromptRules = `ATURAN PEMBUATAN 'image_prompt' (SANGAT PENTING):
 1. DESKRIPSI KAYA & SPESIFIK: JANGAN gunakan template generik. Jelaskan elemen adegan, tindakan karakter, objek utama, pencahayaan, dan latar belakang (background) secara sangat kaya dan mendetail sesuai dengan narasi pada slide tersebut.
-2. Art Style: ${style}
+2. Art Style & Konsep: ${style}. Deskripsi Konsep Visual: ${styleConcept}. (WAJIB sertakan seluruh deskripsi konsep visual ini secara eksplisit di awal kalimat 'image_prompt' pada SETIAP slide agar AI pembuat gambar tidak lupa. Misal: "A highly detailed [Deskripsi Konsep Visual], ...")
 3. Palet Warna: ${rawPalette}
 4. Komposisi Ruang: ${comp} (Pastikan mengatur letak objek visual agar menyediakan ruang kosong sesuai komposisi ini)
 5. SPESIFIKASI KARAKTER (WAJIB diterjemahkan ke dalam bahasa Inggris dan dimasukkan ke dalam prompt jika nilainya bukan 'Tanpa Karakter'):
@@ -1845,6 +1972,7 @@ ${commonPromptRules}`;
 - SPECS: Aspect Ratio ${ratio}, Safe Margin 140px.
 - VISUAL GUIDE: ${style}. ${comp}.
 - ART STYLE: ${style}.
+- KONSEP VISUAL: ${styleConcept}
 - CHARACTER SPECIFICATION: ${charFormatted}. Completely blank featureless face without any eyes, dots, or facial expression (STRICT FACELESS).
 - COLOR PALETTE: ${paletteExpanded}.
 - TYPOGRAPHY: Header (${fontHeader}, ${effectHeader}) | Body (${fontBody}, ${effectBody}, ${bodyFmt}) | Footer (${fontFooter}, ${patchFooter} at ${posFooter}).
@@ -1877,8 +2005,12 @@ Make the aspect ratio ${ratio}`;
                 }
 
                 const sContent = `@createimage
-[SLIDE ${slideNum}]
-GEN AI PROMPT:
+[SLIDE ${slideNum}] ${isLast ? ' - SLIDE PENUTUP (CALL TO ACTION / FLKS)' : ''}
+* SPECS: Aspect Ratio ${ratio}, FULL BLEED EDGE-TO-EDGE, Invisible Text Margin 140px.
+* STRICT UNIFORMITY: DILARANG MENGUBAH desain typography (Font Header, Font Body, Font Footer, dan Patch Footer) dari slide sebelumnya. Harus persis 100% SAMA! (TETAP PATUHI DYNAMIC FOOTER CONTRAST DAN ALIGNMENT GLOBAL).
+* KONSEP VISUAL UTAMA: ${style} - ${styleConcept}
+${strictSyariatRule}
+* GEN AI PROMPT:
 ${sData.image_prompt}
 
 ${siNaskah}
