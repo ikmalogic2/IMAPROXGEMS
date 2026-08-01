@@ -1090,6 +1090,17 @@
         let currentTopicTemp = ""; 
         let confirmCallback = null;
 
+        function saveActiveOutput() {
+            localStorage.setItem('imapro_active_output', JSON.stringify({
+                topicTemp: currentTopicTemp,
+                blocks: currentOutputBlocks
+            }));
+            const topicVal = document.getElementById('input-topic').value;
+            const instVal = document.getElementById('input-instructions').value;
+            localStorage.setItem('imapro_input_topic', topicVal);
+            localStorage.setItem('imapro_input_inst', instVal);
+        }
+
         function renderGemsGrid() {
             const grid = document.getElementById('gems-grid');
             
@@ -1141,6 +1152,23 @@
                 document.getElementById('gemini-api-key').value = savedKey;
             }
             
+            // Restore inputs & outputs yang sedang aktif
+            const savedTopic = localStorage.getItem('imapro_input_topic');
+            const savedInst = localStorage.getItem('imapro_input_inst');
+            if(savedTopic) document.getElementById('input-topic').value = savedTopic;
+            if(savedInst) document.getElementById('input-instructions').value = savedInst;
+
+            const activeOut = JSON.parse(localStorage.getItem('imapro_active_output'));
+            if(activeOut && activeOut.blocks && activeOut.blocks.length > 0) {
+                currentTopicTemp = activeOut.topicTemp;
+                currentOutputBlocks = activeOut.blocks;
+                let html = "";
+                currentOutputBlocks.forEach((blk, i) => {
+                    html += createOutputBlockHTML(i, blk.title, blk.content, false);
+                });
+                document.getElementById('output-container').innerHTML = html;
+            }
+
             if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark');
             } else {
@@ -1796,6 +1824,7 @@ Kembalikan wajib dalam format JSON array sesuai skema yang diminta.`;
                 html += createOutputBlockHTML(i, title, content, false);
             }
             document.getElementById('output-container').innerHTML = html;
+            saveActiveOutput();
         }
 
         async function generateModeB(topic, instructions) {
@@ -2038,6 +2067,7 @@ Make the aspect ratio ${ratio}`;
             html += createOutputBlockHTML(slides, capTitle, capContent, false);
 
             document.getElementById('output-container').innerHTML = html;
+            saveActiveOutput();
         }
 
         async function copyText(btn, index) {
