@@ -116,13 +116,11 @@
             border-bottom-color: #38383A;
         }
 
-        /* Floating Button Specific Styles */
-        #floating-theme-btn {
-            touch-action: none; /* Prevent default touch actions like scroll when dragging */
-        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center py-10 px-4 relative pb-24 bg-ios-bg dark:bg-ios-darkBg text-ios-text dark:text-ios-darkText">
+<body class="min-h-screen flex flex-col items-center py-10 px-4 md:px-8 lg:px-12 relative pb-24 bg-ios-bg dark:bg-ios-darkBg text-ios-text dark:text-ios-darkText">
     
     <!-- TOAST NOTIFICATION -->
     <div id="toast" class="fixed top-6 right-4 text-white px-5 py-3 shadow-lg opacity-0 translate-y-[-20px] transition-all duration-300 z-[150] pointer-events-none flex items-center gap-3">
@@ -144,7 +142,7 @@
 
     <!-- GEMS WINDOW MODAL -->
     <div id="gems-modal" class="fixed inset-0 bg-black/60 z-[110] hidden flex flex-col items-center justify-center backdrop-blur-md transition-opacity opacity-0 pt-6 pb-6 px-4">
-        <div class="bg-ios-bg dark:bg-ios-darkBg w-full max-w-4xl h-full max-h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300">
+        <div class="bg-ios-bg dark:bg-ios-darkBg w-full lg:w-[96%] xl:w-[98%] h-full max-h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300">
             <!-- Modal Header -->
             <div class="flex justify-between items-center px-6 py-5 border-b border-gray-200 dark:border-ios-darkBorder bg-white dark:bg-ios-darkPanel z-10">
                 <div class="flex items-center gap-3">
@@ -189,33 +187,42 @@
     </div>
 
     <!-- HEADER -->
-    <div class="w-full max-w-4xl flex justify-center items-center mb-4 mt-2 px-2 overflow-hidden">
+    <div class="w-full flex justify-center items-center mb-4 mt-2 px-2 overflow-hidden">
         <!-- Logo dipangkas atas dan bawah 18% menggunakan clip-path, margin disesuaikan agar ruang kosong tertutup -->
-        <img src="https://ik.imagekit.io/ikmalogic/imapro.png" alt="imapro logo" class="w-full h-auto max-w-full sm:max-w-lg md:max-w-xl object-contain drop-shadow-sm transition-all duration-300 dark:brightness-0 dark:invert" style="clip-path: inset(18% 0 18% 0); margin-top: -6%; margin-bottom: -6%;">
+        <img src="https://ik.imagekit.io/ikmalogic/imapro.png" alt="imapro logo" class="w-full h-auto max-w-full sm:max-w-xl md:max-w-2xl lg:max-w-4xl object-contain drop-shadow-sm transition-all duration-300 dark:brightness-0 dark:invert" style="clip-path: inset(18% 0 18% 0); margin-top: -6%; margin-bottom: -6%;">
     </div>
 
     <!-- TAB BUTTONS -->
-    <div class="w-full max-w-4xl grid grid-cols-3 gap-2 mb-8 bg-[#E3E3E8] dark:bg-[#1C1C1E] p-1.5 rounded-2xl shadow-inner border border-transparent dark:border-[#2C2C2E]">
-        <button id="btn-mode-a" onclick="switchMode('A')" class="w-full flex items-center justify-center gap-2 px-3 py-3 text-sm font-semibold rounded-xl text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-300">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+    <div class="w-full flex gap-1 sm:gap-2 mb-8 bg-[#E3E3E8] dark:bg-[#1C1C1E] p-1.5 rounded-2xl shadow-inner border border-transparent dark:border-[#2C2C2E] overflow-x-auto hide-scrollbar">
+        <!-- THEME BUTTON (ICON ONLY) -->
+        <button onclick="toggleTheme()" class="flex items-center justify-center px-3 sm:px-4 py-3 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-300 flex-shrink-0" title="Ubah Tema">
+            <svg class="w-5 h-5 hidden dark:block text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            <svg class="w-5 h-5 block dark:hidden text-gray-800" fill="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+        </button>
+
+        <!-- MODE A -->
+        <button id="btn-mode-a" onclick="switchMode('A')" class="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-1 sm:px-3 py-3 text-[11px] sm:text-sm font-semibold rounded-xl text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-300 whitespace-nowrap">
+            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
             <span class="hidden sm:inline">Mode A (Ide)</span>
             <span class="sm:hidden">Ide</span>
         </button>
 
-        <button id="btn-mode-b" onclick="switchMode('B')" class="w-full flex items-center justify-center gap-2 px-3 py-3 text-sm font-bold rounded-xl bg-white dark:bg-ios-darkPanel shadow-sm text-black dark:text-white transition-all duration-300">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+        <!-- MODE B -->
+        <button id="btn-mode-b" onclick="switchMode('B')" class="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-1 sm:px-3 py-3 text-[11px] sm:text-sm font-bold rounded-xl bg-white dark:bg-ios-darkPanel shadow-sm text-black dark:text-white transition-all duration-300 whitespace-nowrap">
+            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
             <span class="hidden sm:inline">Mode B (Carousel)</span>
             <span class="sm:hidden">Carousel</span>
         </button>
         
-        <button id="btn-mode-gems" onclick="openGemsModal()" class="w-full flex items-center justify-center gap-2 px-3 py-3 text-sm font-semibold rounded-xl text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 hover:bg-purple-500/10 transition-all duration-300">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+        <!-- GEMS -->
+        <button id="btn-mode-gems" onclick="openGemsModal()" class="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-1 sm:px-3 py-3 text-[11px] sm:text-sm font-semibold rounded-xl text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 hover:bg-purple-500/10 transition-all duration-300 whitespace-nowrap">
+            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
             <span class="hidden sm:inline">Gems (Aset)</span>
             <span class="sm:hidden">Gems</span>
         </button>
     </div>
 
-    <div class="w-full max-w-4xl space-y-4">
+    <div class="w-full space-y-4">
         
         <!-- KARTU 1: INPUT -->
         <div class="glass-panel bg-ios-panel dark:bg-ios-darkPanel border border-transparent dark:border-ios-darkBorder">
@@ -734,12 +741,6 @@
         </div>
     </div>
 
-    <!-- FLOATING THEME BUTTON -->
-    <div id="floating-theme-btn" class="fixed top-6 right-6 z-[90] p-4 bg-white dark:bg-[#2C2C2E] text-black dark:text-white rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.4)] border border-gray-200 dark:border-gray-700 cursor-grab active:cursor-grabbing hover:scale-105 transition-transform" style="touch-action: none;" title="Drag & Drop untuk memindahkan">
-        <svg id="theme-icon-light-float" class="w-6 h-6 hidden dark:block text-yellow-400" fill="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-        <svg id="theme-icon-dark-float" class="w-6 h-6 block dark:hidden text-gray-800" fill="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-    </div>
-
     <script>
         const styleArtsList = [
             "Auto-Set by AI", "KUSTOM", 
@@ -1036,67 +1037,7 @@
             renderGemsGrid();
             renderSaved();
             switchMode('B');
-            
-            setupFloatingButton();
         };
-
-        function setupFloatingButton() {
-            const floatBtn = document.getElementById('floating-theme-btn');
-            let isDraggingFloat = false;
-            let hasMovedFloat = false;
-            let startXFloat, startYFloat;
-
-            const dragStartFloat = (e) => {
-                isDraggingFloat = true;
-                hasMovedFloat = false;
-                let clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-                let clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-                startXFloat = clientX - floatBtn.offsetLeft;
-                startYFloat = clientY - floatBtn.offsetTop;
-                floatBtn.style.transition = 'none'; // Disable transition for smooth dragging
-            };
-
-            const dragMoveFloat = (e) => {
-                if (!isDraggingFloat) return;
-                hasMovedFloat = true;
-                e.preventDefault(); // Prevent scrolling on touch
-                let clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-                let clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-                
-                let newLeft = clientX - startXFloat;
-                let newTop = clientY - startYFloat;
-                
-                // Bounds keeping it within viewport
-                newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - floatBtn.offsetWidth));
-                newTop = Math.max(0, Math.min(newTop, window.innerHeight - floatBtn.offsetHeight));
-
-                floatBtn.style.left = `${newLeft}px`;
-                floatBtn.style.top = `${newTop}px`;
-                floatBtn.style.bottom = 'auto'; // Important to override default CSS
-                floatBtn.style.right = 'auto'; // Important to override default CSS
-            };
-
-            const dragEndFloat = (e) => {
-                if (!isDraggingFloat) return;
-                isDraggingFloat = false;
-                floatBtn.style.transition = 'background-color 0.4s, transform 0.2s'; // Restore transition
-                
-                // If it wasn't moved, treat as a click to toggle theme
-                if (!hasMovedFloat) {
-                    toggleTheme();
-                }
-            };
-
-            // Mouse events
-            floatBtn.addEventListener('mousedown', dragStartFloat);
-            window.addEventListener('mousemove', dragMoveFloat);
-            window.addEventListener('mouseup', dragEndFloat);
-            
-            // Touch events
-            floatBtn.addEventListener('touchstart', dragStartFloat, {passive: false});
-            window.addEventListener('touchmove', dragMoveFloat, {passive: false});
-            window.addEventListener('touchend', dragEndFloat);
-        }
 
         function toggleTheme() {
             if (document.documentElement.classList.contains('dark')) {
@@ -1167,8 +1108,8 @@
 
             if(!btnA || !btnB) return; 
 
-            const activeClass = 'w-full flex items-center justify-center gap-2 px-3 py-3 text-sm font-bold rounded-xl bg-white dark:bg-ios-darkPanel shadow-sm text-black dark:text-white transition-all duration-300';
-            const inactiveClass = 'w-full flex items-center justify-center gap-2 px-3 py-3 text-sm font-semibold rounded-xl text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-300';
+            const activeClass = 'flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-1 sm:px-3 py-3 text-[11px] sm:text-sm font-bold rounded-xl bg-white dark:bg-ios-darkPanel shadow-sm text-black dark:text-white transition-all duration-300 whitespace-nowrap';
+            const inactiveClass = 'flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-1 sm:px-3 py-3 text-[11px] sm:text-sm font-semibold rounded-xl text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-300 whitespace-nowrap';
 
             if (mode === 'A') {
                 btnA.className = activeClass;
