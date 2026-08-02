@@ -1362,7 +1362,86 @@
             } else {
                 html += `
                     <div><label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-2">B. Haircut/ Penutup Kepala</label>
-                    <select id="char-headwear" class="w-full p-2 text-sm border border-gray-200 dark:border-ios-darkBorder ios-input dark:bg-ios-darkInput dark:text-white outline-none" onchange="checkCharCustom(this)"><option value="Peci/ Kopiah Hitam">Peci/ Kopiah Hitam</option><option value="Rapi Standar">Rapi Standar</option><option value="Messy Curly">Messy Curly</option><option value="KUSTOM">KUSTOM</option></select><input type="text" id="char-headwear-custom" class="hidden w-full p-2 text-sm ios-input border border-gray-200 dark:border-ios-darkBorder dark:bg-ios-darkInput dark:text-white mt-2 outline-none" placeholder="Ketik detail..."></div>
+                    <select id="char-headwear" class="w-full p-2 text-sm border border-gray-200 dark:border-ios-darkBorder ios-input dark:bg-ios-darkInput dark:text-white outline-none" onchange="checkCharCustom(this)"><option value="Peci/ Kopiah Hitam">Peci/ Kopiah Hitam</option><option value="Rapi Standar">Rapi Standar</option><option value="Messy Curly">Messy Curly</option><option value="None">None</option>
+<option value="Buzzcut">Buzzcut</option>
+<option value="Induction Cut">Induction Cut</option>
+<option value="Burr Cut">Burr Cut</option>
+<option value="Crew Cut">Crew Cut</option>
+<option value="Ivy League">Ivy League</option>
+<option value="Butch Cut">Butch Cut</option>
+<option value="High and Tight">High and Tight</option>
+<option value="Caesar Cut">Caesar Cut</option>
+<option value="French Crop">French Crop</option>
+<option value="Textured Crop">Textured Crop</option>
+<option value="Side Part">Side Part</option>
+<option value="Classic Side Part">Classic Side Part</option>
+<option value="Comb Over">Comb Over</option>
+<option value="Business Cut">Business Cut</option>
+<option value="Taper Cut">Taper Cut</option>
+<option value="Low Taper">Low Taper</option>
+<option value="Mid Taper">Mid Taper</option>
+<option value="High Taper">High Taper</option>
+<option value="Scissor Cut">Scissor Cut</option>
+<option value="Medium Layer Cut">Medium Layer Cut</option>
+<option value="Curtains">Curtains</option>
+<option value="Middle Part">Middle Part</option>
+<option value="Two Block">Two Block</option>
+<option value="Korean Two Block">Korean Two Block</option>
+<option value="Korean Perm">Korean Perm</option>
+<option value="Comma Hair">Comma Hair</option>
+<option value="Down Perm">Down Perm</option>
+<option value="Wolfcut">Wolfcut</option>
+<option value="Bro Flow">Bro Flow</option>
+<option value="Slick Back">Slick Back</option>
+<option value="Pompadour">Pompadour</option>
+<option value="Quiff">Quiff</option>
+<option value="Brush Up">Brush Up</option>
+<option value="Spiky Hair">Spiky Hair</option>
+<option value="Messy Fringe">Messy Fringe</option>
+<option value="Shag Cut">Shag Cut</option>
+<option value="Mullet">Mullet</option>
+<option value="Long Straight">Long Straight</option>
+<option value="Long Wavy">Long Wavy</option>
+<option value="Curly Medium">Curly Medium</option>
+<option value="Wavy Medium">Wavy Medium</option>
+<option value="Broccoli Hair">Broccoli Hair</option>
+<option value="Afro">Afro</option>
+<option value="Man Bun">Man Bun</option>
+<option value="Top Knot">Top Knot</option>
+<option value="Samurai Bun">Samurai Bun</option>
+<option value="Clean Shaved">Clean Shaved</option>
+<option value="Peci Hitam">Peci Hitam</option>
+<option value="Peci Putih">Peci Putih</option>
+<option value="Kopiah">Kopiah</option>
+<option value="Songkok">Songkok</option>
+<option value="Kufi">Kufi</option>
+<option value="Imamah">Imamah</option>
+<option value="Sorban">Sorban</option>
+<option value="White Turban">White Turban</option>
+<option value="Black Turban">Black Turban</option>
+<option value="Ghutrah">Ghutrah</option>
+<option value="Saudi Ghutrah">Saudi Ghutrah</option>
+<option value="Shemagh">Shemagh</option>
+<option value="Red Shemagh">Red Shemagh</option>
+<option value="Keffiyeh">Keffiyeh</option>
+<option value="Agal">Agal</option>
+<option value="Omani Kuma">Omani Kuma</option>
+<option value="Fez">Fez</option>
+<option value="Beanie">Beanie</option>
+<option value="Baseball Cap">Baseball Cap</option>
+<option value="Snapback">Snapback</option>
+<option value="Dad Cap">Dad Cap</option>
+<option value="Trucker Cap">Trucker Cap</option>
+<option value="Bucket Hat">Bucket Hat</option>
+<option value="Fedora">Fedora</option>
+<option value="Panama Hat">Panama Hat</option>
+<option value="Boater Hat">Boater Hat</option>
+<option value="Flat Cap">Flat Cap</option>
+<option value="Newsboy Cap">Newsboy Cap</option>
+<option value="Cowboy Hat">Cowboy Hat</option>
+<option value="Beret">Beret</option>
+<option value="Headband">Headband</option>
+<option value="Bandana">Bandana</option><option value="KUSTOM">KUSTOM</option></select><input type="text" id="char-headwear-custom" class="hidden w-full p-2 text-sm ios-input border border-gray-200 dark:border-ios-darkBorder dark:bg-ios-darkInput dark:text-white mt-2 outline-none" placeholder="Ketik detail..."></div>
                 `;
             }
 
@@ -1371,7 +1450,57 @@
                 <select id="char-outfit" class="w-full p-2 text-sm border border-gray-200 dark:border-ios-darkBorder ios-input dark:bg-ios-darkInput dark:text-white outline-none" onchange="checkCharCustom(this)"><option value="Gamis Longgar (Modest)">Gamis Longgar (Modest)</option><option value="Kemeja Koko">Kemeja Koko</option><option value="Casual Sopan">Casual Sopan</option><option value="KUSTOM">KUSTOM</option></select><input type="text" id="char-outfit-custom" class="hidden w-full p-2 text-sm ios-input border border-gray-200 dark:border-ios-darkBorder dark:bg-ios-darkInput dark:text-white mt-2 outline-none" placeholder="Ketik outfit..."></div>
                 
                 <div><label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-2">D. Aksesoris</label>
-                <select id="char-accessories" class="w-full p-2 text-sm border border-gray-200 dark:border-ios-darkBorder ios-input dark:bg-ios-darkInput dark:text-white outline-none" onchange="checkCharCustom(this)"><option value="Tanpa Aksesoris">Tanpa Aksesoris</option><option value="Kacamata Bulat">Kacamata Bulat</option><option value="Membawa Buku">Membawa Buku</option><option value="KUSTOM">KUSTOM</option></select><input type="text" id="char-accessories-custom" class="hidden w-full p-2 text-sm ios-input border border-gray-200 dark:border-ios-darkBorder dark:bg-ios-darkInput dark:text-white mt-2 outline-none" placeholder="Ketik aksesoris..."></div>
+                <select id="char-accessories" class="w-full p-2 text-sm border border-gray-200 dark:border-ios-darkBorder ios-input dark:bg-ios-darkInput dark:text-white outline-none" onchange="checkCharCustom(this)"><option value="Tanpa Aksesoris">Tanpa Aksesoris</option><option value="Kacamata Bulat">Kacamata Bulat</option><option value="None">None</option>
+<option value="Round Glasses">Round Glasses</option>
+<option value="Square Glasses">Square Glasses</option>
+<option value="Rectangle Glasses">Rectangle Glasses</option>
+<option value="Oval Glasses">Oval Glasses</option>
+<option value="Aviator Glasses">Aviator Glasses</option>
+<option value="Browline Glasses">Browline Glasses</option>
+<option value="Wayfarer Glasses">Wayfarer Glasses</option>
+<option value="Rimless Glasses">Rimless Glasses</option>
+<option value="Half Rim Glasses">Half Rim Glasses</option>
+<option value="Thick Round Glasses">Thick Round Glasses</option>
+<option value="Thick Frame Glasses">Thick Frame Glasses</option>
+<option value="Thin Frame Glasses">Thin Frame Glasses</option>
+<option value="Black Frame Glasses">Black Frame Glasses</option>
+<option value="Gold Frame Glasses">Gold Frame Glasses</option>
+<option value="Silver Frame Glasses">Silver Frame Glasses</option>
+<option value="Transparent Frame Glasses">Transparent Frame Glasses</option>
+<option value="Blue Light Glasses">Blue Light Glasses</option>
+<option value="Reading Glasses">Reading Glasses</option>
+<option value="Sunglasses">Sunglasses</option>
+<option value="Aviator Sunglasses">Aviator Sunglasses</option>
+<option value="Wayfarer Sunglasses">Wayfarer Sunglasses</option>
+<option value="Round Sunglasses">Round Sunglasses</option>
+<option value="Sport Sunglasses">Sport Sunglasses</option>
+<option value="Eyepatch">Eyepatch</option>
+<option value="Medical Eye Patch">Medical Eye Patch</option>
+<option value="Earbuds">Earbuds</option>
+<option value="Wireless Earbuds">Wireless Earbuds</option>
+<option value="Bluetooth Earpiece">Bluetooth Earpiece</option>
+<option value="Headset">Headset</option>
+<option value="Gaming Headset">Gaming Headset</option>
+<option value="Over Ear Headphones">Over Ear Headphones</option>
+<option value="On Ear Headphones">On Ear Headphones</option>
+<option value="Bluetooth Headphones">Bluetooth Headphones</option>
+<option value="Microphone Headset">Microphone Headset</option>
+<option value="Face Mask">Face Mask</option>
+<option value="Medical Mask">Medical Mask</option>
+<option value="Respirator Mask">Respirator Mask</option>
+<option value="Neck Gaiter">Neck Gaiter</option>
+<option value="Face Shield">Face Shield</option>
+<option value="Beard">Beard</option>
+<option value="Short Beard">Short Beard</option>
+<option value="Full Beard">Full Beard</option>
+<option value="Goatee">Goatee</option>
+<option value="Mustache">Mustache</option>
+<option value="Light Stubble">Light Stubble</option>
+<option value="Medium Stubble">Medium Stubble</option>
+<option value="Heavy Stubble">Heavy Stubble</option>
+<option value="Sideburns">Sideburns</option>
+<option value="Hearing Aid">Hearing Aid</option>
+<option value="Oxygen Cannula">Oxygen Cannula</option><option value="Membawa Buku">Membawa Buku</option><option value="KUSTOM">KUSTOM</option></select><input type="text" id="char-accessories-custom" class="hidden w-full p-2 text-sm ios-input border border-gray-200 dark:border-ios-darkBorder dark:bg-ios-darkInput dark:text-white mt-2 outline-none" placeholder="Ketik aksesoris..."></div>
             `;
             fields.innerHTML = html;
         }
