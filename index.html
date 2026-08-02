@@ -1357,7 +1357,48 @@
             if (val === 'Wanita' || val === 'Anak Perempuan') {
                 html += `
                     <div><label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-2">B. Penutup Kepala</label>
-                    <select id="char-headwear" class="w-full p-2 text-sm border border-gray-200 dark:border-ios-darkBorder ios-input dark:bg-ios-darkInput dark:text-white outline-none" onchange="checkCharCustom(this)"><option value="Khimar Panjang Menutup Dada">Khimar Panjang Menutup Dada</option><option value="Khimar & Cadar/Niqab">Khimar & Cadar/Niqab</option><option value="Bergo Anak">Bergo Anak</option><option value="KUSTOM">KUSTOM</option></select><input type="text" id="char-headwear-custom" class="hidden w-full p-2 text-sm ios-input border border-gray-200 dark:border-ios-darkBorder dark:bg-ios-darkInput dark:text-white mt-2 outline-none" placeholder="Ketik detail..."></div>
+                    <select id="char-headwear" class="w-full p-2 text-sm border border-gray-200 dark:border-ios-darkBorder ios-input dark:bg-ios-darkInput dark:text-white outline-none" onchange="checkCharCustom(this)"><option value="Khimar Panjang Menutup Dada">Khimar Panjang Menutup Dada</option><option value="Khimar & Cadar/Niqab">Khimar & Cadar/Niqab</option><option value="Bergo Anak">Bergo Anak</option><option value="None">None</option>
+<option value="Long Khimar">Long Khimar</option>
+<option value="Extra Long Khimar">Extra Long Khimar</option>
+<option value="Maxi Khimar">Maxi Khimar</option>
+<option value="XXL Khimar">XXL Khimar</option>
+<option value="Butterfly Khimar">Butterfly Khimar</option>
+<option value="Diamond Khimar">Diamond Khimar</option>
+<option value="Layered Khimar">Layered Khimar</option>
+<option value="One Layer Khimar">One Layer Khimar</option>
+<option value="Two Layer Khimar">Two Layer Khimar</option>
+<option value="Three Layer Khimar">Three Layer Khimar</option>
+<option value="Instant Khimar">Instant Khimar</option>
+<option value="Tie Back Khimar">Tie Back Khimar</option>
+<option value="Overhead Khimar">Overhead Khimar</option>
+<option value="Closed Khimar">Closed Khimar</option>
+<option value="Front Closed Khimar">Front Closed Khimar</option>
+<option value="Saudi Khimar">Saudi Khimar</option>
+<option value="Yemeni Khimar">Yemeni Khimar</option>
+<option value="Turkish Khimar">Turkish Khimar</option>
+<option value="Moroccan Khimar">Moroccan Khimar</option>
+<option value="Niqab">Niqab</option>
+<option value="Saudi Niqab">Saudi Niqab</option>
+<option value="Yemeni Niqab">Yemeni Niqab</option>
+<option value="Double Layer Niqab">Double Layer Niqab</option>
+<option value="Triple Layer Niqab">Triple Layer Niqab</option>
+<option value="Eye Veil Niqab">Eye Veil Niqab</option>
+<option value="Full Face Niqab">Full Face Niqab</option>
+<option value="Cadar">Cadar</option>
+<option value="Long Cadar">Long Cadar</option>
+<option value="Khimar with Niqab">Khimar with Niqab</option>
+<option value="Khimar with Cadar">Khimar with Cadar</option>
+<option value="Jilbab Syar'i">Jilbab Syar'i</option>
+<option value="Long Jilbab Syar'i">Long Jilbab Syar'i</option>
+<option value="Extra Long Jilbab Syar'i">Extra Long Jilbab Syar'i</option>
+<option value="Shayla with Khimar Style">Shayla with Khimar Style</option>
+<option value="Al Amira Syar'i">Al Amira Syar'i</option>
+<option value="Prayer Mukena Hood">Prayer Mukena Hood</option>
+<option value="Telekung Hood">Telekung Hood</option>
+<option value="Chador">Chador</option>
+<option value="Iranian Chador">Iranian Chador</option>
+<option value="Afghan Chador">Afghan Chador</option>
+<option value="Burqa">Burqa</option><option value="KUSTOM">KUSTOM</option></select><input type="text" id="char-headwear-custom" class="hidden w-full p-2 text-sm ios-input border border-gray-200 dark:border-ios-darkBorder dark:bg-ios-darkInput dark:text-white mt-2 outline-none" placeholder="Ketik detail..."></div>
                 `;
             } else {
                 html += `
@@ -1508,7 +1549,45 @@
 <option value="Straight Fit Pants">Straight Fit Pants</option>
 <option value="Loose Fit Pants">Loose Fit Pants</option>
 <option value="Sarong">Sarong</option>
-<option value="Izar">Izar</option><option value="KUSTOM">KUSTOM</option></select><input type="text" id="char-outfit-custom" class="hidden w-full p-2 text-sm ios-input border border-gray-200 dark:border-ios-darkBorder dark:bg-ios-darkInput dark:text-white mt-2 outline-none" placeholder="Ketik outfit..."></div>
+<option value="Izar">Izar</option><option value="None">None</option>
+<option value="Loose Abaya">Loose Abaya</option>
+<option value="Saudi Abaya">Saudi Abaya</option>
+<option value="Emirati Abaya">Emirati Abaya</option>
+<option value="Nadwa Abaya">Nadwa Abaya</option>
+<option value="Classic Abaya">Classic Abaya</option>
+<option value="Umbrella Abaya">Umbrella Abaya</option>
+<option value="A-Line Abaya">A-Line Abaya</option>
+<option value="Flared Abaya">Flared Abaya</option>
+<option value="Butterfly Abaya">Butterfly Abaya</option>
+<option value="Open Front Abaya">Open Front Abaya</option>
+<option value="Closed Front Abaya">Closed Front Abaya</option>
+<option value="Jilbab Syar'i Dress">Jilbab Syar'i Dress</option>
+<option value="Loose Gamis">Loose Gamis</option>
+<option value="Maxi Gamis">Maxi Gamis</option>
+<option value="Straight Cut Gamis">Straight Cut Gamis</option>
+<option value="A-Line Gamis">A-Line Gamis</option>
+<option value="Flared Gamis">Flared Gamis</option>
+<option value="Umbrella Gamis">Umbrella Gamis</option>
+<option value="Layered Gamis">Layered Gamis</option>
+<option value="Princess Cut Gamis">Princess Cut Gamis</option>
+<option value="Loose Kaftan">Loose Kaftan</option>
+<option value="Moroccan Jellaba">Moroccan Jellaba</option>
+<option value="Turkish Ferace">Turkish Ferace</option>
+<option value="Iranian Manteau">Iranian Manteau</option>
+<option value="Loose Baju Kurung">Loose Baju Kurung</option>
+<option value="Loose Baju Kurung Modern">Loose Baju Kurung Modern</option>
+<option value="Loose Hanfu Muslimah">Loose Hanfu Muslimah</option>
+<option value="Loose Kimono Muslimah">Loose Kimono Muslimah</option>
+<option value="Loose Cardigan Set">Loose Cardigan Set</option>
+<option value="Long Outer Set">Long Outer Set</option>
+<option value="Loose Tunic and Skirt">Loose Tunic and Skirt</option>
+<option value="Loose Tunic and Palazzo">Loose Tunic and Palazzo</option>
+<option value="Loose Blouse and Maxi Skirt">Loose Blouse and Maxi Skirt</option>
+<option value="Loose Blouse and Wide Leg Pants">Loose Blouse and Wide Leg Pants</option>
+<option value="Loose Coat Dress">Loose Coat Dress</option>
+<option value="Prayer Mukena">Prayer Mukena</option>
+<option value="Telekung">Telekung</option>
+<option value="Travel Prayer Set">Travel Prayer Set</option><option value="KUSTOM">KUSTOM</option></select><input type="text" id="char-outfit-custom" class="hidden w-full p-2 text-sm ios-input border border-gray-200 dark:border-ios-darkBorder dark:bg-ios-darkInput dark:text-white mt-2 outline-none" placeholder="Ketik outfit..."></div>
                 
                 <div><label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-2">D. Aksesoris</label>
                 <select id="char-accessories" class="w-full p-2 text-sm border border-gray-200 dark:border-ios-darkBorder ios-input dark:bg-ios-darkInput dark:text-white outline-none" onchange="checkCharCustom(this)"><option value="Tanpa Aksesoris">Tanpa Aksesoris</option><option value="Kacamata Bulat">Kacamata Bulat</option><option value="None">None</option>
