@@ -48,6 +48,7 @@
             font-family: 'Space Grotesk', sans-serif;
             -webkit-font-smoothing: antialiased;
             transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
         
         .accordion-content { 
@@ -68,6 +69,7 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.02); 
             overflow: hidden; 
             transition: all 0.3s ease;
+            width: 100%; /* Ensure full width */
         }
         .dark .glass-panel {
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
@@ -120,7 +122,7 @@
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center py-10 px-4 md:px-8 lg:px-12 relative pb-24 bg-ios-bg dark:bg-ios-darkBg text-ios-text dark:text-ios-darkText">
+<body class="min-h-screen flex flex-col py-6 px-4 md:px-6 lg:px-8 xl:px-10 relative pb-24 bg-ios-bg dark:bg-ios-darkBg text-ios-text dark:text-ios-darkText w-full items-stretch">
     
     <!-- TOAST NOTIFICATION -->
     <div id="toast" class="fixed top-6 right-4 text-white px-5 py-3 shadow-lg opacity-0 translate-y-[-20px] transition-all duration-300 z-[150] pointer-events-none flex items-center gap-3">
@@ -140,9 +142,22 @@
         </div>
     </div>
 
+    <!-- CUSTOM PROMPT MODAL -->
+    <div id="prompt-modal" class="fixed inset-0 bg-black/50 z-[100] hidden flex items-center justify-center backdrop-blur-sm transition-opacity opacity-0">
+        <div class="bg-white dark:bg-[#1C1C1E] p-6 rounded-2xl shadow-xl max-w-sm w-full mx-4 transform scale-95 transition-transform duration-300">
+            <h3 class="font-bold text-lg mb-2 text-black dark:text-white">Simpan Profil Setting</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Masukkan nama untuk Profil Setting ini:</p>
+            <input type="text" id="prompt-input" class="w-full p-3 mb-6 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput dark:text-white outline-none focus:ring-2 focus:ring-[#007AFF] transition-all" placeholder="Nama Profil (cth: Preset A)">
+            <div class="flex justify-end gap-3">
+                <button onclick="closePromptModal()" class="px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-bold text-sm transition-colors">Batal</button>
+                <button id="prompt-confirm-btn" class="px-4 py-2 bg-[#007AFF] hover:bg-blue-600 text-white rounded-xl font-bold text-sm transition-colors shadow-sm">Simpan</button>
+            </div>
+        </div>
+    </div>
+
     <!-- GEMS WINDOW MODAL -->
     <div id="gems-modal" class="fixed inset-0 bg-black/60 z-[110] hidden flex flex-col items-center justify-center backdrop-blur-md transition-opacity opacity-0 pt-6 pb-6 px-4">
-        <div class="bg-ios-bg dark:bg-ios-darkBg w-full lg:w-[96%] xl:w-[98%] h-full max-h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300">
+        <div class="bg-ios-bg dark:bg-ios-darkBg w-full lg:w-[98%] xl:w-[98%] h-full max-h-[95vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300">
             <!-- Modal Header -->
             <div class="flex justify-between items-center px-6 py-5 border-b border-gray-200 dark:border-ios-darkBorder bg-white dark:bg-ios-darkPanel z-10">
                 <div class="flex items-center gap-3">
@@ -163,7 +178,7 @@
             <div class="flex-1 flex flex-col overflow-hidden">
                 <!-- Search Bar -->
                 <div class="px-6 py-4 border-b border-gray-100 dark:border-ios-darkBorder bg-white/50 dark:bg-[#141414]/50 z-10">
-                    <div class="relative">
+                    <div class="relative max-w-3xl mx-auto w-full">
                         <svg class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         <input type="text" id="search-gems" onkeyup="filterGems()" placeholder="Cari gems (aset, tools, referensi)..." class="w-full pl-10 pr-4 py-3 bg-gray-100 dark:bg-[#1C1C1E] border border-transparent focus:border-purple-500 dark:focus:border-purple-500 rounded-xl text-sm outline-none transition-colors dark:text-white placeholder-gray-500">
                     </div>
@@ -171,7 +186,7 @@
                 
                 <!-- Scrollable List/Grid -->
                 <div class="flex-1 overflow-y-auto p-4 md:p-6">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4" id="gems-grid">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 md:gap-4" id="gems-grid">
                         <!-- Buttons dynamically generated by JS -->
                     </div>
                     
@@ -222,48 +237,93 @@
         </button>
     </div>
 
-    <div class="w-full space-y-4">
+    <div class="w-full space-y-4 flex-1">
         
         <!-- KARTU 1: INPUT -->
-        <div class="glass-panel bg-ios-panel dark:bg-ios-darkPanel border border-transparent dark:border-ios-darkBorder">
+        <div class="glass-panel w-full bg-ios-panel dark:bg-ios-darkPanel border border-transparent dark:border-ios-darkBorder">
             <button onclick="toggleAccordion('input-content', 'input-icon')" class="w-full px-6 py-5 flex justify-between items-center hover:bg-gray-50/50 dark:hover:bg-[#1C1C1E]/50 transition-colors">
                 <span class="font-bold tracking-wide">1. KARTU INPUT</span>
                 <svg id="input-icon" class="w-5 h-5 text-gray-400 transition-transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
             <div id="input-content" class="accordion-content open px-6 py-0 border-t border-ios-border dark:border-ios-darkBorder">
-                <div class="py-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="relative">
-                        <textarea id="input-topic" rows="5" class="w-full p-4 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput outline-none resize-y placeholder-gray-400 dark:text-white" placeholder="Ketik topik, ide, atau paste naskah (Slide 1..., Slide 2...) di sini..."></textarea>
-                        <button onclick="document.getElementById('input-topic').value=''" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 p-1" title="Clear All"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                <!-- Using full width grids that expand on larger screens -->
+                <div class="py-6 flex flex-col gap-4">
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                        <div class="relative w-full">
+                            <textarea id="input-topic" rows="4" class="w-full p-4 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput outline-none resize-y placeholder-gray-400 dark:text-white" placeholder="Ketik topik, ide, atau paste naskah (Slide 1..., Slide 2...) di sini..."></textarea>
+                            <button onclick="document.getElementById('input-topic').value=''" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 p-1" title="Clear All"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                        </div>
+                        <div class="relative w-full">
+                            <textarea id="input-instructions" rows="4" class="w-full p-4 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput outline-none resize-y placeholder-gray-400 dark:text-white" placeholder="Ketik instruksi tambahan (opsional)..."></textarea>
+                            <button onclick="document.getElementById('input-instructions').value=''" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 p-1" title="Clear All"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                        </div>
                     </div>
-                    <div class="relative">
-                        <textarea id="input-instructions" rows="5" class="w-full p-4 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput outline-none resize-y placeholder-gray-400 dark:text-white" placeholder="Ketik instruksi tambahan (opsional)..."></textarea>
-                        <button onclick="document.getElementById('input-instructions').value=''" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 p-1" title="Clear All"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="relative w-full">
+                            <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5 ml-1">Niche / Topik Spesifik</label>
+                            <input type="text" id="input-niche" class="w-full p-3 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput outline-none placeholder-gray-400 dark:text-white text-sm" placeholder="cth: Keuangan Syariah, dll">
+                        </div>
+                        <div class="relative w-full">
+                            <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5 ml-1">Target Audience</label>
+                            <input type="text" id="input-audience" class="w-full p-3 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput outline-none placeholder-gray-400 dark:text-white text-sm" placeholder="cth: Ibu muda usia 25-35 thn">
+                        </div>
+                        <div class="relative w-full">
+                            <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5 ml-1">Jml. Ide (Khusus Mode A)</label>
+                            <input type="number" id="input-ide-count" min="1" max="20" value="5" class="w-full p-3 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput outline-none placeholder-gray-400 dark:text-white text-sm">
+                        </div>
+                    </div>
+                    <div class="relative w-full mt-4">
+                        <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5 ml-1">Pantangan Kata (Negative Words)</label>
+                        <input type="text" id="input-negative-words" class="w-full p-3 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput outline-none placeholder-gray-400 dark:text-white text-sm" placeholder="Kata yang dilarang muncul di naskah/caption (Pisahkan dengan koma)...">
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- KARTU 2: SETTING -->
-        <div id="setting-card" class="glass-panel bg-ios-panel dark:bg-ios-darkPanel border border-transparent dark:border-ios-darkBorder" style="display: block;">
+        <div id="setting-card" class="glass-panel w-full bg-ios-panel dark:bg-ios-darkPanel border border-transparent dark:border-ios-darkBorder" style="display: block;">
             <button onclick="toggleAccordion('setting-content', 'setting-icon')" class="w-full px-6 py-5 flex justify-between items-center hover:bg-gray-50/50 dark:hover:bg-[#1C1C1E]/50 transition-colors">
                 <span class="font-bold tracking-wide">2. KARTU SETTING</span>
                 <svg id="setting-icon" class="w-5 h-5 text-gray-400 transition-transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
             <div id="setting-content" class="accordion-content open px-6 py-0 border-t border-ios-border dark:border-ios-darkBorder">
-                <div class="py-6">
-                    <div class="flex justify-between items-center mb-2">
-                        <button onclick="window.open('https://share.gemini.google/vL561r5vqLZ2', '_blank')" class="px-4 py-2 text-xs font-bold text-white bg-purple-600 rounded-xl hover:bg-purple-700 transition-colors flex items-center gap-1 shadow-sm"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg> Canvas</button>
+                <div class="py-6 w-full">
+                    <div class="flex flex-wrap justify-between items-center mb-2 gap-2">
+                        <button onclick="window.open('https://share.gemini.google/IqtXvQMzkgmQ', '_blank')" class="px-4 py-2 text-xs font-bold text-white bg-purple-600 rounded-xl hover:bg-purple-700 transition-colors flex items-center gap-1 shadow-sm whitespace-nowrap"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg> Canvas</button>
                         
                         <div class="flex gap-2">
-                            <button onclick="resetSettings()" class="px-4 py-2 text-xs font-bold text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">Reset</button>
-                            <button id="btn-auto-set" onclick="autoSetSettings()" class="px-4 py-2 text-xs font-bold text-white bg-[#007AFF] rounded-xl hover:bg-[#0056b3] transition-colors flex items-center gap-1 shadow-sm"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg> Global Auto-Set AI</button>
+                            <button onclick="resetSettings()" class="px-4 py-2 text-xs font-bold text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors whitespace-nowrap">Reset</button>
+                            <button id="btn-auto-set" onclick="autoSetSettings()" class="px-4 py-2 text-xs font-bold text-white bg-[#007AFF] rounded-xl hover:bg-[#0056b3] transition-colors flex items-center gap-1 shadow-sm whitespace-nowrap"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg> Global Auto-Set AI</button>
+                        </div>
+                    </div>
+
+                    <!-- PENGELOLAAN PROFIL SETTING -->
+                    <div class="mt-4 mb-6 p-4 bg-gray-50 dark:bg-[#1A1A1C] rounded-2xl border border-gray-200 dark:border-ios-darkBorder flex flex-col gap-3 w-full">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide">Profil Setting (Preset)</span>
+                            <div class="flex gap-2">
+                                <label class="cursor-pointer px-3 py-1.5 text-[11px] font-bold text-gray-600 dark:text-gray-300 bg-white dark:bg-[#2C2C2E] border border-gray-200 dark:border-[#3A3A3C] rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-[#3A3A3C] transition-colors whitespace-nowrap">
+                                    Import JSON
+                                    <input type="file" accept=".json" class="hidden" onchange="importSettingsProfile(this)">
+                                </label>
+                                <button onclick="exportSettingsProfile()" class="px-3 py-1.5 text-[11px] font-bold text-gray-600 dark:text-gray-300 bg-white dark:bg-[#2C2C2E] border border-gray-200 dark:border-[#3A3A3C] rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-[#3A3A3C] transition-colors whitespace-nowrap">Export JSON</button>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap sm:flex-nowrap gap-2 items-center">
+                            <select id="saved-settings-dropdown" class="flex-1 min-w-[150px] p-2.5 ios-input border border-ios-border dark:border-ios-darkBorder bg-white dark:bg-ios-darkInput dark:text-white outline-none text-sm">
+                                <option value="">-- Pilih Profil Setting --</option>
+                            </select>
+                            <button onclick="loadSettingsProfile()" class="px-4 py-2.5 text-xs font-bold text-white bg-blue-500 hover:bg-blue-600 rounded-xl transition-colors shadow-sm whitespace-nowrap">Load</button>
+                            <button onclick="saveSettingsProfile()" class="px-4 py-2.5 text-xs font-bold text-white bg-[#34C759] hover:bg-green-600 rounded-xl transition-colors shadow-sm whitespace-nowrap">Save</button>
+                            <button onclick="deleteSettingsProfile()" class="px-3 py-2.5 text-xs font-bold text-red-500 bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-xl transition-colors shadow-sm flex-shrink-0" title="Hapus Profil">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
                         </div>
                     </div>
 
                     <!-- API KEY SECTION -->
                     <div class="setting-section-title mt-4 text-blue-500 dark:text-blue-400">0. API Key (Wajib untuk AI Generate)</div>
-                    <div class="grid grid-cols-1 gap-5 text-sm mb-8">
+                    <div class="w-full text-sm mb-8">
                         <div>
                             <input type="password" id="gemini-api-key" placeholder="Masukkan Gemini API Key dari Google AI Studio..." class="w-full p-3 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput dark:text-white outline-none">
                             <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Dapatkan API Key gratis di <a href="https://aistudio.google.com/" target="_blank" class="text-blue-500 hover:underline">Google AI Studio</a>. Key hanya disimpan lokal di browser Anda.</p>
@@ -272,7 +332,7 @@
                     
                     <!-- SECTION 1: ART STYLE -->
                     <div class="setting-section-title text-[#007AFF]">I. Gaya Seni (Wajib Dipilih Pertama)</div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-4 mb-8">
+                    <div class="w-full mt-4 mb-8">
                         <div>
                             <div class="flex justify-between items-center mb-2">
                                 <label class="block text-gray-700 dark:text-gray-300 font-bold">Gaya Seni (Art Style)</label>
@@ -288,7 +348,8 @@
 
                     <!-- SECTION 2: PENGATURAN UMUM -->
                     <div class="setting-section-title">II. Pengaturan Umum & Copywriting</div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-sm mb-8">
+                    <!-- Optimized grid for full screen: 1 col on mobile, 2 on tablet, 4 on ultrawide -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 text-sm mb-8 w-full">
                         <div>
                             <div class="flex justify-between items-center mb-2">
                                 <label class="block text-gray-700 dark:text-gray-300 font-bold">Jumlah Slide</label>
@@ -355,12 +416,12 @@
                                 <input type="text" id="set-hook-custom" class="hidden w-full p-3 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput dark:text-white outline-none" placeholder="Ketik tipe hook custom...">
                             </div>
                         </div>
-                        <div>
+                        <div class="md:col-span-2 xl:col-span-4">
                             <div class="flex justify-between items-center mb-2">
                                 <label class="block text-gray-700 dark:text-gray-300 font-bold">Gaya Bahasa</label>
                                 <button type="button" onclick="autoSetSingle(this, 'set-language-style', 'language_style', 'STRING', 'Tone and voice tulisan')" class="text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 p-1 rounded transition-colors" title="Auto-Set Fitur Ini"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></button>
                             </div>
-                            <div class="flex gap-2">
+                            <div class="flex gap-2 w-full">
                                 <select id="set-language-style" onchange="handleKustom(this)" class="w-full p-3 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput dark:text-white outline-none">
                                     <option value="Auto-Set by AI">Auto-Set by AI</option>
                                     <option value="KUSTOM">KUSTOM</option>
@@ -378,7 +439,7 @@
 
                     <!-- SECTION 3: VISUAL LAINNYA & KARAKTER -->
                     <div class="setting-section-title">III. Elemen Visual & Karakter</div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-sm mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5 text-sm mb-8 w-full">
                         <div>
                             <div class="flex justify-between items-center mb-2">
                                 <label class="block text-gray-700 dark:text-gray-300 font-bold">Palet Warna (Color DNA)</label>
@@ -428,19 +489,19 @@
                             </div>
                         </div>
                         
-                        <div id="character-details-container" class="md:col-span-2 hidden bg-gray-50 dark:bg-[#1C1C1E] p-5 rounded-2xl border border-gray-100 dark:border-ios-darkBorder shadow-sm">
+                        <div id="character-details-container" class="col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-3 hidden bg-gray-50 dark:bg-[#1C1C1E] p-5 rounded-2xl border border-gray-100 dark:border-ios-darkBorder shadow-sm w-full">
                             <p class="text-xs text-red-500 dark:text-red-400 font-bold mb-4 tracking-wide">*ATURAN FACELESS & NO EYES MUTLAK BERLAKU UNTUK SYARIAT.</p>
-                            <div id="dynamic-char-fields" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div id="dynamic-char-fields" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
                                 <!-- Injected dynamically -->
                             </div>
                         </div>
                         
-                        <div class="md:col-span-2">
+                        <div class="col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-3">
                             <div class="flex justify-between items-center mb-2">
                                 <label class="block text-gray-700 dark:text-gray-300 font-bold">Negative Prompt (Objek Haram/Dihindari)</label>
                                 <button type="button" onclick="autoSetSingle(this, 'set-negative-prompt', 'negative_prompt', 'STRING', 'Hal yang dihindari di gambar')" class="text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 p-1 rounded transition-colors" title="Auto-Set Fitur Ini"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></button>
                             </div>
-                            <div class="relative">
+                            <div class="relative w-full">
                                 <textarea id="set-negative-prompt" rows="3" class="w-full p-4 pr-10 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput outline-none resize-y dark:text-white">SEMUA BENTUK MATA, HIDUNG, MULUT PADA MANUSIA MAUPUN HEWAN/BINATANG/BONEKA. DILARANG ADA TITIK MATA, GARIS MATA, ATAU MATA TERPEJAM PADA HEWAN (ANJING, KUDA, KUCING, BURUNG DLL). RAMBUT WANITA, LEHER WANITA, LENGAN WANITA, BETIS WANITA.</textarea>
                                 <button onclick="document.getElementById('set-negative-prompt').value=''" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 p-1" title="Clear All"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
                             </div>
@@ -449,7 +510,7 @@
 
                     <!-- SECTION 4: TIPOGRAFI HEADER -->
                     <div class="setting-section-title">IV. Tipografi Header (Judul)</div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-sm mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-sm mb-8 w-full">
                         <div>
                             <div class="flex justify-between items-center mb-2">
                                 <label class="block text-gray-700 dark:text-gray-300 font-bold">Font Header</label>
@@ -467,16 +528,144 @@
                             </div>
                             <div class="flex gap-2">
                                 <select id="set-texteffect-header" onchange="handleKustom(this)" class="w-full p-3 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput dark:text-white outline-none">
-                                    <option value="Auto-Set by AI">Auto-Set by AI</option>
-                                    <option value="KUSTOM">KUSTOM</option>
-                                    <option value="FLAT (BAWAAN FONT)">FLAT (BAWAAN FONT)</option>
-                                    <option value="3D EMBOSSED (TIMBUL)">3D EMBOSSED (TIMBUL)</option>
-                                    <option value="DEBOSSED (TENGGELAM)">DEBOSSED (TENGGELAM)</option>
-                                    <option value="NEON GLOW (MENYALA)">NEON GLOW (MENYALA)</option>
-                                    <option value="METALLIC FOIL (EMAS/ PERAK)">METALLIC FOIL (EMAS/ PERAK)</option>
-                                    <option value="CHALK/ TEXTURAL (KAPUR/ KASAR)">CHALK/ TEXTURAL (KAPUR/ KASAR)</option>
-                                    <option value="WATERCOLOR BLEND (MENYATU AIR)">WATERCOLOR BLEND (MENYATU AIR)</option>
-                                </select>
+<option value="Auto-Set by AI">Auto-Set by AI</option>
+<option value="KUSTOM">KUSTOM</option>
+
+<option value="FLAT (BAWAAN FONT)">FLAT (BAWAAN FONT)</option>
+<option value="SEMI BOLD BOOST">SEMI BOLD BOOST</option>
+<option value="EXTRA BOLD IMPACT">EXTRA BOLD IMPACT</option>
+
+<option value="3D EMBOSSED (TIMBUL)">3D EMBOSSED (TIMBUL)</option>
+<option value="DEBOSSED (TENGGELAM)">DEBOSSED (TENGGELAM)</option>
+<option value="BEVEL SOFT">BEVEL SOFT</option>
+<option value="BEVEL HARD">BEVEL HARD</option>
+<option value="3D EXTRUDED">3D EXTRUDED</option>
+<option value="INFLATABLE PUFF">INFLATABLE PUFF</option>
+<option value="CLAY 3D">CLAY 3D</option>
+<option value="PLASTIC 3D">PLASTIC 3D</option>
+<option value="GEL 3D">GEL 3D</option>
+
+<option value="NEON GLOW (MENYALA)">NEON GLOW (MENYALA)</option>
+<option value="OUTER GLOW SOFT">OUTER GLOW SOFT</option>
+<option value="OUTER GLOW STRONG">OUTER GLOW STRONG</option>
+<option value="INNER GLOW">INNER GLOW</option>
+<option value="AURA GLOW">AURA GLOW</option>
+<option value="CYBER GLOW">CYBER GLOW</option>
+<option value="HOLOGLOW">HOLOGLOW</option>
+
+<option value="METALLIC FOIL (EMAS/ PERAK)">METALLIC FOIL (EMAS/ PERAK)</option>
+<option value="CHROME SHINE">CHROME SHINE</option>
+<option value="GOLD LUXE">GOLD LUXE</option>
+<option value="SILVER LUXE">SILVER LUXE</option>
+<option value="ROSE GOLD FOIL">ROSE GOLD FOIL</option>
+<option value="BRONZE METAL">BRONZE METAL</option>
+<option value="IRIDESCENT METAL">IRIDESCENT METAL</option>
+
+<option value="CHALK/ TEXTURAL (KAPUR/ KASAR)">CHALK/ TEXTURAL (KAPUR/ KASAR)</option>
+<option value="GRAINY TEXTURE">GRAINY TEXTURE</option>
+<option value="ROUGH INK">ROUGH INK</option>
+<option value="DRY BRUSH">DRY BRUSH</option>
+<option value="PASTEL DUST">PASTEL DUST</option>
+<option value="PENCIL SHADE">PENCIL SHADE</option>
+<option value="CHARCOAL TEXTURE">CHARCOAL TEXTURE</option>
+<option value="CRAYON TEXTURE">CRAYON TEXTURE</option>
+<option value="MARKER BLEED">MARKER BLEED</option>
+<option value="HALFTONE PRINT">HALFTONE PRINT</option>
+<option value="RISOGRAPH GRAIN">RISOGRAPH GRAIN</option>
+<option value="SCREEN PRINT">SCREEN PRINT</option>
+
+<option value="WATERCOLOR BLEND (MENYATU AIR)">WATERCOLOR BLEND (MENYATU AIR)</option>
+<option value="INK WASH">INK WASH</option>
+<option value="BRUSH PAINT">BRUSH PAINT</option>
+<option value="GOUACHE PAINT">GOUACHE PAINT</option>
+<option value="ACRYLIC PAINT">ACRYLIC PAINT</option>
+<option value="OIL PAINT TEXTURE">OIL PAINT TEXTURE</option>
+<option value="HAND PAINTED">HAND PAINTED</option>
+
+<option value="DROP SHADOW SOFT">DROP SHADOW SOFT</option>
+<option value="DROP SHADOW HARD">DROP SHADOW HARD</option>
+<option value="LONG SHADOW">LONG SHADOW</option>
+<option value="FLOATING SHADOW">FLOATING SHADOW</option>
+<option value="MULTI SHADOW STACK">MULTI SHADOW STACK</option>
+<option value="AMBIENT SHADOW">AMBIENT SHADOW</option>
+
+<option value="OUTLINE THIN">OUTLINE THIN</option>
+<option value="OUTLINE MEDIUM">OUTLINE MEDIUM</option>
+<option value="OUTLINE THICK">OUTLINE THICK</option>
+<option value="DOUBLE OUTLINE">DOUBLE OUTLINE</option>
+<option value="INLINE STROKE">INLINE STROKE</option>
+<option value="OUTLINE + SHADOW">OUTLINE + SHADOW</option>
+<option value="STICKER OUTLINE">STICKER OUTLINE</option>
+<option value="BUBBLE OUTLINE">BUBBLE OUTLINE</option>
+
+<option value="GRADIENT FILL">GRADIENT FILL</option>
+<option value="GRADIENT MESH">GRADIENT MESH</option>
+<option value="DUOTONE FILL">DUOTONE FILL</option>
+<option value="MULTICOLOR BLEND">MULTICOLOR BLEND</option>
+<option value="SUNSET GRADIENT">SUNSET GRADIENT</option>
+<option value="OCEAN GRADIENT">OCEAN GRADIENT</option>
+<option value="PASTEL GRADIENT">PASTEL GRADIENT</option>
+
+<option value="GLASSMORPHISM">GLASSMORPHISM</option>
+<option value="FROSTED GLASS">FROSTED GLASS</option>
+<option value="LIQUID GLASS">LIQUID GLASS</option>
+<option value="TRANSLUCENT ACRYLIC">TRANSLUCENT ACRYLIC</option>
+
+<option value="NEUMORPHISM SOFT">NEUMORPHISM SOFT</option>
+<option value="NEUMORPHISM INSET">NEUMORPHISM INSET</option>
+<option value="SOFT UI RAISED">SOFT UI RAISED</option>
+
+<option value="VINTAGE LETTERPRESS">VINTAGE LETTERPRESS</option>
+<option value="TYPEWRITER INK">TYPEWRITER INK</option>
+<option value="RETRO PRINT">RETRO PRINT</option>
+<option value="COMIC POP">COMIC POP</option>
+<option value="MANGA IMPACT">MANGA IMPACT</option>
+<option value="PIXEL ART">PIXEL ART</option>
+<option value="ARCADE GLOW">ARCADE GLOW</option>
+<option value="GAME HUD">GAME HUD</option>
+<option value="SCI-FI HOLOGRAM">SCI-FI HOLOGRAM</option>
+<option value="CYBERPUNK EDGE">CYBERPUNK EDGE</option>
+
+<option value="PAPER CUT LAYERED">PAPER CUT LAYERED</option>
+<option value="CUTOUT SHADOW">CUTOUT SHADOW</option>
+<option value="KIRIGAMI PAPER">KIRIGAMI PAPER</option>
+<option value="ORIGAMI FOLD">ORIGAMI FOLD</option>
+<option value="TORN PAPER">TORN PAPER</option>
+
+<option value="KNIT TEXTURE">KNIT TEXTURE</option>
+<option value="CROCHET TEXTURE">CROCHET TEXTURE</option>
+<option value="WOOL FELT">WOOL FELT</option>
+<option value="EMBROIDERY STITCH">EMBROIDERY STITCH</option>
+<option value="PATCHWORK FABRIC">PATCHWORK FABRIC</option>
+<option value="DENIM STITCH">DENIM STITCH</option>
+<option value="LEATHER STAMP">LEATHER STAMP</option>
+
+<option value="WOOD ENGRAVED">WOOD ENGRAVED</option>
+<option value="STONE ENGRAVED">STONE ENGRAVED</option>
+<option value="MARBLE ENGRAVED">MARBLE ENGRAVED</option>
+<option value="CERAMIC GLAZE">CERAMIC GLAZE</option>
+<option value="METAL ENGRAVED">METAL ENGRAVED</option>
+
+<option value="SMOKE EFFECT">SMOKE EFFECT</option>
+<option value="FIRE GLOW">FIRE GLOW</option>
+<option value="ICE CRYSTAL">ICE CRYSTAL</option>
+<option value="LIGHTNING EDGE">LIGHTNING EDGE</option>
+<option value="DUST PARTICLE">DUST PARTICLE</option>
+
+<option value="HANDWRITTEN BRUSH">HANDWRITTEN BRUSH</option>
+<option value="CALLIGRAPHIC SWASH">CALLIGRAPHIC SWASH</option>
+<option value="MARKER HANDDRAWN">MARKER HANDDRAWN</option>
+<option value="DOODLE OUTLINE">DOODLE OUTLINE</option>
+<option value="SKETCHY LINE">SKETCHY LINE</option>
+
+<option value="MINIMAL ELEGANT">MINIMAL ELEGANT</option>
+<option value="EDITORIAL LUXE">EDITORIAL LUXE</option>
+<option value="MODERN CLEAN SHADOW">MODERN CLEAN SHADOW</option>
+<option value="SOFT BLUR BLEND">SOFT BLUR BLEND</option>
+<option value="AMBIENT GLOW TEXT">AMBIENT GLOW TEXT</option>
+<option value="MATTE FINISH">MATTE FINISH</option>
+<option value="SATIN FINISH">SATIN FINISH</option>
+<option value="GLOSSY FINISH">GLOSSY FINISH</option>                                </select>
                                 <input type="text" id="set-texteffect-header-custom" class="hidden w-full p-3 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput dark:text-white outline-none" placeholder="Ketik efek...">
                             </div>
                         </div>
@@ -491,7 +680,7 @@
 
                     <!-- SECTION 5: TIPOGRAFI BODY -->
                     <div class="setting-section-title">V. Tipografi Body (Teks Utama)</div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-sm mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 text-sm mb-8 w-full">
                         <div>
                             <div class="flex justify-between items-center mb-2">
                                 <label class="block text-gray-700 dark:text-gray-300 font-bold">Font Body</label>
@@ -510,11 +699,16 @@
                             <div class="flex gap-2">
                                 <select id="set-texteffect-body" onchange="handleKustom(this)" class="w-full p-3 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput dark:text-white outline-none">
                                     <option value="Auto-Set by AI">Auto-Set by AI</option>
-                                    <option value="KUSTOM">KUSTOM</option>
-                                    <option value="FLAT (BAWAAN FONT)">FLAT (BAWAAN FONT)</option>
-                                    <option value="3D EMBOSSED (TIMBUL)">3D EMBOSSED (TIMBUL)</option>
-                                    <option value="DEBOSSED (TENGGELAM)">DEBOSSED (TENGGELAM)</option>
-                                </select>
+<option value="Auto-Set by AI">Auto-Set by AI</option>
+<option value="CLEAN FLAT TEXT">CLEAN FLAT TEXT</option>
+<option value="FLOATING CLEAN TEXT">FLOATING CLEAN TEXT</option>
+<option value="DROP SHADOW TIPIS">DROP SHADOW TIPIS</option>
+<option value="SOFT OUTLINE">SOFT OUTLINE</option>
+<option value="OUTLINE + SOFT SHADOW">OUTLINE + SOFT SHADOW</option>
+<option value="SEAMLESS BLEND WITH ART">SEAMLESS BLEND WITH ART</option>
+<option value="CONTEXTUAL AUTO-CONTRAST">CONTEXTUAL AUTO-CONTRAST</option>
+<option value="OPAQUE 90%">OPAQUE 90%</option>
+<option value="KUSTOM">KUSTOM</option>                              </select>
                                 <input type="text" id="set-texteffect-body-custom" class="hidden w-full p-3 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput dark:text-white outline-none" placeholder="Ketik efek...">
                             </div>
                         </div>
@@ -561,7 +755,7 @@
 
                     <!-- SECTION 6: FOOTER & WATERMARK -->
                     <div class="setting-section-title">VI. Footer, Watermark & Logo</div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-sm">
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 text-sm w-full">
                         <div>
                             <div class="flex justify-between items-center mb-2">
                                 <label class="block text-gray-700 dark:text-gray-300 font-bold">Font Footer</label>
@@ -581,9 +775,48 @@
                                 <select id="set-texteffect-footer" onchange="handleKustom(this)" class="w-full p-3 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput dark:text-white outline-none">
                                     <option value="Auto-Set by AI">Auto-Set by AI</option>
                                     <option value="KUSTOM">KUSTOM</option>
-                                    <option value="FLAT (BAWAAN FONT)">FLAT (BAWAAN FONT)</option>
-                                    <option value="3D EMBOSSED (TIMBUL)">3D EMBOSSED (TIMBUL)</option>
-                                    <option value="DEBOSSED (TENGGELAM)">DEBOSSED (TENGGELAM)</option>
+
+<option value="FLAT (BAWAAN FONT)">FLAT (BAWAAN FONT)</option>
+<option value="CLEAN FLAT TEXT">CLEAN FLAT TEXT</option>
+<option value="MINIMAL FLAT TEXT">MINIMAL FLAT TEXT</option>
+<option value="MATTE FLAT TEXT">MATTE FLAT TEXT</option>
+
+<option value="OPAQUE 100%">OPAQUE 100%</option>
+<option value="OPAQUE 90%">OPAQUE 90%</option>
+<option value="OPAQUE 80%">OPAQUE 80%</option>
+<option value="OPAQUE 70%">OPAQUE 70%</option>
+<option value="OPAQUE 60%">OPAQUE 60%</option>
+<option value="OPAQUE 50%">OPAQUE 50%</option>
+
+<option value="DROP SHADOW TIPIS">DROP SHADOW TIPIS</option>
+<option value="SOFT SHADOW">SOFT SHADOW</option>
+<option value="AMBIENT SHADOW">AMBIENT SHADOW</option>
+
+<option value="OUTLINE TIPIS">OUTLINE TIPIS</option>
+<option value="SOFT OUTLINE">SOFT OUTLINE</option>
+<option value="WHITE OUTLINE TIPIS">WHITE OUTLINE TIPIS</option>
+<option value="DARK OUTLINE TIPIS">DARK OUTLINE TIPIS</option>
+<option value="OUTLINE + SOFT SHADOW">OUTLINE + SOFT SHADOW</option>
+
+<option value="SEMI TRANSPARENT">SEMI TRANSPARENT</option>
+<option value="TRANSPARENT BLEND">TRANSPARENT BLEND</option>
+<option value="SEAMLESS BLEND WITH PATCH">SEAMLESS BLEND WITH PATCH</option>
+<option value="AUTO-CONTRAST WITH PATCH">AUTO-CONTRAST WITH PATCH</option>
+
+<option value="EMBOSSED HALUS">EMBOSSED HALUS</option>
+<option value="DEBOSSED HALUS">DEBOSSED HALUS</option>
+
+<option value="MONOCHROME PRINT">MONOCHROME PRINT</option>
+<option value="EDITORIAL PRINT">EDITORIAL PRINT</option>
+<option value="PAPER GRAIN HALUS">PAPER GRAIN HALUS</option>
+
+<option value="FABRIC PRINT">FABRIC PRINT</option>
+<option value="EMBROIDERY STITCH HALUS">EMBROIDERY STITCH HALUS</option>
+<option value="KNIT TEXTURE HALUS">KNIT TEXTURE HALUS</option>
+<option value="WOVEN LABEL TEXT">WOVEN LABEL TEXT</option>
+
+<option value="GLASS TEXT BLEND">GLASS TEXT BLEND</option>
+
                                 </select>
                                 <input type="text" id="set-texteffect-footer-custom" class="hidden w-full p-3 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput dark:text-white outline-none" placeholder="Ketik efek...">
                             </div>
@@ -595,13 +828,171 @@
                             </div>
                             <div class="flex gap-2">
                                 <select id="set-patch-footer" onchange="handleKustom(this)" class="w-full p-3 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput dark:text-white outline-none">
-                                    <option value="Auto-Set by AI">Auto-Set by AI</option>
-                                    <option value="KUSTOM">KUSTOM</option>
-                                    <option value="Tanpa Patch (Teks Transparan)">Tanpa Patch (Teks Transparan)</option>
-                                    <option value="Pill Hollow Capsule">Pill Hollow Capsule</option>
-                                    <option value="Kotak Minimalis">Kotak Minimalis</option>
-                                    <option value="Rounded Rectangle">Rounded Rectangle</option>
-                                    <option value="Pita/ Ribbon">Pita/ Ribbon</option>
+<option value="Auto-Set by AI">Auto-Set by AI</option>
+<option value="KUSTOM">KUSTOM</option>
+<option value="Tanpa Patch (Teks Transparan)">Tanpa Patch (Teks Transparan)</option>
+
+<option value="Pill Hollow Capsule">Pill Hollow Capsule</option>
+<option value="Pill Solid Capsule">Pill Solid Capsule</option>
+<option value="Pill Glassmorphism">Pill Glassmorphism</option>
+<option value="Pill Soft Shadow">Pill Soft Shadow</option>
+<option value="Pill Gradient">Pill Gradient</option>
+<option value="Pill Neon Glow">Pill Neon Glow</option>
+
+<option value="Kotak Minimalis">Kotak Minimalis</option>
+<option value="Kotak Solid">Kotak Solid</option>
+<option value="Kotak Outline">Kotak Outline</option>
+<option value="Kotak Sudut Tajam">Kotak Sudut Tajam</option>
+<option value="Kotak Berlapis">Kotak Berlapis</option>
+<option value="Kotak Bayangan Keras">Kotak Bayangan Keras</option>
+
+<option value="Rounded Rectangle">Rounded Rectangle</option>
+<option value="Rounded Rectangle Solid">Rounded Rectangle Solid</option>
+<option value="Rounded Rectangle Outline">Rounded Rectangle Outline</option>
+<option value="Rounded Rectangle Glass">Rounded Rectangle Glass</option>
+<option value="Rounded Rectangle Gradient">Rounded Rectangle Gradient</option>
+<option value="Rounded Rectangle Soft Shadow">Rounded Rectangle Soft Shadow</option>
+
+<option value="Pita / Ribbon">Pita / Ribbon</option>
+<option value="Pita Lipat">Pita Lipat</option>
+<option value="Pita Ujung Bercabang">Pita Ujung Bercabang</option>
+<option value="Pita Melengkung">Pita Melengkung</option>
+<option value="Pita Vertikal">Pita Vertikal</option>
+<option value="Pita Kain">Pita Kain</option>
+<option value="Pita Kertas">Pita Kertas</option>
+
+<option value="Label Minimalis">Label Minimalis</option>
+<option value="Label Harga">Label Harga</option>
+<option value="Label Gantung">Label Gantung</option>
+<option value="Label Pakaian">Label Pakaian</option>
+<option value="Label Jahitan">Label Jahitan</option>
+<option value="Label Emboss">Label Emboss</option>
+<option value="Label Deboss">Label Deboss</option>
+
+<option value="Badge Bulat">Badge Bulat</option>
+<option value="Badge Oval">Badge Oval</option>
+<option value="Badge Perisai">Badge Perisai</option>
+<option value="Badge Vintage">Badge Vintage</option>
+<option value="Badge Stempel">Badge Stempel</option>
+<option value="Badge Segel Lilin">Badge Segel Lilin</option>
+<option value="Badge Medal">Badge Medal</option>
+
+<option value="Speech Bubble">Speech Bubble</option>
+<option value="Chat Bubble Rounded">Chat Bubble Rounded</option>
+<option value="Chat Bubble Outline">Chat Bubble Outline</option>
+<option value="Cloud Bubble">Cloud Bubble</option>
+
+<option value="Sticker Outline Putih">Sticker Outline Putih</option>
+<option value="Sticker Die-Cut">Sticker Die-Cut</option>
+<option value="Sticker Kiss-Cut">Sticker Kiss-Cut</option>
+<option value="Sticker Holographic">Sticker Holographic</option>
+<option value="Sticker Kertas">Sticker Kertas</option>
+<option value="Sticker Sobek">Sticker Sobek</option>
+
+<option value="Paper Strip">Paper Strip</option>
+<option value="Sobekan Kertas">Sobekan Kertas</option>
+<option value="Potongan Kertas">Potongan Kertas</option>
+<option value="Sticky Note">Sticky Note</option>
+<option value="Washi Tape">Washi Tape</option>
+<option value="Kertas Terlipat">Kertas Terlipat</option>
+<option value="Kertas Gulung">Kertas Gulung</option>
+<option value="Kertas Pergamen">Kertas Pergamen</option>
+
+<option value="Fabric Patch">Fabric Patch</option>
+<option value="Knit Patch">Knit Patch</option>
+<option value="Crochet Patch">Crochet Patch</option>
+<option value="Felt Patch">Felt Patch</option>
+<option value="Denim Patch">Denim Patch</option>
+<option value="Leather Patch">Leather Patch</option>
+<option value="Embroidered Patch">Embroidered Patch</option>
+<option value="Woven Label Patch">Woven Label Patch</option>
+<option value="Quilted Patch">Quilted Patch</option>
+
+<option value="Wooden Plaque">Wooden Plaque</option>
+<option value="Bamboo Plaque">Bamboo Plaque</option>
+<option value="Metal Plate">Metal Plate</option>
+<option value="Enamel Plate">Enamel Plate</option>
+<option value="Acrylic Plate">Acrylic Plate</option>
+<option value="Ceramic Tile">Ceramic Tile</option>
+<option value="Stone Plaque">Stone Plaque</option>
+<option value="Clay Plaque">Clay Plaque</option>
+
+<option value="Glassmorphism Panel">Glassmorphism Panel</option>
+<option value="Frosted Glass Panel">Frosted Glass Panel</option>
+<option value="Transparent Blur Panel">Transparent Blur Panel</option>
+<option value="Liquid Glass Capsule">Liquid Glass Capsule</option>
+<option value="Acrylic Transparent Panel">Acrylic Transparent Panel</option>
+
+<option value="Neumorphism Soft Panel">Neumorphism Soft Panel</option>
+<option value="Neumorphism Inset Panel">Neumorphism Inset Panel</option>
+<option value="Soft UI Capsule">Soft UI Capsule</option>
+
+<option value="Gradient Bar">Gradient Bar</option>
+<option value="Solid Color Bar">Solid Color Bar</option>
+<option value="Transparent Color Bar">Transparent Color Bar</option>
+<option value="Bottom Full-Width Bar">Bottom Full-Width Bar</option>
+<option value="Bottom Floating Bar">Bottom Floating Bar</option>
+<option value="Lower Third Minimalis">Lower Third Minimalis</option>
+<option value="Lower Third Modern">Lower Third Modern</option>
+<option value="Lower Third Editorial">Lower Third Editorial</option>
+
+<option value="Outline Frame">Outline Frame</option>
+<option value="Double Outline Frame">Double Outline Frame</option>
+<option value="Corner Bracket Frame">Corner Bracket Frame</option>
+<option value="Decorative Border Frame">Decorative Border Frame</option>
+<option value="Ornamental Frame">Ornamental Frame</option>
+<option value="Vintage Frame">Vintage Frame</option>
+<option value="Art Deco Frame">Art Deco Frame</option>
+
+<option value="Hexagon Badge">Hexagon Badge</option>
+<option value="Octagon Badge">Octagon Badge</option>
+<option value="Diamond Badge">Diamond Badge</option>
+<option value="Arch Shape">Arch Shape</option>
+<option value="Ticket Shape">Ticket Shape</option>
+<option value="Bookmark Shape">Bookmark Shape</option>
+<option value="Tab Shape">Tab Shape</option>
+<option value="Folder Tab">Folder Tab</option>
+
+<option value="Pixel UI Panel">Pixel UI Panel</option>
+<option value="Game HUD Panel">Game HUD Panel</option>
+<option value="Retro Game Label">Retro Game Label</option>
+<option value="Cyberpunk HUD">Cyberpunk HUD</option>
+<option value="Futuristic Interface">Futuristic Interface</option>
+<option value="Sci-Fi Hologram Panel">Sci-Fi Hologram Panel</option>
+
+<option value="Comic Caption Box">Comic Caption Box</option>
+<option value="Comic Speech Box">Comic Speech Box</option>
+<option value="Manga Caption Box">Manga Caption Box</option>
+<option value="Pop Art Burst">Pop Art Burst</option>
+
+<option value="Isometric Platform">Isometric Platform</option>
+<option value="3D Extruded Plate">3D Extruded Plate</option>
+<option value="3D Floating Capsule">3D Floating Capsule</option>
+<option value="3D Beveled Plaque">3D Beveled Plaque</option>
+<option value="Inflatable 3D Patch">Inflatable 3D Patch</option>
+<option value="Clay 3D Patch">Clay 3D Patch</option>
+
+<option value="Minimal Underline">Minimal Underline</option>
+<option value="Double Underline">Double Underline</option>
+<option value="Highlight Marker">Highlight Marker</option>
+<option value="Brush Stroke">Brush Stroke</option>
+<option value="Paint Swipe">Paint Swipe</option>
+<option value="Ink Stroke">Ink Stroke</option>
+<option value="Chalk Stroke">Chalk Stroke</option>
+
+<option value="Islamic Geometric Frame">Islamic Geometric Frame</option>
+<option value="Mihrab Arch Patch">Mihrab Arch Patch</option>
+<option value="Arabesque Border Patch">Arabesque Border Patch</option>
+<option value="Mashrabiya Pattern Patch">Mashrabiya Pattern Patch</option>
+<option value="Islamic Tile Patch">Islamic Tile Patch</option>
+
+<option value="Organic Blob">Organic Blob</option>
+<option value="Soft Cloud Shape">Soft Cloud Shape</option>
+<option value="Abstract Wave">Abstract Wave</option>
+<option value="Leaf Shape">Leaf Shape</option>
+<option value="Pebble Shape">Pebble Shape</option>
+<option value="Scalloped Edge Patch">Scalloped Edge Patch</option>
+<option value="Wavy Border Patch">Wavy Border Patch</option>
                                 </select>
                                 <input type="text" id="set-patch-footer-custom" class="hidden w-full p-3 ios-input border border-ios-border dark:border-ios-darkBorder bg-ios-input dark:bg-ios-darkInput dark:text-white outline-none" placeholder="Ketik patch footer custom...">
                             </div>
@@ -632,7 +1023,7 @@
                             </div>
                         </div>
                         
-                        <div class="md:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-5 mt-2">
+                        <div class="col-span-1 md:col-span-2 xl:col-span-4 grid grid-cols-1 md:grid-cols-2 gap-5 mt-2">
                             <div>
                                 <div class="flex justify-between items-center mb-2">
                                     <label class="block text-gray-700 dark:text-gray-300 font-bold">Logo (Teks/ Sosmed)</label>
@@ -649,7 +1040,7 @@
                             </div>
                         </div>
 
-                        <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-5 mt-4 border-t border-dashed border-gray-200 dark:border-ios-darkBorder pt-6">
+                        <div class="col-span-1 md:col-span-2 xl:col-span-4 grid grid-cols-1 md:grid-cols-2 gap-5 mt-4 border-t border-dashed border-gray-200 dark:border-ios-darkBorder pt-6">
                             <div>
                                 <div class="flex justify-between items-center mb-2">
                                     <label class="block text-gray-700 dark:text-gray-300 font-bold">Nama File Logo (Bisa >1, Pisah Koma)</label>
@@ -690,18 +1081,18 @@
         </button>
 
         <!-- KARTU 3: OUTPUT -->
-        <div class="glass-panel bg-ios-panel dark:bg-ios-darkPanel border border-transparent dark:border-ios-darkBorder">
+        <div class="glass-panel w-full bg-ios-panel dark:bg-ios-darkPanel border border-transparent dark:border-ios-darkBorder">
             <button onclick="toggleAccordion('output-wrapper', 'output-icon')" class="w-full px-6 py-5 flex justify-between items-center hover:bg-gray-50/50 dark:hover:bg-[#1C1C1E]/50 transition-colors">
                 <span class="font-bold tracking-wide">3. KARTU OUTPUT</span>
                 <svg id="output-icon" class="w-5 h-5 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
             <div id="output-wrapper" class="accordion-content px-6 py-0 border-t border-ios-border dark:border-ios-darkBorder">
                 <div class="py-6">
-                    <div class="flex justify-end gap-3 mb-4">
+                    <div class="flex justify-end gap-3 mb-4 w-full">
                         <button onclick="copyAllBlocks()" class="px-4 py-2 text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors">Copy All</button>
                         <button onclick="saveAllBlocks()" class="px-4 py-2 text-xs font-bold text-white bg-[#34C759] hover:bg-green-600 rounded-xl transition-colors">Save All Group</button>
                     </div>
-                    <div id="output-container" class="space-y-4">
+                    <div id="output-container" class="space-y-4 w-full">
                         <p class="text-sm text-gray-400 text-center py-8 font-medium">Hasil generate akan muncul di sini.</p>
                     </div>
                 </div>
@@ -709,31 +1100,31 @@
         </div>
 
         <!-- KARTU 4: SAVED -->
-        <div class="glass-panel bg-ios-panel dark:bg-ios-darkPanel border border-transparent dark:border-ios-darkBorder">
+        <div class="glass-panel w-full bg-ios-panel dark:bg-ios-darkPanel border border-transparent dark:border-ios-darkBorder">
             <button onclick="toggleAccordion('saved-wrapper', 'saved-icon')" class="w-full px-6 py-5 flex justify-between items-center hover:bg-gray-50/50 dark:hover:bg-[#1C1C1E]/50 transition-colors">
                 <span class="font-bold tracking-wide">4. KARTU SAVED</span>
                 <svg id="saved-icon" class="w-5 h-5 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
             <div id="saved-wrapper" class="accordion-content px-6 py-0 border-t border-ios-border dark:border-ios-darkBorder">
-                <div class="py-6">
+                <div class="py-6 w-full">
                     <div class="flex border-b border-gray-100 dark:border-ios-darkBorder mb-6">
                         <button id="tab-saved-a" onclick="switchSavedTab('A')" class="px-6 py-3 text-sm font-bold border-b-2 border-transparent text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors">Mode A (Ideas)</button>
                         <button id="tab-saved-b" onclick="switchSavedTab('B')" class="px-6 py-3 text-sm font-bold border-b-2 border-[#007AFF] text-[#007AFF] transition-colors">Mode B (Carousel)</button>
                     </div>
                     
-                    <div id="saved-container" class="space-y-5"></div>
+                    <div id="saved-container" class="space-y-5 w-full"></div>
 
-                    <div class="mt-8 pt-6 border-t border-gray-100 dark:border-ios-darkBorder flex justify-between items-center bg-gray-50/50 dark:bg-[#1A1A1C] -mx-6 -mb-6 px-6 py-5 rounded-b-3xl">
+                    <div class="mt-8 pt-6 border-t border-gray-100 dark:border-ios-darkBorder flex flex-col md:flex-row gap-4 justify-between items-center bg-gray-50/50 dark:bg-[#1A1A1C] -mx-6 -mb-6 px-6 py-5 rounded-b-3xl">
                         <div>
                             <h4 class="text-sm font-bold">Data Management</h4>
                             <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Ekspor atau impor data tersimpan (JSON).</p>
                         </div>
                         <div class="flex gap-2">
-                            <label class="cursor-pointer px-4 py-2.5 text-xs font-bold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#2C2C2E] border border-gray-200 dark:border-[#3A3A3C] rounded-xl shadow-sm hover:bg-gray-50 dark:hover:bg-[#3A3A3C] transition-colors">
+                            <label class="cursor-pointer px-4 py-2.5 text-xs font-bold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#2C2C2E] border border-gray-200 dark:border-[#3A3A3C] rounded-xl shadow-sm hover:bg-gray-50 dark:hover:bg-[#3A3A3C] transition-colors whitespace-nowrap">
                                 Import JSON
                                 <input type="file" accept=".json" class="hidden" onchange="importData(this)">
                             </label>
-                            <button onclick="exportData()" class="px-4 py-2.5 text-xs font-bold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#2C2C2E] border border-gray-200 dark:border-[#3A3A3C] rounded-xl shadow-sm hover:bg-gray-50 dark:hover:bg-[#3A3A3C] transition-colors">Export JSON</button>
+                            <button onclick="exportData()" class="px-4 py-2.5 text-xs font-bold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#2C2C2E] border border-gray-200 dark:border-[#3A3A3C] rounded-xl shadow-sm hover:bg-gray-50 dark:hover:bg-[#3A3A3C] transition-colors whitespace-nowrap">Export JSON</button>
                         </div>
                     </div>
                 </div>
@@ -929,7 +1320,6 @@
             "9. GAYA 9/ ImaMacra / Premium Handcrafted Macrame Fiber Art": "3D bohemian macrame cotton cord knot craft diorama, highly precise and thickly textured. Featuring intricate knot weaves, naturally falling frayed fringes, and natural wood supports highlighted by soft directional lighting. Creating an organic, tactile, warm, and highly artistic handmade craft atmosphere.",
             "10. GAYA 10/ ImaWeave / Premium Woven Tapestry Art": "Traditional woven tapestry illustration with dense yarn weaves and realistic fabric textures. Featuring a slightly faded classic color palette, intricate decorative border stitches, and thick woven yarn elements that provide a tactile feel. Bathed in soft lighting that highlights the woven curves on the fabric surface, creating a majestic, historical, and highly artistic visual atmosphere.",
             "11. GAYA 11/ ImaTile / Premium 3D Textile Storybook Art": "3D textile storybook illustration made from a blend of textile crafts, patchwork, and embroidery with realistic physical depth. Featuring a blank faceless character formed from cotton and felt cutouts, combined with embossed stitches and a rough textured canvas background. Highlighted by warm lighting to emphasize the fibers of each material, creating a tactile, nostalgic, and highly artistic handmade fairytale atmosphere.",
-
             "12. GAYA 12/ ImaSand / Premium Sand Sculpture & Art Diorama 3D": "Premium 3D sand sculpture art diorama with precise micro-grain details. Featuring a dense granular sand surface texture with a warm golden-cream color gradient, and natural sunlight effects that accentuate the carved depths. Creating an organic, artistic, and aesthetic beach-vibe visual atmosphere.",
             "13. GAYA 13/ ImaShadow / Premium Paper Shadow Box 3D": "3D paper shadow box diorama focusing on profound shadow play. Featuring highly precise object silhouettes, softly gradated matte paper textures, and hidden lighting effects from behind the paper layers that accentuate visual contours. Creating a dramatic, poetic, and highly artistic atmosphere.",
             "14. GAYA 14/ ImaCraft / Premium 3D Papercraft Diorama": "3D papercraft diorama with precise layered depth effects. Featuring a fine-grained matte paper texture with sharp fold lines and cut angles, as well as soft interplay of shadows between layers. Creating a creative, aesthetic, and highly artistic visual atmosphere.",
@@ -941,7 +1331,6 @@
             "20. GAYA 20/ ImaCut / Premium Handmade Cut Paper Collage": "Premium handmade cut paper collage art featuring stacked colored paper with visible matte fiber textures. Each layer has crisp cut edges with natural drop shadows in between, producing a 3D physical depth effect. Creating an organic, artistic visual atmosphere rich with a handmade touch.",
             "21. GAYA 21/ ImaCard / Premium Handmade Cardboard Craft 3D": "3D miniature diorama made from precisely layered corrugated cardboard and kraft paper cutouts. Featuring natural brown paper fiber textures with exposed inner cardboard ridges along the cut edges, and soft lighting that produces natural drop shadows. Creating an eco-friendly, artistic, and highly artistic handmade craft visual atmosphere.",
             "22. GAYA 22/ ImaSculpt / Premium 3D Paper Sculpture Art": "3D paper sculpture diorama, precisely carved and shaped with stunning volumetric depth. Featuring a smooth matte paper fiber texture, gentle curves and folds, and sharp cut edges. Bathed in soft lighting that casts gradated shadows among hollows and folds, creating an elegant, artistic, and highly artistic visual atmosphere.",
-
             "23. GAYA 23/ ImaWhimsi / Ink & Watercolor Whimsical Doodle": "Traditional analog ink and watercolor doodle illustration in a children's storybook style. Characters are drawn with super thin (0.05pt) black ink that is intentionally imperfect, combined with transparent watercolor strokes that aesthetically bleed outside the lines on rough textured paper.",
             "24. GAYA 24/ ImaWimmel / Wimmelbilderbuch (Teeming Picture Book)": "Teeming Wimmelbilderbuch children's hidden-object book illustration, highly dense and crowded. Using a bird's-eye or isometric perspective, featuring a super busy miniature world with hundreds of characters and objects interconnected in witty little stories.",
             "25. GAYA 25/ ImaCozy / Premium Cozy Storybook Illustration": "Classic 2D digital children's book illustration drawn using textured pastel brush strokes and traditional colored pencils. Featuring a warm color palette with a soft magical glowing illumination on a grainy paper texture surface. Creating a highly cozy, calming, nostalgic, and imaginative fairytale atmosphere.",
@@ -955,46 +1344,38 @@
             "33. GAYA 33/ ImaCottage / Premium Cottagecore Storybook Illustration": "2D children's book illustration embracing a romantic and peaceful cottagecore aesthetic. Featuring a blend of pastel watercolor strokes and colored pencil hatching on a rough paper surface, highlighting organic elements like wildflowers, mushrooms, and wooden cottages in warm earth tones. Creating a highly calming, nostalgic, cozy, and nature-harmonious fairytale atmosphere.",
             "34. GAYA 34/ ImaKids / Premium Children's Book Illustration": "2D digital children's book illustration blending soft watercolor strokes and detailed colored pencil hatching on a rough textured paper surface. Featuring organically designed characters with blank faceless features integrated into a warm pastel color palette environment, creating a nostalgic, cozy, and imaginative fairytale atmosphere.",
             "35. GAYA 35/ ImaStory / Whimsical Watercolor Storybook Illustration": "Traditional whimsical watercolor storybook illustration full of warmth and imagination. Using soft wet-on-wet color strokes combined with thin pencil sketches on a richly textured cold-pressed paper surface. Featuring expressively proportioned characters with a muted earthy pastel color palette, creating a nostalgic, sweet, and storytelling atmosphere.",
-
             "36. GAYA 36/ ImaWaco / Watercolor & Ink Illustration": "Premium traditional watercolor painting with expressive freehand black ink contour lines. Utilizing wet-on-wet techniques to produce luminous transparent color gradients, lively brush textures, and natural pigment grains on a realistic cold-pressed paper surface.",
             "37. GAYA 37/ ImaGouache / Premium Opaque Gouache Painting": "2D traditional opaque gouache painting illustration on a rough textured paper surface. Featuring expressive brush strokes, dense pigmented overlapping colors with a matte shine-free finish, and organic handmade painting details. Creating a warm, aesthetic, characterful visual atmosphere rich in tactile texture.",
             "38. GAYA 38/ ImaOil / Premium Impasto Oil Painting": "2D traditional impasto oil painting illustration on a rough canvas surface. Featuring expressive impasto brush strokes with voluminous color pigment build-up, realistic oil sheen effects, and a thick blend of organically unified colors. Creating an elegant, classic, expressive, and highly artistic visual atmosphere.",
             "39. GAYA 39/ ImaAcryl / Premium Expressive Acrylic Painting": "2D traditional expressive acrylic painting illustration on a rough canvas surface. Featuring thick, bold, and decisive brush strokes with highly pigmented, fast-drying overlapping colors. Highlighting a satin semi-gloss finish with light impasto texture details, creating a dynamic, energetic, expressive, and contemporary visual atmosphere.",
             "40. GAYA 40/ ImaColor / Premium Colored Pencil Illustration": "Traditional 2D colored pencil illustration drawn using layered hatching techniques on a thick textured sketch paper surface. Featuring rich color pigment strokes, organic color blending through varied hand pressure, and precise line details that retain the original paper grain. Creating a warm, nostalgic, expressive visual atmosphere that strongly emphasizes an authentic hand-drawn touch.",
-
             "41. GAYA 41/ ImaStudy / Studygram Digital Journaling & Scrapbook": "Modern digital journaling Studygram aesthetic like GoodNotes or Notion apps. Set against a white grid or graph paper background, decorated with a collage of torn paper scraps, decorative stickers, pastel washi tape, highlighter marks, paper clips, and neat minimal line illustration notes.",
             "42. GAYA 42/ ImaDenim / Hand-Drawn Sketchnote & Visual Journaling": "Creative analog hand-drawn sketchnote journaling doodles using black ink pens and Copic marker coloring. Featuring faint pencil construction lines, connecting arrows, visual thinking diagrams, and slight coffee stains that provide a casual yet informative study note impression.",
             "43. GAYA 43/ ImaSketch / Doodle Journal Notebook Illustration": "Teenage school notebook sketch drawn using a blue gel or ballpoint pen on lined paper. Featuring cross-hatching techniques, marker circles, annotation arrows, and bright neon highlighter scribbles that create a relaxed study atmosphere.",
             "44. GAYA 44/ ImaMix / Mixed Media Experimental Collage": "Experimental mixed media collage artwork harmoniously combining analog painting techniques and digital collages. Featuring a unique blend of thickly textured paint strokes, expressive black ink sketches, and stacked paper cutouts with a grainy texture. Creating a visually rich, detailed, artistic, and highly energetic creative display.",
-
             "45. GAYA 45/ ImaFlato / Modern Flat Vector Illustration": "Modern flat vector 2D minimal graphic art with a clean lineless aesthetic. Featuring crisp geometric shapes, solid color blocking in pastel or pop themes, and flat lighting without complex gradients to create a neat, elegant, and user-friendly look.",
             "46. GAYA 46/ ImaNoto / Notion Minimal Monochrome Illustration": "Pure minimal monochrome black and white Notion-style illustration. Set against a clean white background with vast negative space, featuring solid black hair silhouettes and a highly elegant, neat infographic or mind map structure.",
             "47. GAYA 47/ ImaLine / Intricate Black & White Line Art Illustration": "Monochrome black & white line art illustration in a highly dense and detailed coloring book style. Using clean and thick black contour lines, combined with intricate cross-hatching techniques to provide texture and shading on retro-vibe interiors. Featuring a linear composition without color, rich in visual elements, creating a nostalgic, calm, and aesthetic atmosphere.",
             "48. GAYA 48/ ImaPop / Bold Pop Art Illustration": "Modern pop art poster digital illustration with thick, bold black outlines. Featuring a blend of highly saturated and bold contrasting colors, combined with a fine vintage comic print halftone texture to create an iconic, energetic, and highly expressive visual impression.",
             "49. GAYA 49/ ImaAvantAsian / Avant-Garde Geometric Asian Illustration": "Premium flat vector digital illustration deconstructed into abstract geometric shapes. Featuring an Asian female character (STRICTLY profile or completely featureless silhouette) adorned with traditional patterns (flowers, clouds, ornaments) and complex headpieces broken down into sharp shapes. Set against an abstract collage of geometric shapes in a bright, contrasting color palette, creating an avant-garde, fashionable, and contemporary atmosphere.",
-
             "50. GAYA 50/ ImaGeru / Grunge Streetwear Photocopy Collage": "Raw and bold grunge streetwear poster mixed media collage. Using a worn-out xerography photocopy textured monochrome foundation, combined with torn paper, black duct tape, neon spray paint splatters, and stencil-style typography.",
             "51. GAYA 51/ ImaGraf / Risograph Vintage Graphic Print": "Retro risograph vintage graphic print blending indie zine and classic analog poster aesthetics. Featuring a limited dual-tone color blend overlaid with halftone dot patterns, distinctive print misregistration effects, and grainy ink textures on a crispy recycled paper surface. Creating an artistic, nostalgic visual atmosphere rich in analog textures.",
             "52. GAYA 52/ ImaGraff / Urban Street Graffiti Art": "Urban street graffiti mural art drawn on a rough textured brick wall using a combination of spray paint and thick markers. Featuring paint drips, sharp contour lines, striking neon color gradients, and expressive paint splatters. Creating a bold, energetic impression rich in modern street culture aesthetics.",
             "53. GAYA 53/ ImaChalk / Vintage Chalkboard Typography & Sketch": "Classic vintage chalkboard typography and sketch illustration set against a rough textured blackboard background. Featuring dusty chalk strokes with a crispy texture, fine hatching lines, and realistic erased chalk smudge effects. Combined with artistic hand-lettering typography and detailed line sketches, creating a friendly, warm, and authentic cafe or classroom retro atmosphere.",
-
             "54. GAYA 54/ ImaWood / Minimalist Vintage Japanese Woodcut Print": "Modern traditional Japanese Ukiyo-e minimalist vintage woodcut print. Featuring a minimalist composition with clean, sharp, and precise black contour lines on rough textured washi paper. Using a limited, muted vintage color palette, utilizing vast negative space to create a calm, elegant, and authentic atmosphere.",
             "55. GAYA 55/ ImaHoku / Hokusai-inspired Ukiyo-e Sci-Fi": "2D digital painting blending classic Edo-era Ukiyo-e woodblock print aesthetics with sci-fi elements. Featuring bold, dynamic black ink outlines inspired by Hokusai, a traditional muted color palette (indigo, vermilion, ochre), and worn-out ancient washi paper textures. Temporal anomalies are visualized through calligraphic swirling clouds and waves bending space-time, creating a dramatic and historic surreal atmosphere.",
             "56. GAYA 56/ ImaFinlay / Vintage Sci-Fi Stipple Ink Illustration": "Classic black and white vintage sci-fi pulp magazine ink illustration from the 1940s using highly intricate and precise stippling and cross-hatching techniques. Combining extreme chiaroscuro contrast to showcase retro mechanical details, leather textures, and dramatic cinematic lighting. Set against a pitch-black space background, delivering a mysterious, profound, and authentic retro-futuristic cosmic atmosphere.",
-
             "57. GAYA 57/ ImaKomi / Comic Studio (High-Fidelity Islamic Comic)": "Premium high-fidelity Islamic comic studio and professional webtoon style with cel-shaded 2D/2.5D coloring. Using clean, bold black ink lines, dramatic lighting effects, and screentone/halftone textures for a modern and energetic comic narrative visualization.",
             "58. GAYA 58/ ImaWebo / Premium Webtoon Comic Illustration": "Modern Korean webtoon/manhwa digital illustration with extremely clean and smooth line art. Using dynamic diagonal panel layouts, glowing environmental rim lighting, and professionally integrated narrative boxes and speech bubbles.",
             "59. GAYA 59/ ImaDecora / Retro Psychedelic Anime Pop Illustration": "2D digital retro psychedelic anime pop illustration with Harajuku Decora aesthetics and highly vibrant elements. Featuring clean black contour lines, cel-shaded coloring with highly saturated rainbow colors, halftone hatching textures, floral ornaments, and star sparkle effects. Set against a soft cream plain background, creating a cheerful, energetic, nostalgic, and expressive atmosphere.",
-
             "60. GAYA 60/ ImaPixar / Pixar Inspired 3D Animation": "High-end cinematic 3D animation inspired by Pixar feature films. Characters are designed with adorable and expressive proportions, featuring realistic cloth simulations, subsurface scattering skin, and dramatic, emotional volumetric lighting.",
             "61. GAYA 61/ ImaGame / Stylized Game Art Illustration": "Stylized 3D game art illustration concept with a clean isometric perspective. Object surfaces are colored using hand-painted digital brush texture rendering typical of popular casual RPGs, featuring a bright, colorful, and characterful layered environment.",
             "62. GAYA 62/ ImaVoxel / Isometric 3D Voxel Art Diorama": "Isometric 3D voxel art diorama built from precise retro-modern pixel cubes rendered in premium MagicaVoxel. Featuring a neat grid block texture with a matte surface, an enchanting color blend, and natural lighting that produces soft yet distinct shadows. Creating an aesthetic, nostalgic, and visually charming geometric miniature world atmosphere."
         };
 
-        // ====== DAFTAR LINK GEMS (EDIT LINK DI SINI NANTINYA) ======
-        // Ganti url: "#" menjadi link aslinya nanti (misal url: "https://koleksigems.com/knit")
         const gemsData = [
             // --- 🧵 3D FABRIC & YARN CRAFTS ---
+            { title: "IMAPRO 62 | 06.08.2026", url: "https://gemini.google.com/gem/1u6jC4eD_-wHVQMS8dHzoHrxC8vJIThoU?usp=sharing", desc: "Referensi Visual & Aset" },
             { title: "1. GAYA 1/ ImaKnit / Premium Knit & Crochet 3D", url: "https://gemini.google.com/gem/1wydjr_DFrGN_q70XNjnhYovpasUFtGvA?usp=sharing", desc: "Referensi Visual & Aset" },
             { title: "2. GAYA 2/ ImaWaru / Premium Needle Felting 3D", url: "#", desc: "Referensi Visual & Aset" },
             { title: "3. GAYA 3/ ImaQupa / Premium Quilted Patchwork 3D", url: "#", desc: "Referensi Visual & Aset" },
@@ -1006,8 +1387,6 @@
             { title: "9. GAYA 9/ ImaMacra / Premium Handcrafted Macrame Fiber Art", url: "#", desc: "Referensi Visual & Aset" },
             { title: "10. GAYA 10/ ImaWeave / Premium Woven Tapestry Art", url: "#", desc: "Referensi Visual & Aset" },
             { title: "11. GAYA 11/ ImaTile / Premium 3D Textile Storybook Art", url: "#", desc: "Referensi Visual & Aset" },
-
-            // --- ✂️ 3D PAPER & CARDBOARD CRAFTS ---
             { title: "12. GAYA 12/ ImaSand / Premium Sand Sculpture & Art Diorama 3D", url: "#", desc: "Referensi Visual & Aset" },
             { title: "13. GAYA 13/ ImaShadow / Premium Paper Shadow Box 3D", url: "#", desc: "Referensi Visual & Aset" },
             { title: "14. GAYA 14/ ImaCraft / Premium 3D Papercraft Diorama", url: "#", desc: "Referensi Visual & Aset" },
@@ -1019,8 +1398,6 @@
             { title: "20. GAYA 20/ ImaCut / Premium Handmade Cut Paper Collage", url: "#", desc: "Referensi Visual & Aset" },
             { title: "21. GAYA 21/ ImaCard / Premium Handmade Cardboard Craft 3D", url: "#", desc: "Referensi Visual & Aset" },
             { title: "22. GAYA 22/ ImaSculpt / Premium 3D Paper Sculpture Art", url: "#", desc: "Referensi Visual & Aset" },
-
-            // --- 📖 STORYBOOK & TALES ---
             { title: "23. GAYA 23/ ImaWhimsi / Ink & Watercolor Whimsical Doodle", url: "#", desc: "Referensi Visual & Aset" },
             { title: "24. GAYA 24/ ImaWimmel / Wimmelbilderbuch (Teeming Picture Book)", url: "#", desc: "Referensi Visual & Aset" },
             { title: "25. GAYA 25/ ImaCozy / Premium Cozy Storybook Illustration", url: "#", desc: "Referensi Visual & Aset" },
@@ -1034,44 +1411,30 @@
             { title: "33. GAYA 33/ ImaCottage / Premium Cottagecore Storybook Illustration", url: "#", desc: "Referensi Visual & Aset" },
             { title: "34. GAYA 34/ ImaKids / Premium Children's Book Illustration", url: "#", desc: "Referensi Visual & Aset" },
             { title: "35. GAYA 35/ ImaStory / Whimsical Watercolor Storybook Illustration", url: "#", desc: "Referensi Visual & Aset" },
-
-            // --- 🎨 TRADITIONAL PAINTINGS ---
             { title: "36. GAYA 36/ ImaWaco / Watercolor & Ink Illustration", url: "#", desc: "Referensi Visual & Aset" },
             { title: "37. GAYA 37/ ImaGouache / Premium Opaque Gouache Painting", url: "#", desc: "Referensi Visual & Aset" },
             { title: "38. GAYA 38/ ImaOil / Premium Impasto Oil Painting", url: "#", desc: "Referensi Visual & Aset" },
             { title: "39. GAYA 39/ ImaAcryl / Premium Expressive Acrylic Painting", url: "#", desc: "Referensi Visual & Aset" },
             { title: "40. GAYA 40/ ImaColor / Premium Colored Pencil Illustration", url: "#", desc: "Referensi Visual & Aset" },
-
-            // --- 📝 JOURNALING & MIXED MEDIA ---
             { title: "41. GAYA 41/ ImaStudy / Studygram Digital Journaling & Scrapbook", url: "#", desc: "Referensi Visual & Aset" },
             { title: "42. GAYA 42/ ImaDenim / Hand-Drawn Sketchnote & Visual Journaling", url: "#", desc: "Referensi Visual & Aset" },
             { title: "43. GAYA 43/ ImaSketch / Doodle Journal Notebook Illustration", url: "#", desc: "Referensi Visual & Aset" },
             { title: "44. GAYA 44/ ImaMix / Mixed Media Experimental Collage", url: "#", desc: "Referensi Visual & Aset" },
-
-            // --- ✒️ GRAPHIC, POP & VECTOR ---
             { title: "45. GAYA 45/ ImaFlato / Modern Flat Vector Illustration", url: "#", desc: "Referensi Visual & Aset" },
             { title: "46. GAYA 46/ ImaNoto / Notion Minimal Monochrome Illustration", url: "#", desc: "Referensi Visual & Aset" },
             { title: "47. GAYA 47/ ImaLine / Intricate Black & White Line Art Illustration", url: "#", desc: "Referensi Visual & Aset" },
             { title: "48. GAYA 48/ ImaPop / Bold Pop Art Illustration", url: "#", desc: "Referensi Visual & Aset" },
             { title: "49. GAYA 49/ ImaAvantAsian / Avant-Garde Geometric Asian Illustration", url: "#", desc: "Referensi Visual & Aset" },
-
-            // --- 🛹 RETRO & STREET ART ---
             { title: "50. GAYA 50/ ImaGeru / Grunge Streetwear Photocopy Collage", url: "#", desc: "Referensi Visual & Aset" },
             { title: "51. GAYA 51/ ImaGraf / Risograph Vintage Graphic Print", url: "#", desc: "Referensi Visual & Aset" },
             { title: "52. GAYA 52/ ImaGraff / Urban Street Graffiti Art", url: "#", desc: "Referensi Visual & Aset" },
             { title: "53. GAYA 53/ ImaChalk / Vintage Chalkboard Typography & Sketch", url: "#", desc: "Referensi Visual & Aset" },
-
-            // --- ⛩️ JAPANESE & CLASSIC SCI-FI ---
             { title: "54. GAYA 54/ ImaWood / Minimalist Vintage Japanese Woodcut Print", url: "#", desc: "Referensi Visual & Aset" },
             { title: "55. GAYA 55/ ImaHoku / Hokusai-inspired Ukiyo-e Sci-Fi", url: "#", desc: "Referensi Visual & Aset" },
             { title: "56. GAYA 56/ ImaFinlay / Vintage Sci-Fi Stipple Ink Illustration", url: "#", desc: "Referensi Visual & Aset" },
-
-            // --- 🌸 ANIME & WEBTOON ---
             { title: "57. GAYA 57/ ImaKomi / Comic Studio (High-Fidelity Islamic Comic)", url: "#", desc: "Referensi Visual & Aset" },
             { title: "58. GAYA 58/ ImaWebo / Premium Webtoon Comic Illustration", url: "#", desc: "Referensi Visual & Aset" },
             { title: "59. GAYA 59/ ImaDecora / Retro Psychedelic Anime Pop Illustration", url: "#", desc: "Referensi Visual & Aset" },
-
-            // --- 🎮 3D ANIMATION & GAMING ---
             { title: "60. GAYA 60/ ImaPixar / Pixar Inspired 3D Animation", url: "#", desc: "Referensi Visual & Aset" },
             { title: "61. GAYA 61/ ImaGame / Stylized Game Art Illustration", url: "#", desc: "Referensi Visual & Aset" },
             { title: "62. GAYA 62/ ImaVoxel / Isometric 3D Voxel Art Diorama", url: "#", desc: "Referensi Visual & Aset" }
@@ -1086,9 +1449,11 @@
         let currentMode = 'B'; 
         let currentSavedTab = 'B'; 
         let savedData = JSON.parse(localStorage.getItem('imapro_saved_no_img')) || { A: [], B: [] };
+        let savedSettingsProfiles = JSON.parse(localStorage.getItem('imapro_settings_profiles')) || {};
         let currentOutputBlocks = []; 
         let currentTopicTemp = ""; 
         let confirmCallback = null;
+        let promptCallback = null;
 
         function saveActiveOutput() {
             localStorage.setItem('imapro_active_output', JSON.stringify({
@@ -1099,12 +1464,15 @@
             const instVal = document.getElementById('input-instructions').value;
             localStorage.setItem('imapro_input_topic', topicVal);
             localStorage.setItem('imapro_input_inst', instVal);
+            localStorage.setItem('imapro_input_niche', document.getElementById('input-niche').value);
+            localStorage.setItem('imapro_input_audience', document.getElementById('input-audience').value);
+            localStorage.setItem('imapro_input_ide_count', document.getElementById('input-ide-count').value);
+            localStorage.setItem('imapro_input_neg_words', document.getElementById('input-negative-words').value);
         }
 
         function renderGemsGrid() {
             const grid = document.getElementById('gems-grid');
             
-            // Variasi styling visual untuk card (Tailwind JIT Support)
             const styleSets = [
                 { bg: "bg-purple-50 dark:bg-purple-900/20", border: "hover:border-purple-500 dark:hover:border-purple-500", text: "group-hover:text-purple-500", emoji: "🎨" },
                 { bg: "bg-blue-50 dark:bg-blue-900/20", border: "hover:border-blue-500 dark:hover:border-blue-500", text: "group-hover:text-blue-500", emoji: "🖼️" },
@@ -1117,18 +1485,35 @@
             let html = '';
             gemsData.forEach((gem, index) => {
                 const style = styleSets[index % styleSets.length];
-                html += `
-                <a href="${gem.url}" target="_blank" class="gem-item p-4 bg-white dark:bg-[#1C1C1E] border border-gray-100 dark:border-ios-darkBorder shadow-sm hover:shadow-md rounded-2xl ${style.border} transition-all flex items-center gap-4 group">
-                    <div class="w-12 h-12 flex-shrink-0 ${style.bg} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <span class="text-xl">${style.emoji}</span>
+                const isActive = gem.url && gem.url !== "#";
+                
+                if (isActive) {
+                    html += `
+                    <a href="${gem.url}" target="_blank" class="gem-item p-4 bg-white dark:bg-[#1C1C1E] border border-gray-100 dark:border-ios-darkBorder shadow-sm hover:shadow-md rounded-2xl ${style.border} transition-all flex items-center gap-4 group h-full cursor-pointer">
+                        <div class="w-12 h-12 flex-shrink-0 ${style.bg} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <span class="text-xl">${style.emoji}</span>
+                        </div>
+                        <div class="flex-1 min-w-0 text-left">
+                            <h4 class="font-bold text-sm text-gray-800 dark:text-white truncate gem-title" title="${gem.title}">${gem.title}</h4>
+                            <p class="text-xs text-gray-500 mt-0.5 truncate gem-desc">${gem.desc}</p>
+                        </div>
+                        <svg class="w-4 h-4 text-gray-300 dark:text-gray-600 ${style.text} transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
+                    `;
+                } else {
+                    html += `
+                    <div class="gem-item p-4 bg-gray-50 dark:bg-[#141414] border border-transparent shadow-none rounded-2xl flex items-center gap-4 h-full opacity-60 cursor-not-allowed select-none">
+                        <div class="w-12 h-12 flex-shrink-0 bg-gray-200 dark:bg-gray-800/50 rounded-xl flex items-center justify-center grayscale">
+                            <span class="text-xl opacity-50">${style.emoji}</span>
+                        </div>
+                        <div class="flex-1 min-w-0 text-left">
+                            <h4 class="font-bold text-sm text-gray-400 dark:text-gray-600 truncate gem-title" title="${gem.title}">${gem.title}</h4>
+                            <p class="text-[11px] text-gray-400/80 dark:text-gray-600 mt-0.5 truncate gem-desc">${gem.desc}</p>
+                        </div>
+                        <svg class="w-4 h-4 text-gray-300 dark:text-gray-700 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                     </div>
-                    <div class="flex-1 min-w-0 text-left">
-                        <h4 class="font-bold text-sm text-gray-800 dark:text-white truncate gem-title" title="${gem.title}">${gem.title}</h4>
-                        <p class="text-xs text-gray-500 mt-0.5 truncate gem-desc">${gem.desc}</p>
-                    </div>
-                    <svg class="w-4 h-4 text-gray-300 dark:text-gray-600 ${style.text} transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                </a>
-                `;
+                    `;
+                }
             });
             grid.innerHTML = html;
         }
@@ -1152,11 +1537,19 @@
                 document.getElementById('gemini-api-key').value = savedKey;
             }
             
-            // Restore inputs & outputs yang sedang aktif
             const savedTopic = localStorage.getItem('imapro_input_topic');
             const savedInst = localStorage.getItem('imapro_input_inst');
             if(savedTopic) document.getElementById('input-topic').value = savedTopic;
             if(savedInst) document.getElementById('input-instructions').value = savedInst;
+
+            const savedNiche = localStorage.getItem('imapro_input_niche');
+            const savedAud = localStorage.getItem('imapro_input_audience');
+            const savedIdeCnt = localStorage.getItem('imapro_input_ide_count');
+            const savedNegWords = localStorage.getItem('imapro_input_neg_words');
+            if(savedNiche) document.getElementById('input-niche').value = savedNiche;
+            if(savedAud) document.getElementById('input-audience').value = savedAud;
+            if(savedIdeCnt) document.getElementById('input-ide-count').value = savedIdeCnt;
+            if(savedNegWords) document.getElementById('input-negative-words').value = savedNegWords;
 
             const activeOut = JSON.parse(localStorage.getItem('imapro_active_output'));
             if(activeOut && activeOut.blocks && activeOut.blocks.length > 0) {
@@ -1177,6 +1570,7 @@
 
             renderGemsGrid();
             renderSaved();
+            renderSavedSettingsDropdown();
             switchMode('B');
         };
 
@@ -1325,6 +1719,40 @@
             closeConfirmModal();
         });
 
+        function showPromptModal(callback) {
+            document.getElementById('prompt-input').value = '';
+            promptCallback = callback;
+            const modal = document.getElementById('prompt-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.querySelector('div').classList.remove('scale-95');
+                document.getElementById('prompt-input').focus();
+            }, 10);
+        }
+
+        function closePromptModal() {
+            const modal = document.getElementById('prompt-modal');
+            modal.classList.add('opacity-0');
+            modal.querySelector('div').classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                promptCallback = null;
+            }, 300);
+        }
+
+        document.getElementById('prompt-confirm-btn').addEventListener('click', () => {
+            const val = document.getElementById('prompt-input').value;
+            if(promptCallback) promptCallback(val);
+            closePromptModal();
+        });
+
+        document.getElementById('prompt-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                document.getElementById('prompt-confirm-btn').click();
+            }
+        });
+
         function handleKustom(selectEl) {
             const customInput = document.getElementById(selectEl.id + '-custom');
             if (!customInput) return;
@@ -1343,306 +1771,91 @@
             const fields = document.getElementById('dynamic-char-fields');
             if (!container || !fields) return;
 
-            if (val === 'Auto-Set by AI' || val === 'KUSTOM' || val === 'Tanpa Karakter') {
+            if (val === 'Auto-Set by AI' || val === 'KUSTOM' || val === 'Tanpa Karakter' || val === "") {
                 container.classList.add('hidden');
                 return;
             }
 
             container.classList.remove('hidden');
-            let html = `
-                <div><label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-2">A. Wajah</label>
-                <select id="char-face" class="w-full p-2 text-sm border border-gray-200 dark:border-ios-darkBorder ios-input dark:bg-ios-darkInput dark:text-white outline-none" onchange="checkCharCustom(this)"><option value="Normal (Proporsional)">Normal (Proporsional)</option><option value="Chibi (Cute)">Chibi (Cute)</option><option value="KUSTOM">KUSTOM</option></select><input type="text" id="char-face-custom" class="hidden w-full p-2 text-sm ios-input border border-gray-200 dark:border-ios-darkBorder dark:bg-ios-darkInput dark:text-white mt-2 outline-none" placeholder="Ketik wajah..."></div>
-            `;
+            
+            const isFemale = (val === 'Wanita' || val === 'Anak Perempuan');
+            const isMale = (val === 'Pria Dewasa' || val === 'Anak Laki-laki');
+            const isCouple = (val === 'Pasutri');
 
-            if (val === 'Wanita' || val === 'Anak Perempuan') {
-                html += `
-                    <div><label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-2">B. Penutup Kepala</label>
-                    <select id="char-headwear" class="w-full p-2 text-sm border border-gray-200 dark:border-ios-darkBorder ios-input dark:bg-ios-darkInput dark:text-white outline-none" onchange="checkCharCustom(this)"><option value="Khimar Panjang Menutup Dada">Khimar Panjang Menutup Dada</option><option value="Khimar & Cadar/Niqab">Khimar & Cadar/Niqab</option><option value="Bergo Anak">Bergo Anak</option><option value="None">None</option>
-<option value="Long Khimar">Long Khimar</option>
-<option value="Extra Long Khimar">Extra Long Khimar</option>
-<option value="Maxi Khimar">Maxi Khimar</option>
-<option value="XXL Khimar">XXL Khimar</option>
-<option value="Butterfly Khimar">Butterfly Khimar</option>
-<option value="Diamond Khimar">Diamond Khimar</option>
-<option value="Layered Khimar">Layered Khimar</option>
-<option value="One Layer Khimar">One Layer Khimar</option>
-<option value="Two Layer Khimar">Two Layer Khimar</option>
-<option value="Three Layer Khimar">Three Layer Khimar</option>
-<option value="Instant Khimar">Instant Khimar</option>
-<option value="Tie Back Khimar">Tie Back Khimar</option>
-<option value="Overhead Khimar">Overhead Khimar</option>
-<option value="Closed Khimar">Closed Khimar</option>
-<option value="Front Closed Khimar">Front Closed Khimar</option>
-<option value="Saudi Khimar">Saudi Khimar</option>
-<option value="Yemeni Khimar">Yemeni Khimar</option>
-<option value="Turkish Khimar">Turkish Khimar</option>
-<option value="Moroccan Khimar">Moroccan Khimar</option>
-<option value="Niqab">Niqab</option>
-<option value="Saudi Niqab">Saudi Niqab</option>
-<option value="Yemeni Niqab">Yemeni Niqab</option>
-<option value="Double Layer Niqab">Double Layer Niqab</option>
-<option value="Triple Layer Niqab">Triple Layer Niqab</option>
-<option value="Eye Veil Niqab">Eye Veil Niqab</option>
-<option value="Full Face Niqab">Full Face Niqab</option>
-<option value="Cadar">Cadar</option>
-<option value="Long Cadar">Long Cadar</option>
-<option value="Khimar with Niqab">Khimar with Niqab</option>
-<option value="Khimar with Cadar">Khimar with Cadar</option>
-<option value="Jilbab Syar'i">Jilbab Syar'i</option>
-<option value="Long Jilbab Syar'i">Long Jilbab Syar'i</option>
-<option value="Extra Long Jilbab Syar'i">Extra Long Jilbab Syar'i</option>
-<option value="Shayla with Khimar Style">Shayla with Khimar Style</option>
-<option value="Al Amira Syar'i">Al Amira Syar'i</option>
-<option value="Prayer Mukena Hood">Prayer Mukena Hood</option>
-<option value="Telekung Hood">Telekung Hood</option>
-<option value="Chador">Chador</option>
-<option value="Iranian Chador">Iranian Chador</option>
-<option value="Afghan Chador">Afghan Chador</option>
-<option value="Burqa">Burqa</option><option value="KUSTOM">KUSTOM</option></select><input type="text" id="char-headwear-custom" class="hidden w-full p-2 text-sm ios-input border border-gray-200 dark:border-ios-darkBorder dark:bg-ios-darkInput dark:text-white mt-2 outline-none" placeholder="Ketik detail..."></div>
-                `;
+            let html = "";
+
+            if (isCouple) {
+                // LAYOUT PASUTRI: 2 KOLOM
+                html = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                    <!-- SUAMI -->
+                    <div class="space-y-4 bg-white dark:bg-[#2C2C2E] p-4 rounded-xl shadow-sm border border-gray-100 dark:border-ios-darkBorder">
+                        <h5 class="font-bold text-sm text-blue-600 dark:text-blue-400">DATA SUAMI</h5>
+                        ${generateCharFields('suami', true, false)}
+                    </div>
+                    <!-- ISTRI -->
+                    <div class="space-y-4 bg-white dark:bg-[#2C2C2E] p-4 rounded-xl shadow-sm border border-gray-100 dark:border-ios-darkBorder">
+                        <h5 class="font-bold text-sm text-pink-600 dark:text-pink-400">DATA ISTRI</h5>
+                        ${generateCharFields('istri', false, true)}
+                    </div>
+                </div>`;
             } else {
-                html += `
-                    <div><label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-2">B. Haircut/ Penutup Kepala</label>
-                    <select id="char-headwear" class="w-full p-2 text-sm border border-gray-200 dark:border-ios-darkBorder ios-input dark:bg-ios-darkInput dark:text-white outline-none" onchange="checkCharCustom(this)"><option value="Peci/ Kopiah Hitam">Peci/ Kopiah Hitam</option><option value="Rapi Standar">Rapi Standar</option><option value="Messy Curly">Messy Curly</option><option value="None">None</option>
-<option value="Buzzcut">Buzzcut</option>
-<option value="Induction Cut">Induction Cut</option>
-<option value="Burr Cut">Burr Cut</option>
-<option value="Crew Cut">Crew Cut</option>
-<option value="Ivy League">Ivy League</option>
-<option value="Butch Cut">Butch Cut</option>
-<option value="High and Tight">High and Tight</option>
-<option value="Caesar Cut">Caesar Cut</option>
-<option value="French Crop">French Crop</option>
-<option value="Textured Crop">Textured Crop</option>
-<option value="Side Part">Side Part</option>
-<option value="Classic Side Part">Classic Side Part</option>
-<option value="Comb Over">Comb Over</option>
-<option value="Business Cut">Business Cut</option>
-<option value="Taper Cut">Taper Cut</option>
-<option value="Low Taper">Low Taper</option>
-<option value="Mid Taper">Mid Taper</option>
-<option value="High Taper">High Taper</option>
-<option value="Scissor Cut">Scissor Cut</option>
-<option value="Medium Layer Cut">Medium Layer Cut</option>
-<option value="Curtains">Curtains</option>
-<option value="Middle Part">Middle Part</option>
-<option value="Two Block">Two Block</option>
-<option value="Korean Two Block">Korean Two Block</option>
-<option value="Korean Perm">Korean Perm</option>
-<option value="Comma Hair">Comma Hair</option>
-<option value="Down Perm">Down Perm</option>
-<option value="Wolfcut">Wolfcut</option>
-<option value="Bro Flow">Bro Flow</option>
-<option value="Slick Back">Slick Back</option>
-<option value="Pompadour">Pompadour</option>
-<option value="Quiff">Quiff</option>
-<option value="Brush Up">Brush Up</option>
-<option value="Spiky Hair">Spiky Hair</option>
-<option value="Messy Fringe">Messy Fringe</option>
-<option value="Shag Cut">Shag Cut</option>
-<option value="Mullet">Mullet</option>
-<option value="Long Straight">Long Straight</option>
-<option value="Long Wavy">Long Wavy</option>
-<option value="Curly Medium">Curly Medium</option>
-<option value="Wavy Medium">Wavy Medium</option>
-<option value="Broccoli Hair">Broccoli Hair</option>
-<option value="Afro">Afro</option>
-<option value="Man Bun">Man Bun</option>
-<option value="Top Knot">Top Knot</option>
-<option value="Samurai Bun">Samurai Bun</option>
-<option value="Clean Shaved">Clean Shaved</option>
-<option value="Peci Hitam">Peci Hitam</option>
-<option value="Peci Putih">Peci Putih</option>
-<option value="Kopiah">Kopiah</option>
-<option value="Songkok">Songkok</option>
-<option value="Kufi">Kufi</option>
-<option value="Imamah">Imamah</option>
-<option value="Sorban">Sorban</option>
-<option value="White Turban">White Turban</option>
-<option value="Black Turban">Black Turban</option>
-<option value="Ghutrah">Ghutrah</option>
-<option value="Saudi Ghutrah">Saudi Ghutrah</option>
-<option value="Shemagh">Shemagh</option>
-<option value="Red Shemagh">Red Shemagh</option>
-<option value="Keffiyeh">Keffiyeh</option>
-<option value="Agal">Agal</option>
-<option value="Omani Kuma">Omani Kuma</option>
-<option value="Fez">Fez</option>
-<option value="Beanie">Beanie</option>
-<option value="Baseball Cap">Baseball Cap</option>
-<option value="Snapback">Snapback</option>
-<option value="Dad Cap">Dad Cap</option>
-<option value="Trucker Cap">Trucker Cap</option>
-<option value="Bucket Hat">Bucket Hat</option>
-<option value="Fedora">Fedora</option>
-<option value="Panama Hat">Panama Hat</option>
-<option value="Boater Hat">Boater Hat</option>
-<option value="Flat Cap">Flat Cap</option>
-<option value="Newsboy Cap">Newsboy Cap</option>
-<option value="Cowboy Hat">Cowboy Hat</option>
-<option value="Beret">Beret</option>
-<option value="Headband">Headband</option>
-<option value="Bandana">Bandana</option><option value="KUSTOM">KUSTOM</option></select><input type="text" id="char-headwear-custom" class="hidden w-full p-2 text-sm ios-input border border-gray-200 dark:border-ios-darkBorder dark:bg-ios-darkInput dark:text-white mt-2 outline-none" placeholder="Ketik detail..."></div>
-                `;
+                // LAYOUT TUNGGAL
+                html = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">${generateCharFields('char', isMale, isFemale)}</div>`;
             }
 
-            html += `
-                <div><label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-2">C. Outfit/ Pakaian</label>
-                <select id="char-outfit" class="w-full p-2 text-sm border border-gray-200 dark:border-ios-darkBorder ios-input dark:bg-ios-darkInput dark:text-white outline-none" onchange="checkCharCustom(this)"><option value="Gamis Longgar (Modest)">Gamis Longgar (Modest)</option><option value="Kemeja Koko">Kemeja Koko</option><option value="Casual Sopan">Casual Sopan</option><option value="None">None</option>
-<option value="Koko Shirt">Koko Shirt</option>
-<option value="Long Sleeve Koko">Long Sleeve Koko</option>
-<option value="Short Sleeve Koko">Short Sleeve Koko</option>
-<option value="Saudi Thobe">Saudi Thobe</option>
-<option value="Emirati Kandura">Emirati Kandura</option>
-<option value="Omani Dishdasha">Omani Dishdasha</option>
-<option value="Qatari Thobe">Qatari Thobe</option>
-<option value="Moroccan Djellaba">Moroccan Djellaba</option>
-<option value="Jubba">Jubba</option>
-<option value="Long Jubbah">Long Jubbah</option>
-<option value="Abaya for Men">Abaya for Men</option>
-<option value="Bisht">Bisht</option>
-<option value="Kurta">Kurta</option>
-<option value="Kurta Pajama">Kurta Pajama</option>
-<option value="Pathani Suit">Pathani Suit</option>
-<option value="Baju Melayu">Baju Melayu</option>
-<option value="Teluk Belanga">Teluk Belanga</option>
-<option value="Cekak Musang">Cekak Musang</option>
-<option value="Baju Kurung Lelaki">Baju Kurung Lelaki</option>
-<option value="Jalabiya">Jalabiya</option>
-<option value="Kaftan for Men">Kaftan for Men</option>
-<option value="Modern Hanfu">Modern Hanfu</option>
-<option value="Traditional Hanfu">Traditional Hanfu</option>
-<option value="Tang Suit">Tang Suit</option>
-<option value="Samue">Samue</option>
-<option value="Kimono Style Robe">Kimono Style Robe</option>
-<option value="Long Sleeve Shirt">Long Sleeve Shirt</option>
-<option value="Oxford Shirt">Oxford Shirt</option>
-<option value="Linen Shirt">Linen Shirt</option>
-<option value="Flannel Shirt">Flannel Shirt</option>
-<option value="Polo Shirt">Polo Shirt</option>
-<option value="Henley Shirt">Henley Shirt</option>
-<option value="Sweater">Sweater</option>
-<option value="Cardigan">Cardigan</option>
-<option value="Hoodie">Hoodie</option>
-<option value="Zip Hoodie">Zip Hoodie</option>
-<option value="Crewneck Sweatshirt">Crewneck Sweatshirt</option>
-<option value="Bomber Jacket">Bomber Jacket</option>
-<option value="Varsity Jacket">Varsity Jacket</option>
-<option value="Denim Jacket">Denim Jacket</option>
-<option value="Field Jacket">Field Jacket</option>
-<option value="Utility Jacket">Utility Jacket</option>
-<option value="Windbreaker">Windbreaker</option>
-<option value="Puffer Jacket">Puffer Jacket</option>
-<option value="Blazer">Blazer</option>
-<option value="Suit">Suit</option>
-<option value="Vest">Vest</option>
-<option value="Waistcoat">Waistcoat</option>
-<option value="Casual T-Shirt">Casual T-Shirt</option>
-<option value="Long Sleeve T-Shirt">Long Sleeve T-Shirt</option>
-<option value="Plain T-Shirt">Plain T-Shirt</option>
-<option value="Cargo Pants">Cargo Pants</option>
-<option value="Chinos">Chinos</option>
-<option value="Dress Pants">Dress Pants</option>
-<option value="Jeans">Jeans</option>
-<option value="Linen Pants">Linen Pants</option>
-<option value="Jogger Pants">Jogger Pants</option>
-<option value="Straight Fit Pants">Straight Fit Pants</option>
-<option value="Loose Fit Pants">Loose Fit Pants</option>
-<option value="Sarong">Sarong</option>
-<option value="Izar">Izar</option><option value="None">None</option>
-<option value="Loose Abaya">Loose Abaya</option>
-<option value="Saudi Abaya">Saudi Abaya</option>
-<option value="Emirati Abaya">Emirati Abaya</option>
-<option value="Nadwa Abaya">Nadwa Abaya</option>
-<option value="Classic Abaya">Classic Abaya</option>
-<option value="Umbrella Abaya">Umbrella Abaya</option>
-<option value="A-Line Abaya">A-Line Abaya</option>
-<option value="Flared Abaya">Flared Abaya</option>
-<option value="Butterfly Abaya">Butterfly Abaya</option>
-<option value="Open Front Abaya">Open Front Abaya</option>
-<option value="Closed Front Abaya">Closed Front Abaya</option>
-<option value="Jilbab Syar'i Dress">Jilbab Syar'i Dress</option>
-<option value="Loose Gamis">Loose Gamis</option>
-<option value="Maxi Gamis">Maxi Gamis</option>
-<option value="Straight Cut Gamis">Straight Cut Gamis</option>
-<option value="A-Line Gamis">A-Line Gamis</option>
-<option value="Flared Gamis">Flared Gamis</option>
-<option value="Umbrella Gamis">Umbrella Gamis</option>
-<option value="Layered Gamis">Layered Gamis</option>
-<option value="Princess Cut Gamis">Princess Cut Gamis</option>
-<option value="Loose Kaftan">Loose Kaftan</option>
-<option value="Moroccan Jellaba">Moroccan Jellaba</option>
-<option value="Turkish Ferace">Turkish Ferace</option>
-<option value="Iranian Manteau">Iranian Manteau</option>
-<option value="Loose Baju Kurung">Loose Baju Kurung</option>
-<option value="Loose Baju Kurung Modern">Loose Baju Kurung Modern</option>
-<option value="Loose Hanfu Muslimah">Loose Hanfu Muslimah</option>
-<option value="Loose Kimono Muslimah">Loose Kimono Muslimah</option>
-<option value="Loose Cardigan Set">Loose Cardigan Set</option>
-<option value="Long Outer Set">Long Outer Set</option>
-<option value="Loose Tunic and Skirt">Loose Tunic and Skirt</option>
-<option value="Loose Tunic and Palazzo">Loose Tunic and Palazzo</option>
-<option value="Loose Blouse and Maxi Skirt">Loose Blouse and Maxi Skirt</option>
-<option value="Loose Blouse and Wide Leg Pants">Loose Blouse and Wide Leg Pants</option>
-<option value="Loose Coat Dress">Loose Coat Dress</option>
-<option value="Prayer Mukena">Prayer Mukena</option>
-<option value="Telekung">Telekung</option>
-<option value="Travel Prayer Set">Travel Prayer Set</option><option value="KUSTOM">KUSTOM</option></select><input type="text" id="char-outfit-custom" class="hidden w-full p-2 text-sm ios-input border border-gray-200 dark:border-ios-darkBorder dark:bg-ios-darkInput dark:text-white mt-2 outline-none" placeholder="Ketik outfit..."></div>
-                
-                <div><label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-2">D. Aksesoris</label>
-                <select id="char-accessories" class="w-full p-2 text-sm border border-gray-200 dark:border-ios-darkBorder ios-input dark:bg-ios-darkInput dark:text-white outline-none" onchange="checkCharCustom(this)"><option value="Tanpa Aksesoris">Tanpa Aksesoris</option><option value="Kacamata Bulat">Kacamata Bulat</option><option value="None">None</option>
-<option value="Round Glasses">Round Glasses</option>
-<option value="Square Glasses">Square Glasses</option>
-<option value="Rectangle Glasses">Rectangle Glasses</option>
-<option value="Oval Glasses">Oval Glasses</option>
-<option value="Aviator Glasses">Aviator Glasses</option>
-<option value="Browline Glasses">Browline Glasses</option>
-<option value="Wayfarer Glasses">Wayfarer Glasses</option>
-<option value="Rimless Glasses">Rimless Glasses</option>
-<option value="Half Rim Glasses">Half Rim Glasses</option>
-<option value="Thick Round Glasses">Thick Round Glasses</option>
-<option value="Thick Frame Glasses">Thick Frame Glasses</option>
-<option value="Thin Frame Glasses">Thin Frame Glasses</option>
-<option value="Black Frame Glasses">Black Frame Glasses</option>
-<option value="Gold Frame Glasses">Gold Frame Glasses</option>
-<option value="Silver Frame Glasses">Silver Frame Glasses</option>
-<option value="Transparent Frame Glasses">Transparent Frame Glasses</option>
-<option value="Blue Light Glasses">Blue Light Glasses</option>
-<option value="Reading Glasses">Reading Glasses</option>
-<option value="Sunglasses">Sunglasses</option>
-<option value="Aviator Sunglasses">Aviator Sunglasses</option>
-<option value="Wayfarer Sunglasses">Wayfarer Sunglasses</option>
-<option value="Round Sunglasses">Round Sunglasses</option>
-<option value="Sport Sunglasses">Sport Sunglasses</option>
-<option value="Eyepatch">Eyepatch</option>
-<option value="Medical Eye Patch">Medical Eye Patch</option>
-<option value="Earbuds">Earbuds</option>
-<option value="Wireless Earbuds">Wireless Earbuds</option>
-<option value="Bluetooth Earpiece">Bluetooth Earpiece</option>
-<option value="Headset">Headset</option>
-<option value="Gaming Headset">Gaming Headset</option>
-<option value="Over Ear Headphones">Over Ear Headphones</option>
-<option value="On Ear Headphones">On Ear Headphones</option>
-<option value="Bluetooth Headphones">Bluetooth Headphones</option>
-<option value="Microphone Headset">Microphone Headset</option>
-<option value="Face Mask">Face Mask</option>
-<option value="Medical Mask">Medical Mask</option>
-<option value="Respirator Mask">Respirator Mask</option>
-<option value="Neck Gaiter">Neck Gaiter</option>
-<option value="Face Shield">Face Shield</option>
-<option value="Beard">Beard</option>
-<option value="Short Beard">Short Beard</option>
-<option value="Full Beard">Full Beard</option>
-<option value="Goatee">Goatee</option>
-<option value="Mustache">Mustache</option>
-<option value="Light Stubble">Light Stubble</option>
-<option value="Medium Stubble">Medium Stubble</option>
-<option value="Heavy Stubble">Heavy Stubble</option>
-<option value="Sideburns">Sideburns</option>
-<option value="Hearing Aid">Hearing Aid</option>
-<option value="Oxygen Cannula">Oxygen Cannula</option><option value="Membawa Buku">Membawa Buku</option><option value="KUSTOM">KUSTOM</option></select><input type="text" id="char-accessories-custom" class="hidden w-full p-2 text-sm ios-input border border-gray-200 dark:border-ios-darkBorder dark:bg-ios-darkInput dark:text-white mt-2 outline-none" placeholder="Ketik aksesoris..."></div>
-            `;
             fields.innerHTML = html;
+        }
+
+        // Helper untuk generate field karakter
+        function generateCharFields(prefix, isMale, isFemale) {
+            let fieldsHtml = "";
+            
+            const optFace = ['Normal (Proporsional)', 'Chibi (Cute)', 'KUSTOM'];
+            const optHairM = ['Rapi Standar', 'Messy Curly', 'None', 'Buzzcut', 'Induction Cut', 'Burr Cut', 'Crew Cut', 'Ivy League', 'Butch Cut', 'High and Tight', 'Caesar Cut', 'French Crop', 'Textured Crop', 'Side Part', 'Classic Side Part', 'Comb Over', 'Business Cut', 'Taper Cut', 'Low Taper', 'Mid Taper', 'High Taper', 'Scissor Cut', 'Medium Layer Cut', 'Curtains', 'Middle Part', 'Two Block', 'Korean Two Block', 'Korean Perm', 'Comma Hair', 'Down Perm', 'Wolfcut', 'Bro Flow', 'Slick Back', 'Pompadour', 'Quiff', 'Brush Up', 'Spiky Hair', 'Messy Fringe', 'Shag Cut', 'Mullet', 'Long Straight', 'Long Wavy', 'Curly Medium', 'Wavy Medium', 'Broccoli Hair', 'Afro', 'Man Bun', 'Top Knot', 'Samurai Bun', 'Clean Shaved', 'KUSTOM'];
+            const optHeadM = ['Tanpa Penutup Kepala', 'Peci/ Kopiah Hitam', 'Peci Putih', 'Kopiah', 'Songkok', 'Kufi', 'Imamah', 'Sorban', 'White Turban', 'Black Turban', 'Ghutrah', 'Saudi Ghutrah', 'Shemagh', 'Red Shemagh', 'Keffiyeh', 'Agal', 'Omani Kuma', 'Fez', 'Beanie', 'Baseball Cap', 'Snapback', 'Dad Cap', 'Trucker Cap', 'Bucket Hat', 'Fedora', 'Panama Hat', 'Boater Hat', 'Flat Cap', 'Newsboy Cap', 'Cowboy Hat', 'Beret', 'Headband', 'Bandana', 'KUSTOM'];
+            const optHeadF = ['Khimar Panjang Menutup Dada', 'Khimar & Cadar/Niqab', 'Bergo Anak', 'None', 'Long Khimar', 'Extra Long Khimar', 'Maxi Khimar', 'XXL Khimar', 'Butterfly Khimar', 'Diamond Khimar', 'Layered Khimar', 'One Layer Khimar', 'Two Layer Khimar', 'Three Layer Khimar', 'Instant Khimar', 'Tie Back Khimar', 'Overhead Khimar', 'Closed Khimar', 'Front Closed Khimar', 'Saudi Khimar', 'Yemeni Khimar', 'Turkish Khimar', 'Moroccan Khimar', 'Niqab', 'Saudi Niqab', 'Yemeni Niqab', 'Double Layer Niqab', 'Triple Layer Niqab', 'Eye Veil Niqab', 'Full Face Niqab', 'Cadar', 'Long Cadar', 'Khimar with Niqab', 'Khimar with Cadar', 'Jilbab Syar\'i', 'Long Jilbab Syar\'i', 'Extra Long Jilbab Syar\'i', 'Shayla with Khimar Style', 'Al Amira Syar\'i', 'Prayer Mukena Hood', 'Telekung Hood', 'Chador', 'Iranian Chador', 'Afghan Chador', 'Burqa', 'KUSTOM'];
+            const optOutM = ['Kemeja Koko', 'Casual Sopan', 'None', 'Koko Shirt', 'Long Sleeve Koko', 'Short Sleeve Koko', 'Saudi Thobe', 'Emirati Kandura', 'Omani Dishdasha', 'Qatari Thobe', 'Moroccan Djellaba', 'Jubba', 'Long Jubbah', 'Abaya for Men', 'Bisht', 'Kurta', 'Kurta Pajama', 'Pathani Suit', 'Baju Melayu', 'Teluk Belanga', 'Cekak Musang', 'Baju Kurung Lelaki', 'Jalabiya', 'Kaftan for Men', 'Modern Hanfu', 'Traditional Hanfu', 'Tang Suit', 'Samue', 'Kimono Style Robe', 'Long Sleeve Shirt', 'Oxford Shirt', 'Linen Shirt', 'Flannel Shirt', 'Polo Shirt', 'Henley Shirt', 'Sweater', 'Cardigan', 'Hoodie', 'Zip Hoodie', 'Crewneck Sweatshirt', 'Bomber Jacket', 'Varsity Jacket', 'Denim Jacket', 'Field Jacket', 'Utility Jacket', 'Windbreaker', 'Puffer Jacket', 'Blazer', 'Suit', 'Vest', 'Waistcoat', 'Casual T-Shirt', 'Long Sleeve T-Shirt', 'Plain T-Shirt', 'Cargo Pants', 'Chinos', 'Dress Pants', 'Jeans', 'Linen Pants', 'Jogger Pants', 'Straight Fit Pants', 'Loose Fit Pants', 'Sarong', 'Izar', 'KUSTOM'];
+            const optOutF = ['Gamis Longgar (Modest)', 'None', 'Loose Abaya', 'Saudi Abaya', 'Emirati Abaya', 'Nadwa Abaya', 'Classic Abaya', 'Umbrella Abaya', 'A-Line Abaya', 'Flared Abaya', 'Butterfly Abaya', 'Open Front Abaya', 'Closed Front Abaya', 'Jilbab Syar\'i Dress', 'Loose Gamis', 'Maxi Gamis', 'Straight Cut Gamis', 'A-Line Gamis', 'Flared Gamis', 'Umbrella Gamis', 'Layered Gamis', 'Princess Cut Gamis', 'Loose Kaftan', 'Moroccan Jellaba', 'Turkish Ferace', 'Iranian Manteau', 'Loose Baju Kurung', 'Loose Baju Kurung Modern', 'Loose Hanfu Muslimah', 'Loose Kimono Muslimah', 'Loose Cardigan Set', 'Long Outer Set', 'Loose Tunic and Skirt', 'Loose Tunic and Palazzo', 'Loose Blouse and Maxi Skirt', 'Loose Blouse and Wide Leg Pants', 'Loose Coat Dress', 'Prayer Mukena', 'Telekung', 'Travel Prayer Set', 'KUSTOM'];
+            
+            let optAcc = ['Tanpa Aksesoris', 'Kacamata Bulat', 'None', 'Round Glasses', 'Square Glasses', 'Rectangle Glasses', 'Oval Glasses', 'Aviator Glasses', 'Browline Glasses', 'Wayfarer Glasses', 'Rimless Glasses', 'Half Rim Glasses', 'Thick Round Glasses', 'Thick Frame Glasses', 'Thin Frame Glasses', 'Black Frame Glasses', 'Gold Frame Glasses', 'Silver Frame Glasses', 'Transparent Frame Glasses', 'Blue Light Glasses', 'Reading Glasses', 'Sunglasses', 'Aviator Sunglasses', 'Wayfarer Sunglasses', 'Round Sunglasses', 'Sport Sunglasses', 'Eyepatch', 'Medical Eye Patch', 'Earbuds', 'Wireless Earbuds', 'Bluetooth Earpiece', 'Headset', 'Gaming Headset', 'Over Ear Headphones', 'On Ear Headphones', 'Bluetooth Headphones', 'Microphone Headset', 'Face Mask', 'Medical Mask', 'Respirator Mask', 'Neck Gaiter', 'Face Shield', 'Hearing Aid', 'Oxygen Cannula', 'Membawa Buku', 'KUSTOM'];
+            
+            if (isMale) {
+                optAcc.splice(optAcc.length - 3, 0, 'Beard', 'Short Beard', 'Full Beard', 'Goatee', 'Mustache', 'Light Stubble', 'Medium Stubble', 'Heavy Stubble', 'Sideburns');
+            }
+
+            // Wajah
+            fieldsHtml += renderField(prefix + '-face', 'A. Wajah', optFace, 'Proporsi wajah');
+
+            // Rambut / Penutup Kepala
+            if (isMale) {
+                fieldsHtml += renderField(prefix + '-haircut', 'B. Gaya Rambut', optHairM, 'Gaya rambut pria');
+                fieldsHtml += renderField(prefix + '-headwear', 'C. Penutup Kepala', optHeadM, 'Topi/Peci');
+            } else {
+                fieldsHtml += renderField(prefix + '-headwear', 'B. Penutup Kepala', optHeadF, 'Model Khimar/Niqab');
+            }
+
+            // Outfit
+            fieldsHtml += renderField(prefix + '-outfit', isMale ? 'D. Outfit' : 'C. Outfit', isMale ? optOutM : optOutF, 'Jenis pakaian');
+
+            // Aksesoris
+            fieldsHtml += renderField(prefix + '-accessories', isMale ? 'E. Aksesoris' : 'D. Aksesoris', optAcc, 'Aksesoris pelengkap');
+
+            return fieldsHtml;
+        }
+
+        function renderField(id, label, options, desc) {
+            let opts = options.map(o => `<option value="${o}">${o}</option>`).join('');
+            return `
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="block text-xs font-bold text-gray-600 dark:text-gray-400">${label}</label>
+                        <button type="button" onclick="autoSetSingle(this, '${id}', '${id.replace(/-/g, '_')}', 'STRING', '${desc}')" class="text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 p-1 rounded transition-colors" title="Auto-Set Fitur Ini"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></button>
+                    </div>
+                    <select id="${id}" class="w-full p-2 text-sm border border-gray-200 dark:border-ios-darkBorder ios-input dark:bg-ios-darkInput dark:text-white outline-none" onchange="checkCharCustom(this)">${opts}</select>
+                    <input type="text" id="${id}-custom" class="hidden w-full p-2 text-sm ios-input border border-gray-200 dark:border-ios-darkBorder dark:bg-ios-darkInput dark:text-white mt-2 outline-none" placeholder="Ketik manual...">
+                </div>
+            `;
         }
 
         window.checkCharCustom = function(selectEl) {
@@ -1675,13 +1888,23 @@
 
         function getCharacterDetailsString() {
             const charType = getSettingValue('set-character');
+            
             if (charType === 'Auto-Set by AI' || charType === 'KUSTOM' || charType === 'Tanpa Karakter' || charType === "") {
-                return `* KARAKTER UTAMA:\n\t* GENDER: Dinamis\n\t* WAJAH: COMPLETELY BLANK FACE AREA, FACELESS, NO EYES LINES, NO EYE CURVES\n\t* HAIRCUT/ PENUTUP KEPALA: Dinamis\n\t* OUTFIT: Dinamis\n\t* AKSESORIS: Dinamis`;
+                return `KARAKTER UTAMA: Dinamis (Tanpa karakter spesifik, ikuti instruksi utama). PASTIKAN FACELESS.`;
+            }
+
+            if (charType === 'Pasutri') {
+                return `KARAKTER PASUTRI (Keduanya Wajib Faceless/Tanpa Mata):\n- SUAMI:\n  * Wajah: ${getSettingValue('suami-face')}\n  * Rambut: ${getSettingValue('suami-haircut')}\n  * Penutup Kepala: ${getSettingValue('suami-headwear')}\n  * Outfit: ${getSettingValue('suami-outfit')}\n  * Aksesoris: ${getSettingValue('suami-accessories')}\n- ISTRI:\n  * Wajah: ${getSettingValue('istri-face')}\n  * Penutup Kepala: ${getSettingValue('istri-headwear')}\n  * Outfit: ${getSettingValue('istri-outfit')}\n  * Aksesoris: ${getSettingValue('istri-accessories')}`;
+            }
+
+            let charData = "";
+            if (charType === 'Wanita' || charType === 'Anak Perempuan') {
+                charData = `\n- Penutup Kepala: ${getSettingValue('char-headwear')}`;
+            } else {
+                charData = `\n- Gaya Rambut: ${getSettingValue('char-haircut')}\n- Penutup Kepala: ${getSettingValue('char-headwear')}`;
             }
             
-            let headLbl = (charType === 'Wanita' || charType === 'Anak Perempuan') ? 'KHIMAR LEBAR MENUTUP DADA & LENGAN' : 'HAIRCUT/ PENUTUP KEPALA';
-            
-            return `* KARAKTER UTAMA:\n\t* GENDER: ${charType}\n\t* WAJAH: COMPLETELY BLANK FACE AREA, FACELESS, NO EYES LINES, NO EYE CURVES (${getSettingValue('char-face')})\n\t* ${headLbl}: ${getSettingValue('char-headwear')}\n\t* OUTFIT: ${getSettingValue('char-outfit')}\n\t* AKSESORIS: ${getSettingValue('char-accessories')}`;
+            return `KARAKTER UTAMA (${charType} - Wajib Faceless/Tanpa Mata):\n- Wajah: ${getSettingValue('char-face')}${charData}\n- Outfit: ${getSettingValue('char-outfit')}\n- Aksesoris: ${getSettingValue('char-accessories')}`;
         }
 
         function resetSettings() {
@@ -1698,6 +1921,7 @@
             document.getElementById('set-watermark-logos').value = 'Instagram, Threads';
             document.getElementById('set-watermark-username').value = '';
             document.getElementById('set-logo-filename').value = '';
+            document.getElementById('input-negative-words').value = '';
             
             document.getElementById('set-negative-prompt').value = 'SEMUA BENTUK MATA, HIDUNG, MULUT PADA MANUSIA MAUPUN HEWAN/BINATANG/BONEKA. DILARANG ADA TITIK MATA, GARIS MATA, ATAU MATA TERPEJAM PADA HEWAN (ANJING, KUDA, KUCING, BURUNG DLL). RAMBUT WANITA, LEHER WANITA, LENGAN WANITA, BETIS WANITA.';
             handleCharacterChange(document.getElementById('set-character'));
@@ -1740,6 +1964,9 @@
         async function autoSetSettings() {
             const topic = document.getElementById('input-topic').value.trim();
             const instructions = document.getElementById('input-instructions').value.trim();
+            const niche = document.getElementById('input-niche').value.trim();
+            const audience = document.getElementById('input-audience').value.trim();
+            const negWordsContent = document.getElementById('input-negative-words').value.trim();
             
             if (!topic && !instructions) {
                 showToast("Harap isi Topik atau Instruksi pada Kartu Input terlebih dahulu!");
@@ -1761,9 +1988,14 @@
             btn.disabled = true;
             showToast("⏳ AI sedang membaca instruksi dan meracik harmoni visual...");
 
+            let extraContext = "";
+            if (niche) extraContext += `\nNiche/Fokus: "${niche}"`;
+            if (audience) extraContext += `\nTarget Audience: "${audience}"`;
+            if (negWordsContent) extraContext += `\nPantangan Kata Naskah: "${negWordsContent}"`;
+
             try {
                 const promptText = `Anda adalah Ahli Strategi Konten, Desainer Visual Senior, & Prompt Engineer.
-Berdasarkan Topik: "${topic}"
+Berdasarkan Topik: "${topic}"${extraContext}
 Dan Instruksi Tambahan: "${instructions}"
 
 PERHATIAN UTAMA (ANCHOR VISUAL):
@@ -1887,6 +2119,9 @@ REFERENSI OPSI BAWAAN SISTEM:
         async function autoSetSingle(btn, elementId, schemaKey, schemaType, description) {
             const topic = document.getElementById('input-topic').value.trim();
             const instructions = document.getElementById('input-instructions').value.trim();
+            const niche = document.getElementById('input-niche').value.trim();
+            const audience = document.getElementById('input-audience').value.trim();
+            const negWordsContent = document.getElementById('input-negative-words').value.trim();
             
             if (!topic && !instructions) {
                 showToast("Harap isi Topik atau Instruksi pada Kartu Input terlebih dahulu!");
@@ -1897,6 +2132,11 @@ REFERENSI OPSI BAWAAN SISTEM:
             btn.innerHTML = `<svg class="w-3 h-3 animate-spin text-[#007AFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>`;
             btn.disabled = true;
 
+            let extraContext = "";
+            if (niche) extraContext += `\nNiche/Fokus: "${niche}"`;
+            if (audience) extraContext += `\nTarget Audience: "${audience}"`;
+            if (negWordsContent) extraContext += `\nPantangan Kata Naskah: "${negWordsContent}"`;
+
             try {
                 const currentArtStyle = document.getElementById('set-style') ? document.getElementById('set-style').value : 'Auto-Set by AI';
                 
@@ -1904,15 +2144,15 @@ REFERENSI OPSI BAWAAN SISTEM:
                 const selectEl = document.getElementById(elementId);
                 if (selectEl && selectEl.options) {
                     const opts = Array.from(selectEl.options)
-                                    .map(o => o.value)
-                                    .filter(v => v !== 'Auto-Set by AI' && v !== 'KUSTOM');
+                                      .map(o => o.value)
+                                      .filter(v => v !== 'Auto-Set by AI' && v !== 'KUSTOM');
                     if(opts.length > 0) {
                         optionsListText = `\n\nREFERENSI OPSI BAWAAN SISTEM UNTUK FITUR INI:\n[ ${opts.join(' | ')} ]\n\nATURAN PRIORITAS KETAT: Usahakan memprioritaskan untuk memilih persis salah satu dari opsi di atas yang paling MATCHING dengan Art Style / Topik.`;
                     }
                 }
 
                 const promptText = `Anda adalah Ahli Strategi Konten & Desainer Visual.
-Berdasarkan Topik: "${topic}"
+Berdasarkan Topik: "${topic}"${extraContext}
 Dan Instruksi Tambahan: "${instructions}"
 (Sebagai informasi, "Gaya Seni / Art Style" yang saat ini aktif di sistem adalah: "${currentArtStyle}")
 
@@ -2027,7 +2267,7 @@ PENTING:
             }
 
             const container = document.getElementById('output-container');
-            container.innerHTML = `<div class="flex flex-col items-center justify-center p-10 gap-5">
+            container.innerHTML = `<div class="flex flex-col items-center justify-center p-10 gap-5 w-full">
                 <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-t-2 border-[#007AFF]"></div>
                 <p class="text-sm font-bold text-gray-600 dark:text-gray-400 animate-pulse text-center">AI sedang meracik Copywriting & Visual Prompt secara spesifik...<br><span class="text-xs font-normal text-gray-400">Mohon tunggu beberapa detik.</span></p>
             </div>`;
@@ -2039,36 +2279,79 @@ PENTING:
                     await generateModeB(topic, instructions);
                 }
             } catch(error) {
-                container.innerHTML = `<div class="p-8 text-center text-red-500 font-bold bg-red-50 dark:bg-red-900/20 rounded-2xl border border-red-100 dark:border-red-900/30">Terjadi Kesalahan:<br><span class="font-normal text-sm">${error.message}</span></div>`;
+                container.innerHTML = `<div class="p-8 text-center text-red-500 font-bold bg-red-50 dark:bg-red-900/20 rounded-2xl border border-red-100 dark:border-red-900/30 w-full">Terjadi Kesalahan:<br><span class="font-normal text-sm">${error.message}</span></div>`;
             }
         }
 
         function createOutputBlockHTML(index, title, content, isFirst) {
             const id = `out-blk-${Date.now()}-${index}`;
+            const textareaId = `output-textarea-${index}`;
+            const rowCount = Math.min(25, Math.max(5, content.split('\n').length));
             return `
-                <div class="border border-gray-100 dark:border-ios-darkBorder rounded-3xl overflow-hidden bg-white dark:bg-ios-darkPanel mb-5 shadow-sm">
-                    <div class="flex justify-between items-center bg-[#F9F9FB] dark:bg-[#1C1C1E] px-6 py-5 border-b border-gray-100 dark:border-ios-darkBorder">
-                        <button onclick="toggleAccordion('${id}-content', '${id}-icon')" class="flex-grow flex items-center gap-3 text-left font-bold text-sm tracking-wide">
+                <div class="border border-gray-100 dark:border-ios-darkBorder rounded-3xl overflow-hidden bg-white dark:bg-ios-darkPanel mb-5 shadow-sm w-full">
+                    <div class="flex justify-between items-center bg-[#F9F9FB] dark:bg-[#1C1C1E] px-6 py-5 border-b border-gray-100 dark:border-ios-darkBorder flex-wrap gap-2">
+                        <button onclick="toggleAccordion('${id}-content', '${id}-icon')" class="flex-grow flex items-center gap-3 text-left font-bold text-sm tracking-wide min-w-[200px]">
                             <svg id="${id}-icon" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
                             ${title}
                         </button>
                         <div class="flex gap-2">
+                            <button onclick="enableOutputEdit(${index})" class="px-4 py-2 text-xs font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/30 rounded-xl hover:bg-orange-100 dark:hover:bg-orange-900/50 transition-colors">Edit</button>
                             <button onclick="copyText(this, ${index})" class="px-4 py-2 text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors">Copy</button>
                             <button onclick="saveBlock(${index})" class="px-4 py-2 text-xs font-bold text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/30 rounded-xl hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors">Save</button>
                         </div>
                     </div>
                     <div id="${id}-content" class="accordion-content px-5 py-0">
-                        <div class="py-5 text-sm font-mono text-gray-700 dark:text-gray-300 whitespace-pre-wrap leading-relaxed">${content}</div>
+                        <div class="py-5 w-full">
+                            <textarea id="${textareaId}" class="w-full p-4 text-sm font-mono border border-transparent hover:border-gray-200 dark:hover:border-[#3A3A3C] rounded-xl bg-transparent outline-none focus:ring-2 focus:ring-[#007AFF] focus:bg-[#F9F9FB] dark:focus:bg-[#1C1C1E] focus:border-gray-200 dark:focus:border-[#3A3A3C] resize-y transition-colors leading-relaxed text-gray-700 dark:text-gray-300 hide-scrollbar" rows="${rowCount}" readonly onblur="saveEditedOutput(${index}, this.value)">${content}</textarea>
+                        </div>
                     </div>
                 </div>
             `;
         }
 
+        function enableOutputEdit(index) {
+            const textarea = document.getElementById(`output-textarea-${index}`);
+            if (!textarea) return;
+            
+            const contentDiv = textarea.closest('.accordion-content');
+            if (contentDiv && !contentDiv.classList.contains('open')) {
+                contentDiv.classList.add('open');
+                const iconId = contentDiv.id.replace('-content', '-icon');
+                const icon = document.getElementById(iconId);
+                if(icon) icon.classList.add('rotate-180');
+            }
+
+            textarea.removeAttribute('readonly');
+            textarea.focus();
+            showToast("Mode Edit Aktif (Klik di luar kotak untuk simpan)");
+        }
+
+        function saveEditedOutput(index, newVal) {
+            if (currentOutputBlocks[index]) {
+                currentOutputBlocks[index].content = newVal;
+                saveActiveOutput();
+                showToast("Output Diperbarui!");
+                const textarea = document.getElementById(`output-textarea-${index}`);
+                if (textarea) textarea.setAttribute('readonly', true);
+            }
+        }
+
         async function generateModeA(topic, instructions) {
+            const niche = document.getElementById('input-niche').value.trim();
+            const audience = document.getElementById('input-audience').value.trim();
+            const negWordsContent = document.getElementById('input-negative-words').value.trim();
+            let ideCount = parseInt(document.getElementById('input-ide-count').value);
+            if (isNaN(ideCount) || ideCount < 1) ideCount = 5;
+
             const langStyle = getSettingValue('set-language-style');
             const appliedLang = langStyle === 'Auto-Set by AI' ? 'Feynman Muslim (edukatif, solutif, gaya membumi)' : langStyle;
 
-            const promptText = `Anda adalah Content Strategist Islami. Berikan 5 ide konten unik (beragam angle yang edukatif, solutif) untuk audiens awam dengan topik: "${topic}".
+            let extraContext = "";
+            if(niche) extraContext += `\nNiche/Fokus: "${niche}"`;
+            if(audience) extraContext += `\nTarget Audience: "${audience}"`;
+            if(negWordsContent) extraContext += `\nWARNING - PANTANGAN KATA: DILARANG KERAS menggunakan kata-kata berikut dalam hasil tulisan/naskah: "${negWordsContent}"`;
+
+            const promptText = `Anda adalah Content Strategist Islami. Berikan ${ideCount} ide konten unik (beragam angle yang edukatif, solutif) untuk target audiens dengan topik: "${topic}".${extraContext}
 Instruksi Tambahan (jika ada): "${instructions}"
 Gunakan gaya bahasa: ${appliedLang}
 Kembalikan wajib dalam format JSON array sesuai skema yang diminta.`;
@@ -2145,6 +2428,10 @@ Kembalikan wajib dalam format JSON array sesuai skema yang diminta.`;
             const langStyle = getSettingValue('set-language-style');
             const negativePrompt = document.getElementById('set-negative-prompt').value.trim();
             
+            const niche = document.getElementById('input-niche').value.trim();
+            const audience = document.getElementById('input-audience').value.trim();
+            const negWordsContent = document.getElementById('input-negative-words').value.trim();
+
             const ptHead = document.getElementById('set-pt-header').value || '60';
             const ptBody = document.getElementById('set-pt-body').value || '40';
             const ptFoot = document.getElementById('set-pt-footer').value || '20';
@@ -2187,6 +2474,11 @@ Kembalikan wajib dalam format JSON array sesuai skema yang diminta.`;
                 "body": { "type": "STRING", "description": "Teks penjelasan kecil (Wajib KOSONG untuk slide 1)" }
             };
 
+            let extraContext = "";
+            if(niche) extraContext += `\nNiche/Fokus: "${niche}"`;
+            if(audience) extraContext += `\nTarget Audience: "${audience}"`;
+            if(negWordsContent) extraContext += `\nWARNING - PANTANGAN KATA NASKAH: DILARANG KERAS menggunakan kata-kata berikut dalam hasil tulisan/teks: "${negWordsContent}"`;
+
             const commonPromptRules = `ATURAN PEMBUATAN 'image_prompt' (SANGAT PENTING):
 1. DESKRIPSI KAYA & SPESIFIK: JANGAN gunakan template generik. Jelaskan elemen adegan, tindakan karakter, objek utama, pencahayaan, dan latar belakang (background) secara sangat kaya dan mendetail sesuai dengan narasi pada slide tersebut.
 2. Art Style & Konsep: ${style}. Deskripsi Konsep Visual: ${styleConcept}. (WAJIB sertakan seluruh deskripsi konsep visual ini secara eksplisit di awal kalimat 'image_prompt' pada SETIAP slide agar AI pembuat gambar tidak lupa. Misal: "A highly detailed [Deskripsi Konsep Visual], ...")
@@ -2200,7 +2492,8 @@ ${charDetails}
 
             if (isCustomScript) {
                 const promptTextCustom = `Anda adalah Master AI Image Prompter & Desainer Visual.
-User telah membuat naskah copywriting sendiri untuk ${slides} slide. Berikut naskahnya:
+User telah membuat naskah copywriting sendiri untuk ${slides} slide.${extraContext}
+Berikut naskahnya:
 
 ${customSlides.map((txt, idx) => `[SLIDE ${idx + 1}]\n${txt}`).join('\n\n')}
 
@@ -2222,7 +2515,7 @@ ${commonPromptRules}`;
             } else {
                 const promptText = `Anda adalah Copywriter Edukasi Islam kelas dunia & Master AI Image Prompter.
 Buatkan naskah spesifik untuk carousel Instagram sebanyak tepat ${slides} slide.
-Topik: "${topic}"
+Topik: "${topic}"${extraContext}
 Instruksi Tambahan: "${instructions}"
 Alur Copywriting: ${fwText}
 Arahan Khusus Slide 1: ${hookInstruction}
@@ -2243,16 +2536,7 @@ ${commonPromptRules}`;
             let html = "";
             const materiKonten = isCustomScript ? "Naskah Kustom" : (topic.length > 30 ? topic.substring(0,30)+"..." : topic).toUpperCase();
 
-            let charFormatted = charDetails
-                .replace(/\* KARAKTER UTAMA:\n\t/, '')
-                .replace(/\n\t\*/g, ', ')
-                .replace(/\* /g, '')
-                .replace(/GENDER: /g, 'Gender: ')
-                .replace(/WAJAH: /g, 'Face: ')
-                .replace(/HAIRCUT\/ PENUTUP KEPALA: /g, 'Headwear: ')
-                .replace(/KHIMAR LEBAR MENUTUP DADA & LENGAN: /g, 'Headwear: ')
-                .replace(/OUTFIT: /g, 'Outfit: ')
-                .replace(/AKSESORIS: /g, 'Accessories: ');
+            let charFormatted = charDetails;
 
             // --- SLIDE 1 ---
             const s1Data = slidesData[0];
@@ -2324,7 +2608,8 @@ Make the aspect ratio ${ratio}`;
             let capContent = "";
 
             if(!isCustomScript) {
-                 const capPrompt = `Abaikan perintah gambar. Fokus HANYA buatkan 1 paragraf teks tulisan untuk Caption Postingan Instagram yang edukatif dan ringkas mengenai topik "${topic}". Maksimalkan 350 karakter (huruf). Sertakan emoji relevan dan 4-6 hashtag. Jangan gunakan kata pengantar apapun, JANGAN menyisipkan prompt gambar, hanya teks caption murni!`;
+                 let capNegWarning = negWordsContent ? `\n\nWARNING - DILARANG KERAS menggunakan kata-kata berikut dalam caption: "${negWordsContent}"` : "";
+                 const capPrompt = `Abaikan perintah gambar. Fokus HANYA buatkan 1 paragraf teks tulisan untuk Caption Postingan Instagram yang edukatif dan ringkas mengenai topik "${topic}". Maksimalkan 350 karakter (huruf). Sertakan emoji relevan dan 4-6 hashtag. Jangan gunakan kata pengantar apapun, JANGAN menyisipkan prompt gambar, hanya teks caption murni!${capNegWarning}`;
                  const capSchema = { "caption": { "type": "STRING" } };
                  const capRes = await callGeminiAPI(capPrompt, capSchema);
                  capContent = `CAPTION & HASHTAGS:\n\n${capRes[0].caption}`;
@@ -2440,8 +2725,8 @@ Make the aspect ratio ${ratio}`;
                 let cardsHtml = bundle.blocks.map((blk, i) => {
                     const blockId = `${bundleId}-blk-${i}`;
                     return `
-                    <div class="bg-white dark:bg-ios-darkPanel border border-gray-100 dark:border-ios-darkBorder rounded-2xl p-6 mb-4 shadow-sm">
-                        <div class="flex justify-between items-center mb-4">
+                    <div class="bg-white dark:bg-ios-darkPanel border border-gray-100 dark:border-ios-darkBorder rounded-2xl p-4 sm:p-6 mb-4 shadow-sm w-full">
+                        <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
                             <span class="font-bold text-sm tracking-wide">${blk.title}</span>
                             <div class="flex gap-2">
                                 <button onclick="copySavedText('${blockId}-text')" class="p-2 text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors" title="Copy"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>
@@ -2454,10 +2739,10 @@ Make the aspect ratio ${ratio}`;
                 }).join('');
 
                 container.innerHTML += `
-                <div class="border border-gray-100 dark:border-ios-darkBorder rounded-3xl overflow-hidden bg-[#F9F9FB] dark:bg-[#1A1A1C] mb-5 shadow-sm">
-                    <div class="flex justify-between items-center px-6 py-5 border-b border-gray-100 dark:border-ios-darkBorder bg-white dark:bg-[#1C1C1E]">
-                        <button onclick="toggleAccordion('${bundleId}-content', '${bundleId}-icon')" class="flex-grow flex items-center gap-3 text-left font-bold text-sm tracking-wide">
-                            <svg id="${bundleId}-icon" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+                <div class="border border-gray-100 dark:border-ios-darkBorder rounded-3xl overflow-hidden bg-[#F9F9FB] dark:bg-[#1A1A1C] mb-5 shadow-sm w-full">
+                    <div class="flex justify-between items-center px-4 sm:px-6 py-5 border-b border-gray-100 dark:border-ios-darkBorder bg-white dark:bg-[#1C1C1E] flex-wrap gap-2">
+                        <button onclick="toggleAccordion('${bundleId}-content', '${bundleId}-icon')" class="flex-grow flex items-center gap-3 text-left font-bold text-sm tracking-wide min-w-[150px]">
+                            <svg id="${bundleId}-icon" class="w-4 h-4 text-gray-400 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
                             ${bundle.title}
                         </button>
                         <div class="flex gap-2">
@@ -2465,8 +2750,8 @@ Make the aspect ratio ${ratio}`;
                             <button onclick="deleteGroup(${bIdx})" class="px-4 py-2 text-xs font-bold text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-900/30 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors">Delete</button>
                         </div>
                     </div>
-                    <div id="${bundleId}-content" class="accordion-content px-6 py-0">
-                        <div class="py-5">
+                    <div id="${bundleId}-content" class="accordion-content px-4 sm:px-6 py-0 w-full">
+                        <div class="py-5 w-full">
                             ${cardsHtml}
                         </div>
                     </div>
@@ -2559,6 +2844,177 @@ Make the aspect ratio ${ratio}`;
                     } catch(err) {
                         showToast("Gagal membaca file JSON.");
                     }
+                };
+                reader.readAsText(input.files[0]);
+            }
+        }
+
+        // --- MANAJEMEN PROFIL SETTING ---
+        function renderSavedSettingsDropdown() {
+            const dropdown = document.getElementById('saved-settings-dropdown');
+            if(!dropdown) return;
+            let html = '<option value="">-- Pilih Profil Setting --</option>';
+            for(let key in savedSettingsProfiles) {
+                html += `<option value="${key}">${key}</option>`;
+            }
+            dropdown.innerHTML = html;
+        }
+
+        function getSettingsData() {
+            const ids = [
+                'set-style', 'set-style-custom', 'set-slide-count', 'set-ratio', 'set-ratio-custom', 
+                'set-copywriting', 'set-copywriting-custom', 'set-hook', 'set-hook-custom', 
+                'set-language-style', 'set-language-style-custom', 'set-palette', 'set-palette-custom', 
+                'set-composition', 'set-composition-custom', 'set-character', 'set-character-custom', 
+                'set-negative-prompt', 'set-font-header', 'set-font-header-custom', 'set-texteffect-header', 
+                'set-texteffect-header-custom', 'set-pt-header', 'set-font-body', 'set-font-body-custom', 
+                'set-texteffect-body', 'set-texteffect-body-custom', 'set-pt-body', 'set-bodyformat', 
+                'set-bodyformat-custom', 'set-alignment', 'set-alignment-custom', 'set-font-footer', 
+                'set-font-footer-custom', 'set-texteffect-footer', 'set-texteffect-footer-custom', 
+                'set-patch-footer', 'set-patch-footer-custom', 'set-pt-footer', 'set-footer-position', 
+                'set-footer-position-custom', 'set-watermark-logos', 'set-watermark-username', 
+                'set-logo-filename', 'set-logo-position', 'set-logo-position-custom',
+                'char-face', 'char-face-custom', 'char-haircut', 'char-haircut-custom', 'char-headwear', 'char-headwear-custom', 
+                'char-outfit', 'char-outfit-custom', 'char-accessories', 'char-accessories-custom',
+                'suami-face', 'suami-face-custom', 'suami-haircut', 'suami-haircut-custom', 'suami-headwear', 'suami-headwear-custom', 
+                'suami-outfit', 'suami-outfit-custom', 'suami-accessories', 'suami-accessories-custom',
+                'istri-face', 'istri-face-custom', 'istri-headwear', 'istri-headwear-custom', 
+                'istri-outfit', 'istri-outfit-custom', 'istri-accessories', 'istri-accessories-custom'
+            ];
+            
+            let data = {};
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) {
+                    data[id] = el.value;
+                }
+            });
+            return data;
+        }
+
+        function setSettingsData(data) {
+            if(!data) return;
+            
+            for(let id in data) {
+                const el = document.getElementById(id);
+                if(el) {
+                    el.value = data[id];
+                }
+            }
+            
+            const selectIds = [
+                'set-style', 'set-ratio', 'set-copywriting', 'set-hook', 'set-language-style', 
+                'set-palette', 'set-composition', 'set-font-header', 'set-texteffect-header', 
+                'set-font-body', 'set-texteffect-body', 'set-bodyformat', 'set-alignment', 
+                'set-font-footer', 'set-texteffect-footer', 'set-patch-footer', 'set-footer-position', 
+                'set-logo-position'
+            ];
+            
+            selectIds.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) handleKustom(el);
+            });
+
+            const charEl = document.getElementById('set-character');
+            if(charEl) {
+                handleCharacterChange(charEl);
+                
+                const dynamicIds = [
+                    'char-face', 'char-face-custom', 'char-haircut', 'char-haircut-custom', 'char-headwear', 'char-headwear-custom', 
+                    'char-outfit', 'char-outfit-custom', 'char-accessories', 'char-accessories-custom',
+                    'suami-face', 'suami-face-custom', 'suami-haircut', 'suami-haircut-custom', 'suami-headwear', 'suami-headwear-custom', 
+                    'suami-outfit', 'suami-outfit-custom', 'suami-accessories', 'suami-accessories-custom',
+                    'istri-face', 'istri-face-custom', 'istri-headwear', 'istri-headwear-custom', 
+                    'istri-outfit', 'istri-outfit-custom', 'istri-accessories', 'istri-accessories-custom'
+                ];
+                dynamicIds.forEach(id => {
+                    if(data[id]) {
+                        const dEl = document.getElementById(id);
+                        if(dEl) {
+                            dEl.value = data[id];
+                            if(dEl.tagName === 'SELECT') checkCharCustom(dEl);
+                        }
+                    }
+                });
+            }
+        }
+
+        function saveSettingsProfile() {
+            showPromptModal((name) => {
+                if(!name || name.trim() === "") {
+                    showToast("Nama profil tidak boleh kosong!");
+                    return;
+                }
+                
+                const data = getSettingsData();
+                savedSettingsProfiles[name.trim()] = data;
+                localStorage.setItem('imapro_settings_profiles', JSON.stringify(savedSettingsProfiles));
+                renderSavedSettingsDropdown();
+                document.getElementById('saved-settings-dropdown').value = name.trim();
+                showToast("Profil Setting Tersimpan!");
+            });
+        }
+
+        function loadSettingsProfile() {
+            const name = document.getElementById('saved-settings-dropdown').value;
+            if(!name || !savedSettingsProfiles[name]) {
+                showToast("Pilih profil setting terlebih dahulu!");
+                return;
+            }
+            
+            setSettingsData(savedSettingsProfiles[name]);
+            showToast(`Profil '${name}' Dimuat!`);
+        }
+
+        function deleteSettingsProfile() {
+            const name = document.getElementById('saved-settings-dropdown').value;
+            if(!name || !savedSettingsProfiles[name]) {
+                showToast("Pilih profil yang ingin dihapus!");
+                return;
+            }
+            
+            showConfirmModal(`Yakin ingin menghapus Profil Setting '${name}'?`, () => {
+                delete savedSettingsProfiles[name];
+                localStorage.setItem('imapro_settings_profiles', JSON.stringify(savedSettingsProfiles));
+                renderSavedSettingsDropdown();
+                showToast("Profil Dihapus!");
+            });
+        }
+
+        function exportSettingsProfile() {
+            if(Object.keys(savedSettingsProfiles).length === 0) {
+                showToast("Tidak ada profil untuk diekspor!");
+                return;
+            }
+            const dataStr = JSON.stringify(savedSettingsProfiles);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            const exportFileDefaultName = 'imapro_settings_profiles.json';
+            
+            let linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            showToast("Profil Setting Diekspor!");
+        }
+
+        function importSettingsProfile(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    try {
+                        const importedData = JSON.parse(e.target.result);
+                        if(typeof importedData === 'object' && !Array.isArray(importedData)) {
+                            savedSettingsProfiles = { ...savedSettingsProfiles, ...importedData };
+                            localStorage.setItem('imapro_settings_profiles', JSON.stringify(savedSettingsProfiles));
+                            renderSavedSettingsDropdown();
+                            showToast("Profil Setting Berhasil Diimpor!");
+                        } else {
+                            showToast("Format JSON profil tidak valid.");
+                        }
+                    } catch(err) {
+                        showToast("Gagal membaca file JSON.");
+                    }
+                    input.value = "";
                 };
                 reader.readAsText(input.files[0]);
             }
