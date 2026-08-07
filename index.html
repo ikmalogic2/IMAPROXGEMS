@@ -501,7 +501,7 @@
                         
                         <div id="character-details-container" class="col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-3 hidden bg-gray-50 dark:bg-[#1C1C1E] p-5 rounded-2xl border border-gray-100 dark:border-ios-darkBorder shadow-sm w-full">
                             <p class="text-xs text-red-500 dark:text-red-400 font-bold mb-4 tracking-wide">*ATURAN FACELESS & NO EYES MUTLAK BERLAKU UNTUK SYARIAT.</p>
-                            <div id="dynamic-char-fields" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                            <div id="dynamic-char-fields" class="w-full">
                                 <!-- Injected dynamically -->
                             </div>
                         </div>
@@ -1947,7 +1947,7 @@
                 </div>`;
             } else {
                 // LAYOUT TUNGGAL
-                html = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">${generateCharFields('char', isMale, isFemale)}</div>`;
+                html = `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 w-full">${generateCharFields('char', isMale, isFemale)}</div>`;
             }
 
             fields.innerHTML = html;
